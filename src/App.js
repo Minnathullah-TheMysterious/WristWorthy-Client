@@ -1,57 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React from "react";
+import "./App.css";
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import CartPage from "./pages/CartPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import PassResetPage from "./pages/PassResetPage";
+import OtpVerifyPage from "./pages/OtpVerifyPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
+import PageNotFound from "./pages/PageNotFound";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <>
+      <Routes>
+        <Route path="*" element={<PageNotFound />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/req-password-reset" element={<PassResetPage />} />
+        <Route path="/verify-otp-change-password" element={<OtpVerifyPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/product-details" element={<ProductDetailsPage />} />
+      </Routes>
+      <Toaster />
+    </>
   );
 }
 
