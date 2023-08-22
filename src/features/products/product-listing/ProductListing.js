@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import {
-  fetchFilteredProductsAsync,
-} from "./productListingSlice";
+import { fetchFilteredProductsAsync } from "./productListingSlice";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -18,7 +16,7 @@ import {
   PlusIcon,
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
-import { totalProductsCount } from "./productListingAPI";
+import { PRODUCT_LIMIT_PER_PAGE } from "./../../../app/constants";
 
 const sortOptions = [
   { name: "Best Rating", sort: "rating", order: "desc", current: false },
@@ -351,19 +349,12 @@ const ProductListing = () => {
   const [filter, setFilter] = useState({});
   const [pageNum, setPageNum] = useState(1);
   const [sort, setSort] = useState({});
-  const [total, setTotal] = useState(1);
-
-
-  // Set Products per page
-  const productLimitPerPage = 12;
 
   const products = useSelector((state) => state.product);
+  console.log(products);
+  const totalProductsCount = products.totalProductsCount;
+  console.log(totalProductsCount);
   const dispatch = useDispatch();
-
-  const totalProducts = async () => {
-    const totalResults = await totalProductsCount();
-    setTotal(totalResults[0]);
-  };
 
   const handleFilterChange = (e, section, option) => {
     const isChecked = e.target.checked;
@@ -403,10 +394,20 @@ const ProductListing = () => {
     setSort(sort);
   };
 
+  const handlePagination = (e, pageNum) => {
+    e.preventDefault();
+    setPageNum(pageNum);
+    console.log("page number:", pageNum);
+  };
+
   useEffect(() => {
-    dispatch(fetchFilteredProductsAsync({ filter, sort, pageNum, productLimitPerPage}));
-    totalProducts();
-  }, [filter, sort, dispatch, pageNum, productLimitPerPage]);
+    const pagination = { _page: pageNum, _limit: PRODUCT_LIMIT_PER_PAGE };
+    dispatch(fetchFilteredProductsAsync({ filter, sort, pagination }));
+  }, [filter, sort, dispatch, pageNum]);
+
+  useEffect(()=>{
+    setPageNum(1)
+  },[totalProductsCount, sort])
 
   return (
     <div className="bg-white">
@@ -439,11 +440,11 @@ const ProductListing = () => {
 
             {/* Pagination */}
             <Pagination
-              products={products}
+              handlePagination={handlePagination}
               pageNum={pageNum}
               setPageNum={setPageNum}
-              productLimitPerPage={productLimitPerPage}
-              total={total}
+              PRODUCT_LIMIT_PER_PAGE={PRODUCT_LIMIT_PER_PAGE}
+              totalProductsCount={totalProductsCount}
             />
           </section>
         </main>
@@ -700,8 +701,13 @@ function DesktopFilter({ handleFilterChange }) {
   );
 }
 
-function Pagination({ products, productLimitPerPage, setPageNum, pageNum, total }) {
-
+function Pagination({
+  handlePagination,
+  PRODUCT_LIMIT_PER_PAGE,
+  setPageNum,
+  pageNum,
+  totalProductsCount,
+}) {
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
       {/* Mobile Pagination */}
@@ -722,7 +728,9 @@ function Pagination({ products, productLimitPerPage, setPageNum, pageNum, total 
             setPageNum(pageNum + 1);
           }}
           disabled={
-            Math.ceil(total / pageNum) <= productLimitPerPage ? true : false
+            Math.ceil(totalProductsCount / pageNum) <= PRODUCT_LIMIT_PER_PAGE
+              ? true
+              : false
           }
           className="relative rounded-lg inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 focus:z-20 focus:outline-offset-0 active:bg-blue-800 active:text-white disabled:bg-gray-300 disabled:text-gray-900 disabled:cursor-not-allowed"
         >
@@ -735,19 +743,15 @@ function Pagination({ products, productLimitPerPage, setPageNum, pageNum, total 
           <p className="text-sm text-gray-700">
             Showing{" "}
             <span className="font-medium">
-              {products &&
-                products.products &&
-                products.products[0] &&
-                products.products[0].id}
+              {(pageNum - 1) * PRODUCT_LIMIT_PER_PAGE + 1}
             </span>{" "}
             to{" "}
             <span className="font-medium">
-              {products &&
-                products.products &&
-                products.products[products.products.length - 1] &&
-                products.products[products.products.length - 1].id}
+              {pageNum * PRODUCT_LIMIT_PER_PAGE > totalProductsCount
+                ? totalProductsCount
+                : pageNum * PRODUCT_LIMIT_PER_PAGE}
             </span>{" "}
-            of <span className="font-medium">{total}</span> results
+            of <span className="font-medium">{totalProductsCount}</span> results
           </p>
         </div>
         <div>
@@ -767,107 +771,26 @@ function Pagination({ products, productLimitPerPage, setPageNum, pageNum, total 
               <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
             </button>
             {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                setPageNum(1);
-              }}
-              aria-current="page"
-              className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 hover:text-gray-900 focus:z-20 focus:outline-offset-0 active:bg-blue-700 active:text-white ${
-                pageNum === 1
-                  ? "bg-blue-600 text-white hover:bg-blue-500"
-                  : null
-              }`}
-            >
-              1
-            </button>
-            <button
-              disabled={
-                Math.ceil(total / productLimitPerPage) < 2 ? true : false
-              }
-              onClick={(e) => {
-                e.preventDefault();
-                setPageNum(2);
-              }}
-              className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 hover:text-gray-900 focus:z-20 focus:outline-offset-0 active:bg-blue-700 active:text-white disabled:bg-gray-300 disabled:text-gray-900 disabled:cursor-not-allowed ${
-                pageNum === 2
-                  ? "bg-blue-600 text-white hover:bg-blue-500"
-                  : null
-              }`}
-            >
-              2
-            </button>
-            <button
-              disabled={
-                Math.ceil(total / productLimitPerPage) < 3 ? true : false
-              }
-              onClick={(e) => {
-                e.preventDefault();
-                setPageNum(3);
-              }}
-              className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 hover:text-gray-900 focus:z-20 focus:outline-offset-0 active:bg-blue-700 active:text-white disabled:bg-gray-300 disabled:text-gray-900 disabled:cursor-not-allowed ${
-                pageNum === 3
-                  ? "bg-blue-600 text-white hover:bg-blue-500"
-                  : null
-              }`}
-            >
-              3
-            </button>
-            <span
-              aria-disabled
-              aria-readonly
-              className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 focus:z-20 focus:outline-offset-0"
-            >
-              ...
-            </span>
-            <button
-              disabled={
-                Math.ceil(total / productLimitPerPage) < 8 ? true : false
-              }
-              onClick={(e) => {
-                e.preventDefault();
-                setPageNum(8);
-              }}
-              className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 hover:text-gray-900 focus:z-20 focus:outline-offset-0 active:bg-blue-700 active:text-white disabled:bg-gray-300 disabled:text-gray-900 disabled:cursor-not-allowed ${
-                pageNum === 8
-                  ? "bg-blue-600 text-white hover:bg-blue-500"
-                  : null
-              }`}
-            >
-              8
-            </button>
-            <button
-              disabled={
-                Math.ceil(total / productLimitPerPage) < 9 ? true : false
-              }
-              onClick={(e) => {
-                e.preventDefault();
-                setPageNum(9);
-              }}
-              className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 hover:text-gray-900 focus:z-20 focus:outline-offset-0 active:bg-blue-700 active:text-white disabled:bg-gray-300 disabled:text-gray-900 disabled:cursor-not-allowed ${
-                pageNum === 9
-                  ? "bg-blue-600 text-white hover:bg-blue-500"
-                  : null
-              }`}
-            >
-              9
-            </button>
-            <button
-              disabled={
-                Math.ceil(total / productLimitPerPage) < 10 ? true : false
-              }
-              onClick={(e) => {
-                e.preventDefault();
-                setPageNum(10);
-              }}
-              className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 hover:text-gray-900 focus:z-20 focus:outline-offset-0 active:bg-blue-700 active:text-white disabled:bg-gray-300 disabled:text-gray-900 disabled:cursor-not-allowed ${
-                pageNum === 10
-                  ? "bg-blue-600 text-white hover:bg-blue-500"
-                  : null
-              }`}
-            >
-              10
-            </button>
+
+            {Array.from({
+              length: Math.ceil(totalProductsCount / PRODUCT_LIMIT_PER_PAGE),
+            }).map((element, index) => (
+              <button
+                key={index}
+                onClick={(e) => {
+                  handlePagination(e, index + 1);
+                }}
+                aria-current="page"
+                className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 hover:text-gray-900 focus:z-20 focus:outline-offset-0 active:bg-blue-700 active:text-white ${
+                  pageNum === index + 1
+                    ? "bg-blue-600 text-white hover:bg-blue-500"
+                    : ""
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+
             <button
               className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 hover:text-gray-900 focus:z-20 focus:outline-offset-0 active:bg-blue-700 active:text-white disabled:bg-gray-300 disabled:text-gray-900 disabled:cursor-not-allowed ${
                 pageNum > 10 ? "bg-blue-600 text-white hover:bg-blue-500" : null
@@ -877,7 +800,10 @@ function Pagination({ products, productLimitPerPage, setPageNum, pageNum, total 
                 setPageNum(pageNum + 1);
               }}
               disabled={
-                Math.ceil(total / pageNum) <= productLimitPerPage ? true : false
+                Math.ceil(totalProductsCount / pageNum) <=
+                PRODUCT_LIMIT_PER_PAGE
+                  ? true
+                  : false
               }
             >
               <span className="sr-only">Next</span>

@@ -1,12 +1,14 @@
-import axios from "axios";
-
-//////////////////////////
+import axios from "axios";//////////////////////////
 export const fetchProductsByFilters = async (
   filter,
   sort,
-  pageNum,
-  productLimitPerPage
+  pagination
 ) => {
+
+  //filter = {category:['smartphones', 'laptops'], brand:['apple', 'samsung']}
+  //sort = {_sort: 'price', _order: 'desc'}
+  //pagination = {_page: 1, _limit: 10}
+
   console.log("filter object: ", filter);
 
   const filterQueryParams = Object.entries(filter)
@@ -20,32 +22,28 @@ export const fetchProductsByFilters = async (
   for (const key in sort) {
     const sortingValue = sort[key];
     sortingQueryParams = sortingQueryParams + `${key}=${sortingValue}&`;
-    console.log(sortingQueryParams);
   }
+  console.log("Sorting Query Params: ", sortingQueryParams);
 
-  console.log('Sorting Query Params: ',sortingQueryParams)
+  let paginationQueryParams = "";
+  for (const key in pagination) {
+    const paginationValue = pagination[key];
+    paginationQueryParams = paginationQueryParams + `${key}=${paginationValue}&`;
+  }
+  console.log("Sorting Query Params: ", paginationQueryParams);
 
-  const filteredProductsAPI = `http://localhost:5000/products?_page=${pageNum}&_limit=${productLimitPerPage}&${filterQueryParams}&${sortingQueryParams}`;
+  const filteredProductsAPI = `http://localhost:5000/products?${paginationQueryParams}&${filterQueryParams}&${sortingQueryParams}`;
 
   try {
     const response = await fetch(filteredProductsAPI);
     const data = await response.json();
     console.log(data);
-    return data;
+    const totalProductsCount = response.headers.get('X-Total-Count')
+    console.log('Total Product:', totalProductsCount)
+    return {data:{products: data, totalProductsCount: +totalProductsCount}};
   } catch (error) {
     console.error("Error fetching filtered products:", error);
     throw error;
-  }
-};
-
-export const totalProductsCount = async () => {
-  const totalProductsCountAPI = "http://localhost:5000/total";
-  try {
-    const { data } = await axios.get(totalProductsCountAPI);
-    console.log(`product count: ${data}`);
-    return data;
-  } catch (error) {
-    console.error(`Something went wrong while fetching the products`, error);
   }
 };
 

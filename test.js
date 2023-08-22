@@ -1952,7 +1952,10 @@ const products = [
 // console.log(entries);
 // console.log(entries.map(([key, values]) => values.map((value) => `${key}=${value}`)).flat().join('&'));
 
-//////////////
-const array = [1,2,3,4,5,6,7,8,9,]
-const filter = array.filter((item)=> item>4)
-console.log(filter)
+// //////////////
+// const array = [1,2,3,4,5,6,7,8,9,]
+// const filter = array.filter((item)=> item>4)
+// console.log(filter)
+
+///////////////
+console.log(Array.from({length: Math.ceil(100/15)}).map((e)=> 1))
