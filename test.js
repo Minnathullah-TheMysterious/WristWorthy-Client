@@ -1926,8 +1926,8 @@ const products = [
 // categories.map((c)=>console.log({value: c, label:c.charAt(0).toUpperCase()+c.split('-').join(' ').slice(1), checked:false}))
 
 /////////////////////////
-// const brands = [...new Set([...products.map(b=>(b.brand))])]
-// brands.map((b)=>console.log({value: b, label:b.charAt(0).toUpperCase()+b.split('-').join(' ').slice(1), checked:false}))
+const brands = [...new Set([...products.map(b=>(b.brand))])]
+brands.map((b)=>console.log({value: b, label:b.charAt(0).toUpperCase()+b.split('-').join(' ').slice(1), checked:false}))
 
 // ///////////////////
 // const uniquePrices = [...new Set(products.map((p) => p.price))];
@@ -1958,4 +1958,4 @@ const products = [
 // console.log(filter)
 
 ///////////////
-console.log(Array.from({length: Math.ceil(100/15)}).map((e)=> 1))
+// console.log(Array.from({length: Math.ceil(100/15)}).map((e)=> 1))

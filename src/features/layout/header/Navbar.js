@@ -1,25 +1,24 @@
-import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BsSearch } from "react-icons/bs";
-import { Input, Badge, Avatar } from "antd";
+import { Input, Badge, Select, Button } from "antd";
 import {
   Bars3Icon,
   ShoppingCartIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { useDispatch, useSelector } from "react-redux";
+import { authDetailsAsync } from "../../auth/authSlice";
 
-const user = {
-  name: "Tom Cook",
-};
-const navigation = [{ name: "Home", href: "/", current: false }];
+// const navigation = [{ name: "Home", href: "/", current: false }];
+
 const userNavigation = [
-  { name: "My Profile", href: "/user/profile" },
-  { name: "My Orders", href: "/user/orders" },
-  { name: "Wish List", href: "/user/wish-list" },
-  { name: "Manage Addresses", href: "/user/addresses" },
-  { name: "Sign out", href: "/logout" },
+  { id: 1, name: "My Profile", href: "/user/profile" },
+  { id: 2, name: "My Orders", href: "/user/orders" },
+  { id: 3, name: "Wish List", href: "/user/wish-list" },
+  { id: 4, name: "Manage Addresses", href: "/user/addresses" },
 ];
 
 function classNames(...classes) {
@@ -27,6 +26,16 @@ function classNames(...classes) {
 }
 
 const Navbar = () => {
+  const user = useSelector((state) => state.auth.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    dispatch(authDetailsAsync());
+    navigate("/login");
+  };
+
   return (
     <>
       <div className="min-h-full font-serif">
@@ -40,33 +49,15 @@ const Navbar = () => {
                       <Link to={"/"}>
                         <img
                           className="w-16"
-                          src="images/logo256.png"
+                          src="/images/logo256.png"
                           alt="WristWorthy"
                         />
                       </Link>
                     </div>
-                    <div className="hidden md:block">
-                      <div className="ml-10 flex items-baseline space-x-4">
-                        {navigation.map((item) => (
-                          <NavLink
-                            key={item.name}
-                            to={item.href}
-                            className={classNames(
-                              item.current
-                                ? "bg-gray-900 text-white"
-                                : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                              "rounded-md px-3 py-2 text-sm font-medium"
-                            )}
-                            aria-current={item.current ? "page" : undefined}
-                          >
-                            {item.name}
-                          </NavLink>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="ml-10 items-baseline hidden md:block md:w-96">
+
+                    <div className="ml-10 items-baseline hidden md:block lg:w-[500px] w-52">
                       <Input
-                        type="submit"
+                        type="text"
                         size="large"
                         placeholder="Search Products"
                         prefix={<BsSearch />}
@@ -75,17 +66,52 @@ const Navbar = () => {
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-4 flex items-center md:ml-6 md:space-x-6">
-                      <NavLink to={"/login"}>
-                        <button
-                          type="button"
-                          className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                      {user !== null ? (
+                        <Select
+                          size="large"
+                          placeholder={"My Account"}
+                          className="lg:w-52 w-32 text-lg "
+                          value={"My Account"}
                         >
-                          <span className="absolute -inset-1.5" />
-                          <span className="sr-only">View notifications</span>
-                          <span>Sign in</span>
-                        </button>
-                      </NavLink>
-                      <NavLink to={"/cart"}>
+                          {userNavigation.map((item) => (
+                            <Select.Option key={item.id} value={item.id}>
+                              <Link to={item.href}>{item.name}</Link>
+                            </Select.Option>
+                          ))}
+                          <Select.Option onMouseDown={handleLogout}>
+                            <span>Logout</span>
+                          </Select.Option>
+                        </Select>
+                      ) : (
+                        <div className="space-x-6">
+                          <NavLink to={"/login"}>
+                            <button
+                              type="button"
+                              className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                            >
+                              <span className="absolute -inset-1.5" />
+                              <span className="sr-only">
+                                View notifications
+                              </span>
+                              <span>Sign in</span>
+                            </button>
+                          </NavLink>
+                          <NavLink to={"/register"}>
+                            <button
+                              type="button"
+                              className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                            >
+                              <span className="absolute -inset-1.5" />
+                              <span className="sr-only">
+                                View notifications
+                              </span>
+                              <span>Sign up</span>
+                            </button>
+                          </NavLink>
+                        </div>
+                      )}
+
+                      <NavLink to={"/dashboard/cart"}>
                         <button
                           type="button"
                           className=" rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -111,7 +137,7 @@ const Navbar = () => {
                           <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="absolute -inset-1.5" />
                             <span className="sr-only">Open user menu</span>
-                            <p className="text-white font-bold">{user.name}</p>
+                            <p className="text-white font-bold">{user?.name}</p>
                           </Menu.Button>
                         </div>
                         <Transition
@@ -166,7 +192,7 @@ const Navbar = () => {
               </div>
 
               <Disclosure.Panel className="md:hidden">
-                <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
+                {/* <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
                   {navigation.map((item) => (
                     <Disclosure.Button
                       key={item.name}
@@ -183,10 +209,10 @@ const Navbar = () => {
                       {item.name}
                     </Disclosure.Button>
                   ))}
-                </div>
+                </div> */}
                 <div className="px-2 pb-3 pt-2 sm:px-3">
                   <Input
-                    type="submit"
+                    type="text"
                     size="large"
                     placeholder="Search Products"
                     prefix={<BsSearch />}
@@ -194,22 +220,40 @@ const Navbar = () => {
                 </div>
                 <div className="border-t border-gray-700 pb-3 pt-4">
                   <div className="flex justify-between px-5">
-                    <div className="ml-3">
-                      <div className="text-base font-medium leading-none text-white">
-                        {user.name}
+                  {user?(
+                    <>
+                    <div className="flex justify-center items-center">
+                      <div className="font-medium leading-none text-white text-xs cursor-default">
+                        {user?.user?.user_name}
                       </div>
                     </div>
+                    <Button onMouseDown={handleLogout} className="text-white">Logout</Button></>
+                  ):(
+                    <>
+                    <Link to={"/register"}>
+                      <button
+                        type="button"
+                        className="relative ml-auto border border-zinc-50 flex-shrink-0 rounded-lg bg-gray-800 px-4 py-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                      >
+                        <span className="absolute -inset-1.5" />
+                        <span className="sr-only">View notifications</span>
+                        Sign up
+                      </button>
+                    </Link>
                     <Link to={"/login"}>
                       <button
                         type="button"
-                        className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                        className="relative ml-auto border border-zinc-50 flex-shrink-0 rounded-lg bg-gray-800 px-4 py-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                       >
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">View notifications</span>
                         Sign in
                       </button>
-                    </Link>
-                    <Link to={"/cart"}>
+                    </Link></>
+                  )}
+                    
+                    
+                    <Link to={"/dashboard/cart"}>
                       <button
                         type="button"
                         className=" rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"

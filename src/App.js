@@ -11,6 +11,7 @@ import CheckoutPage from "./pages/CheckoutPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import PageNotFound from "./pages/PageNotFound";
 import { Toaster } from "react-hot-toast";
+import ProtectedRoute from "./features/auth/auth-components/ProtectedRoute";
 
 function App() {
   return (
@@ -18,13 +19,15 @@ function App() {
       <Routes>
         <Route path="*" element={<PageNotFound />} />
         <Route path="/" element={<Home />} />
-        <Route path="/cart" element={<CartPage />} />
+        <Route path="/dashboard" element={<ProtectedRoute />}>
+          <Route path="cart" element={<CartPage />} />
+        </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/req-password-reset" element={<PassResetPage />} />
         <Route path="/verify-otp-change-password" element={<OtpVerifyPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/product-details" element={<ProductDetailsPage />} />
+        <Route path="/product-details/:id" element={<ProductDetailsPage />} />
       </Routes>
       <Toaster />
     </>

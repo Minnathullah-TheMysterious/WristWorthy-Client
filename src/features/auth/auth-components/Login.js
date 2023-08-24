@@ -2,18 +2,22 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
+import { useDispatch } from "react-redux";
+import { authDetailsAsync } from "../authSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [phoneInputDisabled, setPhoneInputDisabled] = useState(false);
   const [emailInputDisabled, setEmailInputDisabled] = useState(false);
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const navigate = useNavigate();
 
   const handlePhoneInputChange = (value) => {
     setPhone(value);
@@ -45,7 +49,9 @@ const Login = () => {
 
       if (success) {
         toast.success(message);
-        navigate("/");
+        localStorage.setItem("user", JSON.stringify(response.data));
+        dispatch(authDetailsAsync());
+        navigate(location.state || "/");
       } else {
         toast.error(message);
       }
@@ -91,17 +97,17 @@ const Login = () => {
               >
                 Phone
               </label>
-                <PhoneInput
-                  defaultCountry="IN"
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  autoComplete="phone"
-                  disabled={phoneInputDisabled}
-                  value={phone}
-                  onChange={handlePhoneInputChange}
-                  className="disabled:bg-gray-200 w-full pl-2 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
+              <PhoneInput
+                defaultCountry="IN"
+                id="phone"
+                name="phone"
+                type="tel"
+                autoComplete="phone"
+                disabled={phoneInputDisabled}
+                value={phone}
+                onChange={handlePhoneInputChange}
+                className="disabled:bg-gray-200 w-full pl-2 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
             </div>
 
             <div className="text-center mt-6 text-bold font-serif">OR</div>
