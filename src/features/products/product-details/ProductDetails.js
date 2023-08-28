@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchSelectedProductsAsync } from "./productDetailsSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { addItemToCart } from "../../cart/cartAPI";
+import { addItemToCartAsync } from "../../cart/cartSlice";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -84,34 +84,32 @@ const ProductDetails = () => {
     dispatch(fetchSelectedProductsAsync(params.id));
   }, [dispatch, params.id]);
 
-  const cartProduct = { ...selectedProduct, quantity: 1 };
   const userId = user?.user?._id;
-  const cartItem = { user_id: userId, items: [cartProduct] };
+  const cartItem = { ...selectedProduct, quantity: 1, user_id: userId };
 
   console.log("Product Id:", selectedProduct?.id);
 
-  const productFound = carts
-    ?.flatMap((cart) => cart.items)
-    ?.some((cartItem) => cartItem?.id === selectedProduct?.id);
+  const productFound = carts?.some((cart) => cart?.id === selectedProduct?.id);
   console.log(productFound);
 
   const handleAddToCartClick = async (e) => {
     e.preventDefault();
 
     if (user && !productFound) {
-      const response = await addItemToCart(cartItem);
-      console.log(response);
-      if (response) {
-        toast.success("Added To Cart Successfully");
+      const actionResult = await dispatch(addItemToCartAsync(cartItem));
+      console.log(actionResult)
+
+      if (addItemToCartAsync?.fulfilled?.match(actionResult) && actionResult?.payload) {
+        toast.success("Item Added To Cart");
         navigate("/dashboard/cart");
       } else {
-        toast.error("Failed To Add To Cart");
+        toast.error("Need To Handle This in Server, Try Adding Other Items");
       }
-    }else if(user && productFound){
+    } else if (user && productFound) {
       toast("Already Present In The Cart", {
         className: "font-serif bg-blue-900 text-white",
       });
-      navigate('/dashboard/cart')
+      navigate("/dashboard/cart");
     } else {
       toast("Login To Add To Cart", {
         className: "font-serif bg-blue-900 text-white",
