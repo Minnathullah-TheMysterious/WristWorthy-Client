@@ -5,9 +5,9 @@ import { Outlet } from "react-router-dom";
 import Loader from "../../../app/Loader";
 
 const ProtectedRoute = () => {
-  const user = useSelector(state => state.auth.user);
-  console.log('User Info: ',user);
   const [ok, setOk] = useState();
+
+  const user = JSON.parse(localStorage.getItem('user'))
 
   useEffect(() => {
     const authCheck = async () => {

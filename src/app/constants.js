@@ -1,1 +1,1 @@
-export const PRODUCT_LIMIT_PER_PAGE = 8
+export const PRODUCT_LIMIT_PER_PAGE = 6

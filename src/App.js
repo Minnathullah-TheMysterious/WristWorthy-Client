@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserCartAsync } from "./features/cart/cartSlice";
+import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
 import CartPage from "./pages/CartPage";
 import LoginPage from "./pages/LoginPage";
@@ -10,10 +13,17 @@ import OtpVerifyPage from "./pages/OtpVerifyPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import PageNotFound from "./pages/PageNotFound";
-import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./features/auth/auth-components/ProtectedRoute";
 
 function App() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+
+  const userId = user?.user?._id;
+
+  useEffect(() => {
+    dispatch(fetchUserCartAsync(userId));
+  }, [dispatch, userId]);
   return (
     <>
       <Routes>

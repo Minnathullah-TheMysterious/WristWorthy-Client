@@ -1925,9 +1925,9 @@ const products = [
 // const categories = [...new Set([...products.map(c=>(c.category))])]
 // categories.map((c)=>console.log({value: c, label:c.charAt(0).toUpperCase()+c.split('-').join(' ').slice(1), checked:false}))
 
-/////////////////////////
-const brands = [...new Set([...products.map(b=>(b.brand))])]
-brands.map((b)=>console.log({value: b, label:b.charAt(0).toUpperCase()+b.split('-').join(' ').slice(1), checked:false}))
+// /////////////////////////
+// const brands = [...new Set([...products.map(b=>(b.brand))])]
+// brands.map((b)=>console.log({value: b, label:b.charAt(0).toUpperCase()+b.split('-').join(' ').slice(1), checked:false}))
 
 // ///////////////////
 // const uniquePrices = [...new Set(products.map((p) => p.price))];
@@ -1959,3 +1959,36 @@ brands.map((b)=>console.log({value: b, label:b.charAt(0).toUpperCase()+b.split('
 
 ///////////////
 // console.log(Array.from({length: Math.ceil(100/15)}).map((e)=> 1))
+
+///////////////
+const carts = [
+  { id: 1, user_id: 11, items: [{ price: 10, id:1 }] },
+  { id: 2, user_id: 12, items: [{ price: 10, id:2 }] },
+  { id: 3, user_id: 13, items: [{ price: 10, id:3 }] },
+];
+
+// const totalPrice = carts
+//   .map((cart) => cart.items.reduce((total, cart) => total + cart.price, 0))
+//   .reduce((total, cartTotal) => total + cartTotal, 0);
+// console.log(totalPrice);
+
+// const totalPrice = carts
+//   .map((cart) => cart.items.map((cart) => cart.price))
+//   .flatMap((price) => price)
+//   .reduce((total, price) => total + price);
+// console.log(totalPrice);
+
+// const totalPrice = carts.flatMap((cart)=>cart.items).reduce((total, item)=> total+item.price, 0)
+// console.log(totalPrice);
+
+// const totalPrice = carts
+//   .flatMap((cart) => cart.items)
+//   .reduce((total, item) => {
+//     total.totalPrice += item.price;
+//     total.totalItem += 1;
+//     return total
+//   }, {totalPrice:0, totalItem:0});
+// console.log(totalPrice);
+
+const productFound = carts.flatMap(cart=>cart.items).some((cart)=>cart.id === 1)
+console.log(productFound)

@@ -27,8 +27,16 @@ function classNames(...classes) {
 
 const Navbar = () => {
   const user = useSelector((state) => state.auth.user);
+  const cart = useSelector((state) => state.cart.items);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
+    if (userFromLocalStorage) {
+      dispatch(authDetailsAsync());
+    }
+  }, [dispatch]);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -117,7 +125,7 @@ const Navbar = () => {
                           className=" rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                         >
                           <span className="sr-only">View notifications</span>
-                          <Badge count={5}>
+                          <Badge count={user ? cart.length : null} showZero>
                             <div className="flex space-x-1 text-gray-300">
                               <div className="text-base">Cart</div>
                               <div>
@@ -220,46 +228,52 @@ const Navbar = () => {
                 </div>
                 <div className="border-t border-gray-700 pb-3 pt-4">
                   <div className="flex justify-between px-5">
-                  {user?(
-                    <>
-                    <div className="flex justify-center items-center">
-                      <div className="font-medium leading-none text-white text-xs cursor-default">
-                        {user?.user?.user_name}
-                      </div>
-                    </div>
-                    <Button onMouseDown={handleLogout} className="text-white">Logout</Button></>
-                  ):(
-                    <>
-                    <Link to={"/register"}>
-                      <button
-                        type="button"
-                        className="relative ml-auto border border-zinc-50 flex-shrink-0 rounded-lg bg-gray-800 px-4 py-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                      >
-                        <span className="absolute -inset-1.5" />
-                        <span className="sr-only">View notifications</span>
-                        Sign up
-                      </button>
-                    </Link>
-                    <Link to={"/login"}>
-                      <button
-                        type="button"
-                        className="relative ml-auto border border-zinc-50 flex-shrink-0 rounded-lg bg-gray-800 px-4 py-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                      >
-                        <span className="absolute -inset-1.5" />
-                        <span className="sr-only">View notifications</span>
-                        Sign in
-                      </button>
-                    </Link></>
-                  )}
-                    
-                    
+                    {user ? (
+                      <>
+                        <div className="flex justify-center items-center">
+                          <div className="font-medium leading-none text-white text-xs cursor-default">
+                            {user?.user?.user_name}
+                          </div>
+                        </div>
+                        <Button
+                          onMouseDown={handleLogout}
+                          className="text-white"
+                        >
+                          Logout
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Link to={"/register"}>
+                          <button
+                            type="button"
+                            className="relative ml-auto border border-zinc-50 flex-shrink-0 rounded-lg bg-gray-800 px-4 py-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                          >
+                            <span className="absolute -inset-1.5" />
+                            <span className="sr-only">View notifications</span>
+                            Sign up
+                          </button>
+                        </Link>
+                        <Link to={"/login"}>
+                          <button
+                            type="button"
+                            className="relative ml-auto border border-zinc-50 flex-shrink-0 rounded-lg bg-gray-800 px-4 py-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                          >
+                            <span className="absolute -inset-1.5" />
+                            <span className="sr-only">View notifications</span>
+                            Sign in
+                          </button>
+                        </Link>
+                      </>
+                    )}
+
                     <Link to={"/dashboard/cart"}>
                       <button
                         type="button"
                         className=" rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                       >
                         <span className="sr-only">View notifications</span>
-                        <Badge count={5}>
+                        <Badge count={user?cart.length:null} showZero>
                           <div className="flex space-x-1 text-gray-300">
                             <div className="text-base">Cart</div>
                             <div>

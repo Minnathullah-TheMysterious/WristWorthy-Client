@@ -4,7 +4,9 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSelectedProductsAsync } from "./productDetailsSlice";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import { addItemToCart } from "../../cart/cartAPI";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -65,23 +67,66 @@ function classNames(...classes) {
 }
 
 const ProductDetails = () => {
-  const params = useParams()
-  const dispatch = useDispatch()
-  const selectedProduct = useSelector(state => state.productDetails.selectedProduct)
+  const navigate = useNavigate();
+  const params = useParams();
+  const dispatch = useDispatch();
+  const selectedProduct = useSelector(
+    (state) => state.productDetails.selectedProduct
+  );
+  const user = useSelector((state) => state.auth.user);
+  const carts = useSelector((state) => state.cart.items);
+  console.log(carts);
 
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
 
-  useEffect(()=>{
-    dispatch(fetchSelectedProductsAsync(params.id))
-  }, [dispatch, params.id])
+  useEffect(() => {
+    dispatch(fetchSelectedProductsAsync(params.id));
+  }, [dispatch, params.id]);
+
+  const cartProduct = { ...selectedProduct, quantity: 1 };
+  const userId = user?.user?._id;
+  const cartItem = { user_id: userId, items: [cartProduct] };
+
+  console.log("Product Id:", selectedProduct?.id);
+
+  const productFound = carts
+    ?.flatMap((cart) => cart.items)
+    ?.some((cartItem) => cartItem?.id === selectedProduct?.id);
+  console.log(productFound);
+
+  const handleAddToCartClick = async (e) => {
+    e.preventDefault();
+
+    if (user && !productFound) {
+      const response = await addItemToCart(cartItem);
+      console.log(response);
+      if (response) {
+        toast.success("Added To Cart Successfully");
+        navigate("/dashboard/cart");
+      } else {
+        toast.error("Failed To Add To Cart");
+      }
+    }else if(user && productFound){
+      toast("Already Present In The Cart", {
+        className: "font-serif bg-blue-900 text-white",
+      });
+      navigate('/dashboard/cart')
+    } else {
+      toast("Login To Add To Cart", {
+        className: "font-serif bg-blue-900 text-white",
+      });
+      navigate("/login");
+    }
+  };
+
+  const cartBtn = productFound ? "Go To Cart" : "Add To Cart";
+
   return (
     <div className="bg-white">
       <div className="pt-6">
         <nav aria-label="Breadcrumb">
-          <ol
-            className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8"
-          >
+          <ol className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             {product.breadcrumbs.map((breadcrumb) => (
               <li key={breadcrumb.id}>
                 <div className="flex items-center">
@@ -129,21 +174,21 @@ const ProductDetails = () => {
             <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
               <img
                 src={selectedProduct?.images[1]}
-              alt={selectedProduct?.title}
+                alt={selectedProduct?.title}
                 className="h-full w-full object-cover object-center"
               />
             </div>
             <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
               <img
                 src={selectedProduct?.images[2]}
-              alt={selectedProduct?.title}
+                alt={selectedProduct?.title}
                 className="h-full w-full object-cover object-center"
               />
             </div>
           </div>
           <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
             <img
-             src={selectedProduct?.images[3]}
+              src={selectedProduct?.images[3]}
               alt={selectedProduct?.title}
               className="h-full w-full object-cover object-center"
             />
@@ -183,7 +228,9 @@ const ProductDetails = () => {
                     />
                   ))}
                 </div>
-                <p className="sr-only">{selectedProduct?.rating} out of 5 stars</p>
+                <p className="sr-only">
+                  {selectedProduct?.rating} out of 5 stars
+                </p>
                 <a
                   href={reviews.href}
                   className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
@@ -318,10 +365,11 @@ const ProductDetails = () => {
               </div>
 
               <button
+                onClick={(e) => handleAddToCartClick(e)}
                 type="submit"
                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               >
-                Add to cart
+                {cartBtn}
               </button>
             </form>
           </div>
@@ -332,7 +380,9 @@ const ProductDetails = () => {
               <h3 className="sr-only">Description</h3>
 
               <div className="space-y-6">
-                <p className="text-base text-gray-900">{selectedProduct?.description}</p>
+                <p className="text-base text-gray-900">
+                  {selectedProduct?.description}
+                </p>
               </div>
             </div>
 
@@ -340,7 +390,7 @@ const ProductDetails = () => {
               <h3 className="text-sm font-medium text-gray-900">Highlights</h3>
 
               <div className="mt-4">
-                <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
+                <ul className="list-disc space-y-2 pl-4 text-sm">
                   {product.highlights.map((highlight) => (
                     <li key={highlight} className="text-gray-400">
                       <span className="text-gray-600">{highlight}</span>
