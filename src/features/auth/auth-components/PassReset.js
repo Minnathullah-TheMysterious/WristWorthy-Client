@@ -7,10 +7,10 @@ import { requestPasswordReset, resetPassword, verifyOtp } from "../authAPI";
 const PassReset = () => {
   const [phoneInputDisabled, setPhoneInputDisabled] = useState(false);
   const [emailInputDisabled, setEmailInputDisabled] = useState(false);
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [passwordResetReqSuccess, setPasswordResetReqSuccess] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");

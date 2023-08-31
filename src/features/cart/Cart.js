@@ -26,6 +26,9 @@ const Cart = ({ btnText, destination }) => {
     { totalPrice: 0, totalItems: 0 }
   );
 
+  const totalAmount = calculatedSubTotal?.totalPrice;
+  const totalItems = calculatedSubTotal?.totalItems;
+
   const handleRemoveClick = async (e, pId) => {
     e.preventDefault();
     const deleteItem = await deleteUserCartItem(pId);
@@ -131,11 +134,11 @@ const Cart = ({ btnText, destination }) => {
         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
           <div className="flex justify-between text-base font-medium text-gray-900">
             <p>Subtotal</p>
-            <p>${calculatedSubTotal?.totalPrice}</p>
+            <p>${totalAmount}</p>
           </div>
           <div className="flex justify-between text-base font-medium text-gray-900">
             <p>Total Items</p>
-            <p>{calculatedSubTotal?.totalItems}</p>
+            <p>{totalItems}</p>
           </div>
           <div className="flex justify-between text-base font-medium text-gray-900">
             <p className="mt-0.5 text-sm text-gray-500">
@@ -144,12 +147,12 @@ const Cart = ({ btnText, destination }) => {
           </div>
 
           <div className="mt-6">
-            <Link
-              to={destination}
-              className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+            <div
+              onClick={destination}
+              className="cursor-pointer flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
             >
               {btnText}
-            </Link>
+            </div>
           </div>
           <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
             <Link to={"/"}>

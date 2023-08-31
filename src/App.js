@@ -18,12 +18,12 @@ import { getUserAsync } from "./features/auth/authSlice";
 function App() {
   const dispatch = useDispatch();
 
-  const userFromLocalStorage = JSON.parse(localStorage.getItem('user'))
-  const userId = userFromLocalStorage?.user?._id
+  const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
+  const userId = userFromLocalStorage?.user?._id;
 
   useEffect(() => {
     userId && dispatch(fetchUserCartAsync(userId));
-    userId && dispatch(getUserAsync(userId))
+    userId && dispatch(getUserAsync(userId));
   }, [dispatch, userId]);
   return (
     <>
@@ -32,11 +32,11 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<ProtectedRoute />}>
           <Route path="cart" element={<CartPage />} />
+          <Route path="checkout" element={<CheckoutPage />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/req-password-reset" element={<PassResetPage />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/product-details/:id" element={<ProductDetailsPage />} />
       </Routes>
       <Toaster />

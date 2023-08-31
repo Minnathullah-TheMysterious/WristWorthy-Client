@@ -5,15 +5,26 @@ import { useDispatch, useSelector } from "react-redux";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import { addUserAddressAsync } from "../auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import { placeOrderAsync } from "../order/orderSlice";
+import toast from "react-hot-toast";
 
 const Checkout = () => {
+  const navigate = useNavigate();
   const dispatchAsync = useDispatch();
+  const user = useSelector((state) => state?.auth?.user);
+  const cartItems = useSelector((state) => state?.cart?.items);
+  const selectedUserAddress = useSelector(
+    (state) => state?.auth?.selectedUserAddress
+  );
+
   const [mobileNumber, setMobileNumber] = useState("");
   const [altMobileNumber, setAltMobileNumber] = useState("");
-  const userId = useSelector((state) => state?.auth?.user?._id);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("cash");
 
-  const userFromLocalStorage = JSON.parse(localStorage.getItem('user'))
-  const token = userFromLocalStorage?.token
+  const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
+  const token = userFromLocalStorage?.token;
+  const userId = user?._id;
 
   const userAddressReducer = (state, action) => {
     switch (action.type) {
@@ -53,15 +64,14 @@ const Checkout = () => {
 
   const handleAddAddressClick = async (e) => {
     e.preventDefault();
-    console.log(
-      "token:",
-      token,
-      "\n user id (store):",
-      userId,
-      "\n addresses:",
-      addressData
-    );
-    dispatchAsync(addUserAddressAsync({ addressData, userId, token }));
+    try {
+      dispatchAsync(addUserAddressAsync({ addressData, userId, token }));
+    } catch (error) {
+      console.error(
+        "Something Went Wrong in dispatching the add-user-address",
+        error
+      );
+    }
   };
 
   const handleResetFormClick = async (e) => {
@@ -71,9 +81,53 @@ const Checkout = () => {
     setAltMobileNumber("");
   };
 
+  const handlePaymentMethod = (e) => {
+    console.log(e.target.value);
+    setSelectedPaymentMethod(e.target.value);
+  };
+
+  const totalAmount = cartItems?.reduce(
+    (total, items) => total + items?.price * items?.quantity,
+    0
+  );
+
+  const totalItems = cartItems?.reduce(
+    (total, items) => total + items?.quantity,
+    0
+  );
+
+  const handlePlaceOrderClick = (e) => {
+    e.preventDefault();
+    try {
+      if (!selectedUserAddress) {
+        return toast("Please Choose An Address For Shipping", {
+          className: "font-serif bg-blue-900 text-white",
+        });
+      }
+      const actionResult = dispatchAsync(
+        placeOrderAsync({
+          items: cartItems,
+          user,
+          totalItems,
+          totalAmount,
+          selectedUserAddress,
+          selectedPaymentMethod,
+        })
+      );
+      if (placeOrderAsync.fulfilled.match(actionResult)) {
+        navigate("/payments");
+      }
+    } catch (error) {
+      console.error(
+        "Something Went Wrong in dispatching the place-order",
+        error
+      );
+    }
+  };
+
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10  py-4">
-      <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-5 xl:gap-x-8">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8  py-5">
+      <div className="my-6 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-5 xl:gap-x-8">
         <div className="lg:col-span-3  bg-gray-100">
           <form>
             <div className="space-y-12">
@@ -409,9 +463,12 @@ const Checkout = () => {
                       <div className="flex items-center gap-x-3">
                         <input
                           id="cash"
+                          value={"cash"}
+                          checked={selectedPaymentMethod === "cash"}
                           name="payment-methods"
                           type="radio"
                           className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                          onChange={handlePaymentMethod}
                         />
                         <label
                           htmlFor="cash"
@@ -423,9 +480,11 @@ const Checkout = () => {
                       <div className="flex items-center gap-x-3">
                         <input
                           id="card"
+                          value={"card"}
                           name="payment-methods"
                           type="radio"
                           className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                          onChange={handlePaymentMethod}
                         />
                         <label
                           htmlFor="card"
@@ -458,7 +517,12 @@ const Checkout = () => {
         </div>
         <div className="lg:col-span-2 ">
           {/* Cart Component */}
-          <Cart btnText={"Make Payment"} destination={"/payment"} />
+          <Cart
+            btnText={"Make Payment"}
+            destination={(e) => {
+              handlePlaceOrderClick(e);
+            }}
+          />
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "../features/layout/Layout";
-import CategoryListing from "../features/category-preview/CategoryListing";
+import CategoryListing from "../features/categories/CategoryListing";
 import Promo from "../features/products/product-promo/Promo";
 import ProductListing from "../features/products/product-listing/ProductListing";
 

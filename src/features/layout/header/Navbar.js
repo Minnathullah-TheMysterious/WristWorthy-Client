@@ -56,7 +56,7 @@ const Navbar = () => {
                       </Link>
                     </div>
 
-                    <div className="ml-10 items-baseline hidden md:block lg:w-[500px] w-52">
+                    <div className="ml-10 items-baseline hidden md:block lg:w-[500px] w-80">
                       <Input
                         type="text"
                         size="large"
@@ -294,26 +294,6 @@ const Navbar = () => {
                           </Badge>
                         </button>
                       </Link>
-                    )}
-
-                    {cart.length && (
-                      <button
-                        type="button"
-                        className=" rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                      >
-                        <span className="sr-only">View notifications</span>
-                        <Badge count={0}>
-                          <div className="flex space-x-1 text-gray-300">
-                            <div className="text-base">Cart</div>
-                            <div>
-                              <ShoppingCartIcon
-                                className="h-6 w-6"
-                                aria-hidden="true"
-                              />
-                            </div>
-                          </div>
-                        </Badge>
-                      </button>
                     )}
                   </div>
                   <div className="mt-3 space-y-1 px-2">
