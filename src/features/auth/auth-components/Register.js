@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import toast from "react-hot-toast";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
+import { register } from "../authAPI";
 
 const Register = () => {
   const [user_name, setUser_name] = useState("");
@@ -14,41 +13,23 @@ const Register = () => {
 
   const navigate = useNavigate();
 
+  const registrationData = {
+    user_name,
+    email,
+    phone,
+    password,
+    confirm_password,
+  };
+
   const handleSubmitRegister = async (e) => {
     e.preventDefault();
     try {
-      console.log("Starting registration...");
-
-      const response = await axios.post("/api/v1/auth/register", {
-        user_name,
-        email,
-        phone,
-        password,
-        confirm_password,
-      });
-
-      console.log("Response:", response.data);
-
-      const { success, message } = response.data;
-      if (success) {
-        console.log("Registration successful.");
-        toast.success(message);
+      const response = await register(registrationData);
+      if (response) {
         navigate("/login");
-      } else {
-        console.log("Registration not successful.");
-        console.log("Response status:", response.status);
-        console.log("Error message:", message);
-        toast.error(message);
       }
     } catch (error) {
-      if (error.response && error.response.status === 409) {
-        toast.error(error.response.data.message);
-      } else if (error.response && error.response.status === 400) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error("Something Went Wrong While Registering - Client");
-      }
-      console.error("Something Went Wrong While Registering - Client", error);
+      console.error("Error in registration", error);
     }
   };
 

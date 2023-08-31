@@ -38,7 +38,6 @@ const ProductListing = () => {
   const brands = useSelector(state=>state.product.brands)
   const prices = useSelector(state=>state.product.prices)
   const products = useSelector((state) => state.product);
-  console.log(products)
   const totalProductsCount = products.totalProductsCount;
   const dispatch = useDispatch();
 
@@ -116,7 +115,7 @@ const ProductListing = () => {
     dispatch(fetchCategoriesAsync())
     dispatch(fetchBrandsAsync())
     dispatch(fetchPricesAsync())
-  }, [])
+  }, [dispatch])
 
   return (
     <div className="bg-white">

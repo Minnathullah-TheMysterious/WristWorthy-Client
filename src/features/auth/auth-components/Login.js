@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import toast from "react-hot-toast";
 import { useNavigate, useLocation } from "react-router-dom";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import { useDispatch } from "react-redux";
-import { authDetailsAsync } from "../authSlice";
+import { loginAsync } from "../authSlice";
+import { fetchUserCartAsync } from "../../cart/cartSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -37,35 +36,20 @@ const Login = () => {
     }
   };
 
+  const loginData = { phone, email, password };
+
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post("/api/v1/auth/login", {
-        email,
-        phone,
-        password,
-      });
-      const { success, message } = response.data;
-
-      if (success) {
-        toast.success(message);
-        localStorage.setItem("user", JSON.stringify(response.data));
-        dispatch(authDetailsAsync());
-        navigate(location.state || "/");
-      } else {
-        toast.error(message);
-      }
-    } catch (error) {
-      if (error.response.status === 401) {
-        toast.error(error.response.data.message);
-      } else if (error.response.status === 404) {
-        toast.error(error.response.data.message);
-      } else if (error.response.status === 400) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error("Something Went Wrong While login - Client");
-        console.error("Something Went Wrong While login - Client", error);
-      }
+    const actionResult = await dispatch(loginAsync(loginData));
+    if (loginAsync.fulfilled.match(actionResult)) {
+      console.log("Logged In Successfully");
+      const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
+      const userId = userFromLocalStorage?.user?._id;
+      dispatch(fetchUserCartAsync(userId));
+      localStorage.removeItem("user_id");
+      navigate(location.state || "/");
+    } else {
+      console.error("Failed To Login");
     }
   };
 
@@ -85,6 +69,7 @@ const Login = () => {
 
         <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
           <form
+            noValidate
             className="space-y-6"
             action="#"
             method="POST"

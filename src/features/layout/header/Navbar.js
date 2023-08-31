@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BsSearch } from "react-icons/bs";
-import { Input, Badge, Select, Button } from "antd";
+import { Input, Badge, Button } from "antd";
 import {
   Bars3Icon,
   ShoppingCartIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { authDetailsAsync } from "../../auth/authSlice";
+import { getUserAsync } from "../../auth/authSlice";
 
 // const navigation = [{ name: "Home", href: "/", current: false }];
 
@@ -26,21 +26,14 @@ function classNames(...classes) {
 }
 
 const Navbar = () => {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const cart = useSelector((state) => state.cart.items);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
-    if (userFromLocalStorage) {
-      dispatch(authDetailsAsync());
-    }
-  }, [dispatch]);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    dispatch(authDetailsAsync());
+    dispatch(getUserAsync());
     navigate("/login");
   };
 
@@ -74,22 +67,94 @@ const Navbar = () => {
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-4 flex items-center md:ml-6 md:space-x-6">
-                      {user !== null ? (
-                        <Select
-                          size="large"
-                          placeholder={"My Account"}
-                          className="lg:w-52 w-32 text-lg "
-                          value={"My Account"}
+                      {cart.length ? (
+                        <Link to={"/dashboard/cart"}>
+                          <button
+                            type="button"
+                            className=" rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                          >
+                            <span className="sr-only">View notifications</span>
+                            <Badge count={user ? cart.length : null}>
+                              <div className="flex space-x-1 text-gray-300">
+                                <div className="text-base">Cart</div>
+                                <div>
+                                  <ShoppingCartIcon
+                                    className="h-6 w-6"
+                                    aria-hidden="true"
+                                  />
+                                </div>
+                              </div>
+                            </Badge>
+                          </button>
+                        </Link>
+                      ) : (
+                        <button
+                          type="button"
+                          className=" rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                         >
-                          {userNavigation.map((item) => (
-                            <Select.Option key={item.id} value={item.id}>
-                              <Link to={item.href}>{item.name}</Link>
-                            </Select.Option>
-                          ))}
-                          <Select.Option onMouseDown={handleLogout}>
-                            <span>Logout</span>
-                          </Select.Option>
-                        </Select>
+                          <span className="sr-only">View notifications</span>
+                          <Badge count={0}>
+                            <div className="flex space-x-1 text-gray-300">
+                              <div className="text-base">Cart</div>
+                              <div>
+                                <ShoppingCartIcon
+                                  className="h-6 w-6"
+                                  aria-hidden="true"
+                                />
+                              </div>
+                            </div>
+                          </Badge>
+                        </button>
+                      )}
+
+                      {/* Profile dropdown */}
+                      {user ? (
+                        <Menu as="div" className="relative ml-3 ">
+                          <div>
+                            <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                              <span className="absolute -inset-1.5" />
+                              <span className="sr-only">Open user menu</span>
+                              <p className="text-white font-bold">
+                                {user?.user_name}
+                              </p>
+                            </Menu.Button>
+                          </div>
+                          <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-100"
+                            enterFrom="transform opacity-0 scale-95"
+                            enterTo="transform opacity-100 scale-100"
+                            leave="transition ease-in duration-75"
+                            leaveFrom="transform opacity-100 scale-100"
+                            leaveTo="transform opacity-0 scale-95"
+                          >
+                            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                              {userNavigation.map((item) => (
+                                <Menu.Item key={item.name}>
+                                  {({ active }) => (
+                                    <Link
+                                      to={item.href}
+                                      className={classNames(
+                                        active ? "bg-gray-100" : "",
+                                        "block px-4 py-2 text-sm text-gray-700"
+                                      )}
+                                    >
+                                      {item.name}
+                                    </Link>
+                                  )}
+                                </Menu.Item>
+                              ))}
+                              <Menu.Item className={"flex justify-center"}>
+                                <Button
+                                  onClick={handleLogout}
+                                  className="mx-auto font-serif"
+                                >
+                                  Logout
+                                </Button>
+                              </Menu.Item>
+                            </Menu.Items>
+                          </Transition>
+                        </Menu>
                       ) : (
                         <div className="space-x-6">
                           <NavLink to={"/login"}>
@@ -118,64 +183,6 @@ const Navbar = () => {
                           </NavLink>
                         </div>
                       )}
-
-                      <NavLink to={"/dashboard/cart"}>
-                        <button
-                          type="button"
-                          className=" rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                        >
-                          <span className="sr-only">View notifications</span>
-                          <Badge count={user ? cart.length : null} >
-                            <div className="flex space-x-1 text-gray-300">
-                              <div className="text-base">Cart</div>
-                              <div>
-                                <ShoppingCartIcon
-                                  className="h-6 w-6"
-                                  aria-hidden="true"
-                                />
-                              </div>
-                            </div>
-                          </Badge>
-                        </button>
-                      </NavLink>
-
-                      {/* Profile dropdown */}
-                      <Menu as="div" className="relative ml-3 ">
-                        <div>
-                          <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                            <span className="absolute -inset-1.5" />
-                            <span className="sr-only">Open user menu</span>
-                            <p className="text-white font-bold">{user?.name}</p>
-                          </Menu.Button>
-                        </div>
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
-                        >
-                          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            {userNavigation.map((item) => (
-                              <Menu.Item key={item.name}>
-                                {({ active }) => (
-                                  <Link
-                                    to={item.href}
-                                    className={classNames(
-                                      active ? "bg-gray-100" : "",
-                                      "block px-4 py-2 text-sm text-gray-700"
-                                    )}
-                                  >
-                                    {item.name}
-                                  </Link>
-                                )}
-                              </Menu.Item>
-                            ))}
-                          </Menu.Items>
-                        </Transition>
-                      </Menu>
                     </div>
                   </div>
                   <div className="-mr-2 flex md:hidden">
@@ -232,7 +239,7 @@ const Navbar = () => {
                       <>
                         <div className="flex justify-center items-center">
                           <div className="font-medium leading-none text-white text-xs cursor-default">
-                            {user?.user?.user_name}
+                            {user?.user_name}
                           </div>
                         </div>
                         <Button
@@ -267,13 +274,35 @@ const Navbar = () => {
                       </>
                     )}
 
-                    <Link to={"/dashboard/cart"}>
+                    {cart.length && (
+                      <Link to={"/dashboard/cart"}>
+                        <button
+                          type="button"
+                          className=" rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                        >
+                          <span className="sr-only">View notifications</span>
+                          <Badge count={user ? cart.length : null}>
+                            <div className="flex space-x-1 text-gray-300">
+                              <div className="text-base">Cart</div>
+                              <div>
+                                <ShoppingCartIcon
+                                  className="h-6 w-6"
+                                  aria-hidden="true"
+                                />
+                              </div>
+                            </div>
+                          </Badge>
+                        </button>
+                      </Link>
+                    )}
+
+                    {cart.length && (
                       <button
                         type="button"
                         className=" rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                       >
                         <span className="sr-only">View notifications</span>
-                        <Badge count={user?cart.length:null}>
+                        <Badge count={0}>
                           <div className="flex space-x-1 text-gray-300">
                             <div className="text-base">Cart</div>
                             <div>
@@ -285,7 +314,7 @@ const Navbar = () => {
                           </div>
                         </Badge>
                       </button>
-                    </Link>
+                    )}
                   </div>
                   <div className="mt-3 space-y-1 px-2">
                     {userNavigation.map((item) => (

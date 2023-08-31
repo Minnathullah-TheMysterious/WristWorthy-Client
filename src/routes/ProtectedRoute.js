@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
-import Loader from "../../../app/Loader";
+import Loader from "../app/Loader";
 
 const ProtectedRoute = () => {
   const [ok, setOk] = useState();

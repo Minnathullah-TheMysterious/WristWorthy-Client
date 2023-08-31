@@ -9,6 +9,7 @@ const callouts = [
     imageAlt:
       "Desk with leather desk pad, walnut desk organizer, wireless keyboard and mouse, and porcelain mug.",
     href: "#",
+    id:1
   },
   {
     name: "Self-Improvement",
@@ -18,6 +19,7 @@ const callouts = [
     imageAlt:
       "Wood table with porcelain mug, leather journal, brass pen, leather key ring, and a houseplant.",
     href: "#",
+    id:2
   },
   {
     name: "Travel",
@@ -26,6 +28,7 @@ const callouts = [
       "https://tailwindui.com/img/ecommerce-images/home-page-02-edition-03.jpg",
     imageAlt: "Collection of four insulated travel bottles on wooden shelf.",
     href: "#",
+    id:3
   },
   {
     name: "Desk and Office",
@@ -35,6 +38,7 @@ const callouts = [
     imageAlt:
       "Desk with leather desk pad, walnut desk organizer, wireless keyboard and mouse, and porcelain mug.",
     href: "#",
+    id:4
   },
   {
     name: "Self-Improvement",
@@ -44,6 +48,7 @@ const callouts = [
     imageAlt:
       "Wood table with porcelain mug, leather journal, brass pen, leather key ring, and a houseplant.",
     href: "#",
+    id:5
   },
   {
     name: "Travel",
@@ -52,6 +57,7 @@ const callouts = [
       "https://tailwindui.com/img/ecommerce-images/home-page-02-edition-03.jpg",
     imageAlt: "Collection of four insulated travel bottles on wooden shelf.",
     href: "#",
+    id:6
   },
 ];
 
@@ -66,7 +72,7 @@ const CategoryListing = () => {
 
           <div className="mt-6 space-y-2 lg:grid lg:grid-cols-6 lg:gap-x-6 sm:grid sm:grid-cols-3 sm:gap-x-3 grid grid-cols-2 gap-x-2  md:grid md:grid-cols-4 md:gap-x-4">
             {callouts.map((callout) => (
-              <div key={callout.name} className="group relative">
+              <div key={callout.id} className="group relative">
                 <div className="relative h-80 w-full overflow-hidden rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64">
                   <img
                     src={callout.imageSrc}

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSelectedProductsAsync } from "./productDetailsSlice";
+import { fetchSelectedProductsAsync } from "../product-listing/productListingSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { addItemToCartAsync } from "../../cart/cartSlice";
@@ -71,11 +71,10 @@ const ProductDetails = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const selectedProduct = useSelector(
-    (state) => state.productDetails.selectedProduct
+    (state) => state.product.selectedProduct
   );
   const user = useSelector((state) => state.auth.user);
   const carts = useSelector((state) => state.cart.items);
-  console.log(carts);
 
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
@@ -83,32 +82,31 @@ const ProductDetails = () => {
   useEffect(() => {
     dispatch(fetchSelectedProductsAsync(params.id));
   }, [dispatch, params.id]);
-
-  const userId = user?.user?._id;
-  const cartItem = { ...selectedProduct, quantity: 1, user_id: userId };
-
-  console.log("Product Id:", selectedProduct?.id);
-
+  
   const productFound = carts?.some((cart) => cart?.id === selectedProduct?.id);
-  console.log(productFound);
 
   const handleAddToCartClick = async (e) => {
     e.preventDefault();
+    const userId = user?._id;
+    console.log(userId)
+    const cartItem = { ...selectedProduct, quantity: 1, user_id: userId };
+    //deleting the product id from the product array, since it will clash for different users. database will generate an id.
+    delete cartItem["id"];
 
     if (user && !productFound) {
       const actionResult = await dispatch(addItemToCartAsync(cartItem));
-      console.log(actionResult)
+      console.log(actionResult);
 
-      if (addItemToCartAsync?.fulfilled?.match(actionResult) && actionResult?.payload) {
+      if (
+        addItemToCartAsync?.fulfilled?.match(actionResult) &&
+        actionResult?.payload
+      ) {
         toast.success("Item Added To Cart");
         navigate("/dashboard/cart");
       } else {
         toast.error("Need To Handle This in Server, Try Adding Other Items");
       }
     } else if (user && productFound) {
-      toast("Already Present In The Cart", {
-        className: "font-serif bg-blue-900 text-white",
-      });
       navigate("/dashboard/cart");
     } else {
       toast("Login To Add To Cart", {

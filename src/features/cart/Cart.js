@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import { Select } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserCartAsync, updateCartItemQuantityAsync } from "./cartSlice";
 import { deleteUserCartItem } from "./cartAPI";
 
 const Cart = ({ btnText, destination }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const userCartItems = useSelector((state) => state.cart.items);
-  console.log(userCartItems);
 
-  const userId = user?.user?._id;
+  const userId = user?._id;
 
   useEffect(() => {
     dispatch(fetchUserCartAsync(userId));
@@ -29,9 +29,11 @@ const Cart = ({ btnText, destination }) => {
   const handleRemoveClick = async (e, pId) => {
     e.preventDefault();
     const deleteItem = await deleteUserCartItem(pId);
-    console.log(deleteItem);
     if (deleteItem) {
       dispatch(fetchUserCartAsync(userId));
+      if (userCartItems?.length === 1) {
+        navigate("/");
+      }
     }
   };
 
@@ -56,20 +58,24 @@ const Cart = ({ btnText, destination }) => {
             <ul className="-my-6 divide-y divide-gray-200">
               {userCartItems?.map((product) => (
                 <li key={product?.id} className="flex py-6">
-                  <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                    <img
-                      src={product?.thumbnail}
-                      alt={product?.title}
-                      className="h-full w-full object-cover object-center"
-                    />
-                  </div>
+                  {/* The Link is Not getting the product Id instead it is getting the cart-item Id. On server we will consider it */}
+                  <Link to={`/product-details/${product?.id}`}>
+                    <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                      <img
+                        src={product?.thumbnail}
+                        alt={product?.title}
+                        className="h-full w-full object-cover object-center"
+                      />
+                    </div>
+                  </Link>
 
                   <div className="ml-4 flex flex-1 flex-col">
                     <div>
                       <div className="flex justify-between text-base font-medium text-gray-900">
-                        <h3>
-                          <a href={product?.href}>{product?.title}</a>
-                        </h3>
+                        {/* The Link is Not getting the product Id instead it is getting the cart-item Id. On server we will consider it */}
+                        <Link to={`/product-details/${product?.id}`}>
+                          <h3>{product?.title}</h3>
+                        </Link>
                         <p className="ml-4">${product?.price}</p>
                       </div>
                       <p className="mt-1 text-sm text-gray-500">
@@ -128,10 +134,13 @@ const Cart = ({ btnText, destination }) => {
             <p>${calculatedSubTotal?.totalPrice}</p>
           </div>
           <div className="flex justify-between text-base font-medium text-gray-900">
+            <p>Total Items</p>
+            <p>{calculatedSubTotal?.totalItems}</p>
+          </div>
+          <div className="flex justify-between text-base font-medium text-gray-900">
             <p className="mt-0.5 text-sm text-gray-500">
               Shipping and taxes calculated at checkout.
             </p>
-            <p>Total Items: {calculatedSubTotal?.totalItems}</p>
           </div>
 
           <div className="mt-6">
