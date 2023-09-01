@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { addUserAddress } from "../checkout/checkoutAPI";
 import { getUser, login } from "./authAPI";
-import { deleteUserAddress } from "../user-addresses/userAddressesAPI";
+import { deleteUserAddress } from "../user/userAPI";
 
 const initialState = {
   loading: false,

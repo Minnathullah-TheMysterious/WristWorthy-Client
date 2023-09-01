@@ -1,12 +1,12 @@
 import React, { useReducer, useState } from "react";
-import UserAddresses from "./../user-addresses/UserAddresses";
+import UserAddresses from "../user/components/UserAddresses";
 import Cart from "../cart/Cart";
 import { useDispatch, useSelector } from "react-redux";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import { addUserAddressAsync } from "../auth/authSlice";
 import { useNavigate } from "react-router-dom";
-import { placeOrderAsync } from "../order/orderSlice";
+import { placeOrderAsync } from "../user/userSlice";
 import toast from "react-hot-toast";
 
 const Checkout = () => {
@@ -96,6 +96,16 @@ const Checkout = () => {
     0
   );
 
+  const order = {
+    items: cartItems,
+    user,
+    totalItems,
+    totalAmount,
+    selectedUserAddress,
+    selectedPaymentMethod,
+    status: "Pending", //other status can be delivered, shipped, received. will be managed by the seller
+  };
+
   const handlePlaceOrderClick = (e) => {
     e.preventDefault();
     try {
@@ -103,19 +113,19 @@ const Checkout = () => {
         return toast("Please Choose An Address For Shipping", {
           className: "font-serif bg-blue-900 text-white",
         });
-      }
-      const actionResult = dispatchAsync(
-        placeOrderAsync({
-          items: cartItems,
-          user,
-          totalItems,
-          totalAmount,
-          selectedUserAddress,
-          selectedPaymentMethod,
-        })
-      );
-      if (placeOrderAsync.fulfilled.match(actionResult)) {
-        navigate("/payments");
+      } else if (!cartItems.length) {
+        return toast("Your Cart Is Empty, Please Add Items To Place Order", {
+          className: "font-serif bg-blue-900 text-white",
+        });
+      } else {
+        dispatchAsync(placeOrderAsync({ userId, order }))
+          .then(() => {
+            navigate("/dashboard/order-success");
+            //server: change in stock items
+          })
+          .catch(() => {
+            navigate("/dashboard/cart");
+          });
       }
     } catch (error) {
       console.error(
@@ -518,7 +528,7 @@ const Checkout = () => {
         <div className="lg:col-span-2 ">
           {/* Cart Component */}
           <Cart
-            btnText={"Make Payment"}
+            btnText={"Place Order"}
             destination={(e) => {
               handlePlaceOrderClick(e);
             }}

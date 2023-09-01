@@ -20,7 +20,7 @@ export const addItemToCart = async (cartItem) => {
       throw new Error(errorData.message || "Failed to add item to cart");
     }
   } catch (error) {
-    console.error("Something Went Wrong While adding item to Cart");
+    console.error("Something Went Wrong While adding item to Cart", error);
   }
 };
 
@@ -30,29 +30,38 @@ export const fetchUserCart = async (uId) => {
   try {
     const response = await fetch(URL);
     const data = await response.json();
-    return { data };
+    return data;
   } catch (error) {
     toast.error("Failed To Fetch Cart");
-    console.error("Failed to fetch cart");
+    console.error("Failed to fetch cart", error);
   }
 };
 
-export const deleteUserCartItem = async (pId) => {
+export const deleteUserCartItem = async (cartId) => {
   //in server we will need to delete based on user also. here we don't need that
-  const URL = `http://localhost:5000/carts/${pId}`;
+  const URL = `http://localhost:5000/carts/${cartId}`;
 
   try {
     const response = await fetch(URL, { method: "DELETE" });
     if (response.ok) {
-      toast.success('Item Deleted Successfully')
-      return true;
-    } else {
-      toast.error('Failed To Delete The Item')
-      return false;
+      return cartId
     }
   } catch (error) {
-    toast.error("Something Went Wrong In Deleting The Item");
-    console.error("Failed to fetch cart");
+    console.error("Failed to fetch cart", error);
+  }
+};
+
+export const resetCart = async (uId) => {
+  //in server we can delete based on user . here we can't
+  try {
+    const cart = await fetchUserCart(uId);
+    for (let item of cart) {
+      await deleteUserCartItem(item?.id);
+    }
+    return { success: true, message: "Cart Reset Successful" };
+  } catch (error) {
+    toast.error("Something Went Wrong In Deleting The Cart");
+    console.error("Something Went Wrong In Deleting The Cart", error);
   }
 };
 
@@ -75,6 +84,6 @@ export const updateCartItemQuantity = async (update) => {
       throw new Error(errorData.message || "Failed to add item to cart");
     }
   } catch (error) {
-    console.error("Something Went Wrong While adding item to Cart");
+    console.error("Something Went Wrong While adding item to Cart", error);
   }
 };

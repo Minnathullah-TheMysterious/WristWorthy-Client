@@ -14,6 +14,7 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 import PageNotFound from "./pages/PageNotFound";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { getUserAsync } from "./features/auth/authSlice";
+import OrderSuccessPage from "./pages/OrderSuccessPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,16 +29,17 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="*" element={<PageNotFound />} />
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<ProtectedRoute />}>
           <Route path="cart" element={<CartPage />} />
           <Route path="checkout" element={<CheckoutPage />} />
+          <Route path="order-success" element={<OrderSuccessPage />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/req-password-reset" element={<PassResetPage />} />
         <Route path="/product-details/:id" element={<ProductDetailsPage />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Toaster />
     </>

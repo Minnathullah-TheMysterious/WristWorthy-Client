@@ -1,9 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Select } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserCartAsync, updateCartItemQuantityAsync } from "./cartSlice";
-import { deleteUserCartItem } from "./cartAPI";
+import {
+  deleteUserCartItemAsync,
+  fetchUserCartAsync,
+  updateCartItemQuantityAsync,
+} from "./cartSlice";
+import toast from "react-hot-toast";
 
 const Cart = ({ btnText, destination }) => {
   const navigate = useNavigate();
@@ -12,10 +16,6 @@ const Cart = ({ btnText, destination }) => {
   const userCartItems = useSelector((state) => state.cart.items);
 
   const userId = user?._id;
-
-  useEffect(() => {
-    dispatch(fetchUserCartAsync(userId));
-  }, [dispatch, userId]);
 
   const calculatedSubTotal = userCartItems?.reduce(
     (total, item) => {
@@ -31,13 +31,21 @@ const Cart = ({ btnText, destination }) => {
 
   const handleRemoveClick = async (e, pId) => {
     e.preventDefault();
-    const deleteItem = await deleteUserCartItem(pId);
-    if (deleteItem) {
-      dispatch(fetchUserCartAsync(userId));
-      if (userCartItems?.length === 1) {
-        navigate("/");
-      }
-    }
+    const deleteItem = dispatch(deleteUserCartItemAsync(pId));
+    deleteItem
+      .then(() => {
+        toast.success("Item Removed Successfully");
+        console.log(userCartItems.length);
+        if (userCartItems.length <= 1) {
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        toast("Failed To Remove The Item", {
+          className: "font-serif bg-blue-900 text-white",
+        });
+        console.error('Something Went Wrong While removing the cart Item', error)
+      });
   };
 
   const handleItemQuantityChange = async (value, product) => {

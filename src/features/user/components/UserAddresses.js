@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUserAddressAsync, setSelectedUserAddress } from "../auth/authSlice";
+import { deleteUserAddressAsync, setSelectedUserAddress } from "../../auth/authSlice";
 
 const UserAddresses = () => {
   const dispatch = useDispatch();
