@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { resetCartAsync } from "../features/cart/cartSlice";
-import toast from "react-hot-toast";
 import { fetchAllOrdersAsync } from './../features/user/userSlice';
 
 const OrderSuccessPage = () => {

@@ -53,10 +53,18 @@ export const fetchBrands = async()=>{
   const response = await axios.get(URL)
   return response.data
 }
+
 export const fetchPrices = async()=>{
   const URL = 'http://localhost:5000/prices'
   const response = await axios.get(URL)
   return response.data
+}
+
+export const fetchSelectedProduct = async(id)=>{
+  const URL = `http://localhost:5000/products/${id}`
+  const response = await axios.get(URL)
+  const product = response.data 
+  return product
 }
 
 //*******sample data ************** */

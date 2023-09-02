@@ -1,8 +1,8 @@
 import React from "react";
 import Layout from "../features/layout/Layout";
 import CategoryListing from "../features/categories/CategoryListing";
-import Promo from "../features/products/product-promo/Promo";
-import ProductListing from "../features/products/product-listing/ProductListing";
+import Promo from "../features/products/components/Promo";
+import ProductListing from "../features/products/components/ProductListing";
 
 const Home = () => {
   

@@ -1,5 +1,5 @@
 import React from 'react'
-import TechSpecifications from '../features/products/product-tech-features/TechSpecifications'
+import TechSpecifications from '../features/products/components/TechSpecifications'
 import Layout from '../features/layout/Layout'
 
 const ProductTechFeaturesPage = () => {

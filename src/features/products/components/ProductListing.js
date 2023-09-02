@@ -3,7 +3,12 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { fetchBrandsAsync, fetchCategoriesAsync, fetchFilteredProductsAsync, fetchPricesAsync } from "./productListingSlice";
+import {
+  fetchBrandsAsync,
+  fetchCategoriesAsync,
+  fetchFilteredProductsAsync,
+  fetchPricesAsync,
+} from "../productSlice";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -16,7 +21,7 @@ import {
   PlusIcon,
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
-import { PRODUCT_LIMIT_PER_PAGE } from "./../../../app/constants";
+import { PRODUCT_LIMIT_PER_PAGE } from "../../../app/constants";
 
 const sortOptions = [
   { name: "Best Rating", sort: "rating", order: "desc", current: false },
@@ -34,9 +39,9 @@ const ProductListing = () => {
   const [pageNum, setPageNum] = useState(1);
   const [sort, setSort] = useState({});
 
-  const categories = useSelector(state=>state.product.categories)
-  const brands = useSelector(state=>state.product.brands)
-  const prices = useSelector(state=>state.product.prices)
+  const categories = useSelector((state) => state.product.categories);
+  const brands = useSelector((state) => state.product.brands);
+  const prices = useSelector((state) => state.product.prices);
   const products = useSelector((state) => state.product);
   const totalProductsCount = products.totalProductsCount;
   const dispatch = useDispatch();
@@ -45,7 +50,7 @@ const ProductListing = () => {
     {
       id: "category",
       name: "Category",
-      options:categories,
+      options: categories,
     },
     {
       id: "brand",
@@ -107,15 +112,15 @@ const ProductListing = () => {
     dispatch(fetchFilteredProductsAsync({ filter, sort, pagination }));
   }, [filter, sort, dispatch, pageNum]);
 
-  useEffect(()=>{
-    setPageNum(1)
-  },[totalProductsCount, sort])
+  useEffect(() => {
+    setPageNum(1);
+  }, [totalProductsCount, sort]);
 
-  useEffect(()=>{
-    dispatch(fetchCategoriesAsync())
-    dispatch(fetchBrandsAsync())
-    dispatch(fetchPricesAsync())
-  }, [dispatch])
+  useEffect(() => {
+    dispatch(fetchCategoriesAsync());
+    dispatch(fetchBrandsAsync());
+    dispatch(fetchPricesAsync());
+  }, [dispatch]);
 
   return (
     <div className="bg-white">
@@ -141,7 +146,10 @@ const ProductListing = () => {
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
               {/*Laptop Filters */}
-              <DesktopFilter handleFilterChange={handleFilterChange} filters={filters}/>
+              <DesktopFilter
+                handleFilterChange={handleFilterChange}
+                filters={filters}
+              />
 
               {/* Product grid */}
               <ProductGrid products={products} />
@@ -166,7 +174,7 @@ function MobileFilterDialog({
   filtersOpen,
   setFiltersOpen,
   handleFilterChange,
-  filters
+  filters,
 }) {
   return (
     <Transition.Root show={filtersOpen} as={Fragment}>
@@ -418,7 +426,7 @@ function Pagination({
   pageNum,
   totalProductsCount,
 }) {
-  const totalPages = Math.ceil(totalProductsCount / PRODUCT_LIMIT_PER_PAGE)
+  const totalPages = Math.ceil(totalProductsCount / PRODUCT_LIMIT_PER_PAGE);
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
       {/* Mobile Pagination */}
