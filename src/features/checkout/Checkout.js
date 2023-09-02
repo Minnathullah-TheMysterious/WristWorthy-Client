@@ -4,18 +4,21 @@ import Cart from "../cart/Cart";
 import { useDispatch, useSelector } from "react-redux";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
-import { addUserAddressAsync } from "../auth/authSlice";
+import {
+  addUserAddressAsync,
+  placeOrderAsync,
+  setSelectedUserAddress,
+} from "../user/userSlice";
 import { useNavigate } from "react-router-dom";
-import { placeOrderAsync } from "../user/userSlice";
 import toast from "react-hot-toast";
 
 const Checkout = () => {
   const navigate = useNavigate();
   const dispatchAsync = useDispatch();
-  const user = useSelector((state) => state?.auth?.user);
+  const user = useSelector((state) => state?.user?.userInfo);
   const cartItems = useSelector((state) => state?.cart?.items);
   const selectedUserAddress = useSelector(
-    (state) => state?.auth?.selectedUserAddress
+    (state) => state?.user?.selectedUserAddress
   );
 
   const [mobileNumber, setMobileNumber] = useState("");
@@ -120,6 +123,7 @@ const Checkout = () => {
       } else {
         dispatchAsync(placeOrderAsync({ userId, order }))
           .then(() => {
+            dispatchAsync(setSelectedUserAddress(null));
             navigate("/dashboard/order-success");
             //server: change in stock items
           })

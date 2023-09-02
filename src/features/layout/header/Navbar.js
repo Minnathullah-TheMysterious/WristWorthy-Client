@@ -10,7 +10,8 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserAsync } from "../../auth/authSlice";
+import { getUserAsync } from "../../user/userSlice";
+import { getAuthDataAsync } from "../../auth/authSlice";
 
 // const navigation = [{ name: "Home", href: "/", current: false }];
 
@@ -34,6 +35,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     dispatch(getUserAsync());
+    dispatch(getAuthDataAsync())
     navigate("/login");
   };
 

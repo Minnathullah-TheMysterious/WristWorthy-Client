@@ -51,9 +51,9 @@ export const login = async (loginData) => {
       console.log(user);
       localStorage.setItem(
         "user",
-        JSON.stringify({ token, user: userWithOutAddressesArray })
+        JSON.stringify({ token, user_id: user?._id })
       );
-      return response.data;
+      return userWithOutAddressesArray;
     } else {
       toast.error(message);
       return response.data;
@@ -74,12 +74,30 @@ export const login = async (loginData) => {
   }
 };
 
-export const getUser = async (userId) => {
+export const getAuthData = async (uId) => {
   try {
-    const { data } = await axios.get(`/api/v1/auth/user-info/${userId}`);
-    return data.user;
+    const response = await axios.get(`/api/v1/auth/user-info/${uId}`);
+    const { success, user } = response.data;
+
+    if (success) {
+      console.log({
+        _id: user?._id,
+        user_name: user?.user_name,
+        email: user?.email,
+        phone: user?.phone,
+      });
+      return {
+        _id: user?._id,
+        user_name: user?.user_name,
+        email: user?.email,
+        phone: user?.phone,
+      };
+    } else {
+      toast.error("Error in fetching auth data");
+      return response.data;
+    }
   } catch (error) {
-    console.error("Something Went Wrong in fetching the User - Client", error);
+    console.error("Something Went Wrong While login - Client", error);
   }
 };
 
@@ -108,9 +126,7 @@ export const requestPasswordReset = async (reqResetData) => {
     } else if (error?.response?.status === 500) {
       toast.error(error?.response?.data?.message);
     } else {
-      toast.error(
-        "Something went wrong in requesting the password reset"
-      );
+      toast.error("Something went wrong in requesting the password reset");
       console.error(
         "Something went wrong in requesting the password reset - Client",
         error
@@ -143,13 +159,8 @@ export const verifyOtp = async (userId, otp) => {
     } else if (error.response.status === 404) {
       toast.error(error.response.data.message);
     } else {
-      toast.error(
-        "Something Went Wrong in OTP Verification"
-      );
-      console.error(
-        "Something Went Wrong in OTP Verification - Client",
-        error
-      );
+      toast.error("Something Went Wrong in OTP Verification");
+      console.error("Something Went Wrong in OTP Verification - Client", error);
     }
   }
 };
@@ -175,17 +186,11 @@ export const resetPassword = async (userId, passwords) => {
       toast(error?.response?.data?.message, {
         className: "font-serif bg-blue-900 text-white",
       });
-    }  else if (error?.response?.status === 404) {
+    } else if (error?.response?.status === 404) {
       toast.error(error?.response?.data?.message);
     } else {
-      toast.error(
-        "Something Went Wrong While Password Reset"
-      );
-      console.error(
-        "Something Went Wrong in Password Reset - Client",
-        error
-      );
+      toast.error("Something Went Wrong While Password Reset");
+      console.error("Something Went Wrong in Password Reset - Client", error);
     }
   }
 };
-

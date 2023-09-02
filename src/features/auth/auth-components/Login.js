@@ -6,6 +6,7 @@ import PhoneInput from "react-phone-number-input";
 import { useDispatch } from "react-redux";
 import { loginAsync } from "../authSlice";
 import { fetchUserCartAsync } from "../../cart/cartSlice";
+import { getUserAsync } from "../../user/userSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -40,17 +41,18 @@ const Login = () => {
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    const actionResult = await dispatch(loginAsync(loginData));
-    if (loginAsync.fulfilled.match(actionResult)) {
-      console.log("Logged In Successfully");
-      const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
-      const userId = userFromLocalStorage?.user?._id;
-      dispatch(fetchUserCartAsync(userId));
-      localStorage.removeItem("user_id");
-      navigate(location.state || "/");
-    } else {
-      console.error("Failed To Login");
-    }
+    dispatch(loginAsync(loginData))
+      .then(() => {
+        const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
+        const userId = userFromLocalStorage?.user?._id;
+        dispatch(fetchUserCartAsync(userId));
+        dispatch(getUserAsync(userId))
+        localStorage.removeItem("user_id");
+        navigate(location.state || "/");
+      })
+      .catch((error) => {
+        console.error("Failed To Login", error);
+      });
   };
 
   return (

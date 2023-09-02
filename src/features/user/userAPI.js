@@ -1,6 +1,15 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
+export const getUser = async (userId) => {
+  try {
+    const { data } = await axios.get(`/api/v1/auth/user-info/${userId}`);
+    return data?.user;
+  } catch (error) {
+    console.error("Something Went Wrong in fetching the User - Client", error);
+  }
+};
+
 export const deleteUserAddress = async (userId, addressId) => {
   try {
     const response = await axios.delete(

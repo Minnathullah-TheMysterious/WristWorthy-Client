@@ -13,18 +13,20 @@ import CheckoutPage from "./pages/CheckoutPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import PageNotFound from "./pages/PageNotFound";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import { getUserAsync } from "./features/auth/authSlice";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
+import { getUserAsync } from './features/user/userSlice';
+import { getAuthDataAsync } from "./features/auth/authSlice";
 
 function App() {
   const dispatch = useDispatch();
 
   const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
-  const userId = userFromLocalStorage?.user?._id;
+  const userId = userFromLocalStorage?.user_id;
 
   useEffect(() => {
     userId && dispatch(fetchUserCartAsync(userId));
     userId && dispatch(getUserAsync(userId));
+    userId && dispatch(getAuthDataAsync(userId))
   }, [dispatch, userId]);
   return (
     <>

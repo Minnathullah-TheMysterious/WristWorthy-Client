@@ -1,10 +1,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUserAddressAsync, setSelectedUserAddress } from "../../auth/authSlice";
+import { deleteUserAddressAsync, setSelectedUserAddress } from "../../user/userSlice";
 
 const UserAddresses = () => {
   const dispatch = useDispatch();
-  const userAddresses = useSelector((state) => state?.auth?.user?.addresses);
+  const userAddresses = useSelector((state) => state?.user?.userInfo?.addresses);
   const userId = useSelector((state) => state?.auth?.user?._id);
 
   const handleSelectedAddressChange = (e) => {

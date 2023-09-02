@@ -2588,20 +2588,20 @@
       "order": {
         "items": [
           {
-            "title": "MacBook Pro",
-            "description": "MacBook Pro 2021 with mini-LED display may launch between September, November",
-            "price": 1749,
-            "discountPercentage": 11.02,
-            "rating": 4.57,
-            "stock": 83,
+            "title": "iPhone X",
+            "description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
+            "price": 899,
+            "discountPercentage": 17.94,
+            "rating": 4.44,
+            "stock": 34,
             "brand": "Apple",
-            "category": "laptops",
-            "thumbnail": "https://i.dummyjson.com/data/products/6/thumbnail.png",
+            "category": "smartphones",
+            "thumbnail": "https://i.dummyjson.com/data/products/2/thumbnail.jpg",
             "images": [
-              "https://i.dummyjson.com/data/products/6/1.png",
-              "https://i.dummyjson.com/data/products/6/2.jpg",
-              "https://i.dummyjson.com/data/products/6/3.png",
-              "https://i.dummyjson.com/data/products/6/4.jpg"
+              "https://i.dummyjson.com/data/products/2/1.jpg",
+              "https://i.dummyjson.com/data/products/2/2.jpg",
+              "https://i.dummyjson.com/data/products/2/3.jpg",
+              "https://i.dummyjson.com/data/products/2/thumbnail.jpg"
             ],
             "quantity": 1,
             "user_id": "64d9cca1fd210ef389e268a0",
@@ -2627,121 +2627,6 @@
             "quantity": 1,
             "user_id": "64d9cca1fd210ef389e268a0",
             "id": 2
-          },
-          {
-            "title": "Huawei P30",
-            "description": "Huawei’s re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK.",
-            "price": 499,
-            "discountPercentage": 10.58,
-            "rating": 4.09,
-            "stock": 32,
-            "brand": "Huawei",
-            "category": "smartphones",
-            "thumbnail": "https://i.dummyjson.com/data/products/5/thumbnail.jpg",
-            "images": [
-              "https://i.dummyjson.com/data/products/5/1.jpg",
-              "https://i.dummyjson.com/data/products/5/2.jpg",
-              "https://i.dummyjson.com/data/products/5/3.jpg"
-            ],
-            "quantity": 1,
-            "user_id": "64d9cca1fd210ef389e268a0",
-            "id": 3
-          }
-        ],
-        "user": {
-          "_id": "64d9cca1fd210ef389e268a0",
-          "user_name": "Minnathullah Rahmani",
-          "email": "minnathullahmohammed7337@gmail.com",
-          "password": "$2b$12$tsTg/qLRvxJYjq5sI1zQDedGHSDlK41w3ylYVbxQurPJ0Nkijurj6",
-          "phone": "+919652336445",
-          "createdAt": "2023-08-14T06:41:37.807Z",
-          "updatedAt": "2023-09-01T12:16:00.232Z",
-          "otpSecret": "$2b$12$Xu2SJOkUrOVMkBCO5yqvFeD.KUAYe8JM2ldl80xyruLOsFJ5Pq3V6",
-          "__v": 13,
-          "addresses": [
-            {
-              "firstName": "Mohammed",
-              "lastName": "Rehan",
-              "emailAddress": "rehan@rehan.com",
-              "mobileNumber": "+917337234824",
-              "altMobileNumber": "+919652336445",
-              "country": "india",
-              "street": "Tappa Khana Chaurasta",
-              "city": "Mumbai",
-              "state": "Maharashtra",
-              "pinCode": 506367,
-              "dist": "Siddipet",
-              "mandal": "Maddur",
-              "village": "Maddur",
-              "_id": "64f1579c2239b552d711a8b4"
-            }
-          ]
-        },
-        "totalItems": 3,
-        "totalAmount": 2528,
-        "selectedUserAddress": {
-          "firstName": "Mohammed",
-          "lastName": "Rehan",
-          "emailAddress": "rehan@rehan.com",
-          "mobileNumber": "+917337234824",
-          "altMobileNumber": "+919652336445",
-          "country": "india",
-          "street": "Tappa Khana Chaurasta",
-          "city": "Mumbai",
-          "state": "Maharashtra",
-          "pinCode": 506367,
-          "dist": "Siddipet",
-          "mandal": "Maddur",
-          "village": "Maddur",
-          "_id": "64f1579c2239b552d711a8b4"
-        },
-        "selectedPaymentMethod": "card",
-        "status": "Pending"
-      },
-      "id": 1
-    },
-    {
-      "user_id": "64d9cca1fd210ef389e268a0",
-      "order": {
-        "items": [
-          {
-            "title": "Huawei P30",
-            "description": "Huawei’s re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK.",
-            "price": 499,
-            "discountPercentage": 10.58,
-            "rating": 4.09,
-            "stock": 32,
-            "brand": "Huawei",
-            "category": "smartphones",
-            "thumbnail": "https://i.dummyjson.com/data/products/5/thumbnail.jpg",
-            "images": [
-              "https://i.dummyjson.com/data/products/5/1.jpg",
-              "https://i.dummyjson.com/data/products/5/2.jpg",
-              "https://i.dummyjson.com/data/products/5/3.jpg"
-            ],
-            "quantity": 1,
-            "user_id": "64d9cca1fd210ef389e268a0",
-            "id": 3
-          },
-          {
-            "title": "MacBook Pro",
-            "description": "MacBook Pro 2021 with mini-LED display may launch between September, November",
-            "price": 1749,
-            "discountPercentage": 11.02,
-            "rating": 4.57,
-            "stock": 83,
-            "brand": "Apple",
-            "category": "laptops",
-            "thumbnail": "https://i.dummyjson.com/data/products/6/thumbnail.png",
-            "images": [
-              "https://i.dummyjson.com/data/products/6/1.png",
-              "https://i.dummyjson.com/data/products/6/2.jpg",
-              "https://i.dummyjson.com/data/products/6/3.png",
-              "https://i.dummyjson.com/data/products/6/4.jpg"
-            ],
-            "quantity": 1,
-            "user_id": "64d9cca1fd210ef389e268a0",
-            "id": 4
           }
         ],
         "user": {
@@ -2774,7 +2659,7 @@
           ]
         },
         "totalItems": 2,
-        "totalAmount": 2248,
+        "totalAmount": 1179,
         "selectedUserAddress": {
           "firstName": "Mohammed",
           "lastName": "Rehan",
@@ -2794,58 +2679,188 @@
         "selectedPaymentMethod": "card",
         "status": "Pending"
       },
-      "id": 2
+      "id": 1
     },
     {
-      "user_id": "64d9cca1fd210ef389e268a0",
+      "user_id": "64d9cbfefd210ef389e26898",
       "order": {
-        "items": [],
+        "items": [
+          {
+            "title": "iPhone X",
+            "description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
+            "price": 899,
+            "discountPercentage": 17.94,
+            "rating": 4.44,
+            "stock": 34,
+            "brand": "Apple",
+            "category": "smartphones",
+            "thumbnail": "https://i.dummyjson.com/data/products/2/thumbnail.jpg",
+            "images": [
+              "https://i.dummyjson.com/data/products/2/1.jpg",
+              "https://i.dummyjson.com/data/products/2/2.jpg",
+              "https://i.dummyjson.com/data/products/2/3.jpg",
+              "https://i.dummyjson.com/data/products/2/thumbnail.jpg"
+            ],
+            "quantity": 3,
+            "user_id": "64d9cbfefd210ef389e26898",
+            "id": 1
+          }
+        ],
         "user": {
-          "_id": "64d9cca1fd210ef389e268a0",
-          "user_name": "Minnathullah Rahmani",
-          "email": "minnathullahmohammed7337@gmail.com",
-          "password": "$2b$12$tsTg/qLRvxJYjq5sI1zQDedGHSDlK41w3ylYVbxQurPJ0Nkijurj6",
-          "phone": "+919652336445",
-          "createdAt": "2023-08-14T06:41:37.807Z",
-          "updatedAt": "2023-09-01T12:16:00.232Z",
-          "otpSecret": "$2b$12$Xu2SJOkUrOVMkBCO5yqvFeD.KUAYe8JM2ldl80xyruLOsFJ5Pq3V6",
-          "__v": 13,
+          "_id": "64d9cbfefd210ef389e26898",
+          "user_name": "Mohammed Minnathullah",
+          "email": "minnathullahmohammed@gmail.com",
+          "password": "$2b$12$0kIibtLu/zTlhS9XWb8hd.74OEYyns.qLncUb697CrkNmTWIdTsni",
+          "phone": "+916281089096",
+          "createdAt": "2023-08-14T06:38:54.297Z",
+          "updatedAt": "2023-08-31T12:03:43.719Z",
+          "otpSecret": "$2b$12$J9i9gWShsvTHXbvRB7ah3ep/ctfBkIriZZ5iE6YUmNYfMkAZ.KfjK",
+          "__v": 28,
           "addresses": [
             {
               "firstName": "Mohammed",
-              "lastName": "Rehan",
-              "emailAddress": "rehan@rehan.com",
-              "mobileNumber": "+917337234824",
-              "altMobileNumber": "+919652336445",
-              "country": "india",
+              "lastName": "Minnathullah",
+              "emailAddress": "minnathullahmohammed@gmail.com",
+              "mobileNumber": "+916281089096",
+              "altMobileNumber": "",
+              "country": "nepal",
               "street": "Tappa Khana Chaurasta",
               "city": "Mumbai",
               "state": "Maharashtra",
               "pinCode": 506367,
               "dist": "Siddipet",
+              "mandal": "Hyderabad",
+              "village": "Maddur",
+              "_id": "64eefc02af40f6f925815211"
+            },
+            {
+              "firstName": "Mohammed",
+              "lastName": "Rehan",
+              "emailAddress": "minnathullahmohammed@gmail.com",
+              "mobileNumber": "+919652336445",
+              "altMobileNumber": "+916281089096",
+              "country": "india",
+              "street": "H-No: 5-16, Near royal function hall",
+              "city": "Hyderabad",
+              "state": "Telangana",
+              "pinCode": 506367,
+              "dist": "Siddipet",
               "mandal": "Maddur",
               "village": "Maddur",
-              "_id": "64f1579c2239b552d711a8b4"
+              "_id": "64f08194600cb79cca03fc5d"
             }
           ]
         },
-        "totalItems": 0,
-        "totalAmount": 0,
+        "totalItems": 3,
+        "totalAmount": 2697,
         "selectedUserAddress": {
           "firstName": "Mohammed",
-          "lastName": "Rehan",
-          "emailAddress": "rehan@rehan.com",
-          "mobileNumber": "+917337234824",
-          "altMobileNumber": "+919652336445",
-          "country": "india",
+          "lastName": "Minnathullah",
+          "emailAddress": "minnathullahmohammed@gmail.com",
+          "mobileNumber": "+916281089096",
+          "altMobileNumber": "",
+          "country": "nepal",
           "street": "Tappa Khana Chaurasta",
           "city": "Mumbai",
           "state": "Maharashtra",
           "pinCode": 506367,
           "dist": "Siddipet",
-          "mandal": "Maddur",
+          "mandal": "Hyderabad",
           "village": "Maddur",
-          "_id": "64f1579c2239b552d711a8b4"
+          "_id": "64eefc02af40f6f925815211"
+        },
+        "selectedPaymentMethod": "cash",
+        "status": "Pending"
+      },
+      "id": 2
+    },
+    {
+      "user_id": "64d9cbfefd210ef389e26898",
+      "order": {
+        "items": [
+          {
+            "title": "iPhone X",
+            "description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
+            "price": 899,
+            "discountPercentage": 17.94,
+            "rating": 4.44,
+            "stock": 34,
+            "brand": "Apple",
+            "category": "smartphones",
+            "thumbnail": "https://i.dummyjson.com/data/products/2/thumbnail.jpg",
+            "images": [
+              "https://i.dummyjson.com/data/products/2/1.jpg",
+              "https://i.dummyjson.com/data/products/2/2.jpg",
+              "https://i.dummyjson.com/data/products/2/3.jpg",
+              "https://i.dummyjson.com/data/products/2/thumbnail.jpg"
+            ],
+            "quantity": 1,
+            "user_id": "64d9cbfefd210ef389e26898",
+            "id": 1
+          }
+        ],
+        "user": {
+          "_id": "64d9cbfefd210ef389e26898",
+          "user_name": "Mohammed Minnathullah",
+          "email": "minnathullahmohammed@gmail.com",
+          "password": "$2b$12$0kIibtLu/zTlhS9XWb8hd.74OEYyns.qLncUb697CrkNmTWIdTsni",
+          "phone": "+916281089096",
+          "createdAt": "2023-08-14T06:38:54.297Z",
+          "updatedAt": "2023-08-31T12:03:43.719Z",
+          "otpSecret": "$2b$12$J9i9gWShsvTHXbvRB7ah3ep/ctfBkIriZZ5iE6YUmNYfMkAZ.KfjK",
+          "__v": 28,
+          "addresses": [
+            {
+              "firstName": "Mohammed",
+              "lastName": "Minnathullah",
+              "emailAddress": "minnathullahmohammed@gmail.com",
+              "mobileNumber": "+916281089096",
+              "altMobileNumber": "",
+              "country": "nepal",
+              "street": "Tappa Khana Chaurasta",
+              "city": "Mumbai",
+              "state": "Maharashtra",
+              "pinCode": 506367,
+              "dist": "Siddipet",
+              "mandal": "Hyderabad",
+              "village": "Maddur",
+              "_id": "64eefc02af40f6f925815211"
+            },
+            {
+              "firstName": "Mohammed",
+              "lastName": "Rehan",
+              "emailAddress": "minnathullahmohammed@gmail.com",
+              "mobileNumber": "+919652336445",
+              "altMobileNumber": "+916281089096",
+              "country": "india",
+              "street": "H-No: 5-16, Near royal function hall",
+              "city": "Hyderabad",
+              "state": "Telangana",
+              "pinCode": 506367,
+              "dist": "Siddipet",
+              "mandal": "Maddur",
+              "village": "Maddur",
+              "_id": "64f08194600cb79cca03fc5d"
+            }
+          ]
+        },
+        "totalItems": 1,
+        "totalAmount": 899,
+        "selectedUserAddress": {
+          "firstName": "Mohammed",
+          "lastName": "Minnathullah",
+          "emailAddress": "minnathullahmohammed@gmail.com",
+          "mobileNumber": "+916281089096",
+          "altMobileNumber": "",
+          "country": "nepal",
+          "street": "Tappa Khana Chaurasta",
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "pinCode": 506367,
+          "dist": "Siddipet",
+          "mandal": "Hyderabad",
+          "village": "Maddur",
+          "_id": "64eefc02af40f6f925815211"
         },
         "selectedPaymentMethod": "cash",
         "status": "Pending"
@@ -2853,75 +2868,92 @@
       "id": 3
     },
     {
-      "user_id": "64d9cca1fd210ef389e268a0",
+      "user_id": "64d9cbfefd210ef389e26898",
       "order": {
         "items": [
           {
-            "title": "- Daal Masoor 500 grams",
-            "description": "Fine quality Branded Product Keep in a cool and dry place",
-            "price": 20,
-            "discountPercentage": 4.81,
+            "title": "iPhone X",
+            "description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
+            "price": 899,
+            "discountPercentage": 17.94,
             "rating": 4.44,
-            "stock": 133,
-            "brand": "Saaf & Khaas",
-            "category": "groceries",
-            "thumbnail": "https://i.dummyjson.com/data/products/21/thumbnail.png",
+            "stock": 34,
+            "brand": "Apple",
+            "category": "smartphones",
+            "thumbnail": "https://i.dummyjson.com/data/products/2/thumbnail.jpg",
             "images": [
-              "https://i.dummyjson.com/data/products/21/1.png",
-              "https://i.dummyjson.com/data/products/21/2.jpg",
-              "https://i.dummyjson.com/data/products/21/3.jpg"
+              "https://i.dummyjson.com/data/products/2/1.jpg",
+              "https://i.dummyjson.com/data/products/2/2.jpg",
+              "https://i.dummyjson.com/data/products/2/3.jpg",
+              "https://i.dummyjson.com/data/products/2/thumbnail.jpg"
             ],
             "quantity": 1,
-            "user_id": "64d9cca1fd210ef389e268a0",
+            "user_id": "64d9cbfefd210ef389e26898",
             "id": 1
           }
         ],
         "user": {
-          "_id": "64d9cca1fd210ef389e268a0",
-          "user_name": "Minnathullah Rahmani",
-          "email": "minnathullahmohammed7337@gmail.com",
-          "password": "$2b$12$tsTg/qLRvxJYjq5sI1zQDedGHSDlK41w3ylYVbxQurPJ0Nkijurj6",
-          "phone": "+919652336445",
-          "createdAt": "2023-08-14T06:41:37.807Z",
-          "updatedAt": "2023-09-01T12:16:00.232Z",
-          "otpSecret": "$2b$12$Xu2SJOkUrOVMkBCO5yqvFeD.KUAYe8JM2ldl80xyruLOsFJ5Pq3V6",
-          "__v": 13,
+          "_id": "64d9cbfefd210ef389e26898",
+          "user_name": "Mohammed Minnathullah",
+          "email": "minnathullahmohammed@gmail.com",
+          "password": "$2b$12$0kIibtLu/zTlhS9XWb8hd.74OEYyns.qLncUb697CrkNmTWIdTsni",
+          "phone": "+916281089096",
+          "createdAt": "2023-08-14T06:38:54.297Z",
+          "updatedAt": "2023-08-31T12:03:43.719Z",
+          "otpSecret": "$2b$12$J9i9gWShsvTHXbvRB7ah3ep/ctfBkIriZZ5iE6YUmNYfMkAZ.KfjK",
+          "__v": 28,
           "addresses": [
             {
               "firstName": "Mohammed",
-              "lastName": "Rehan",
-              "emailAddress": "rehan@rehan.com",
-              "mobileNumber": "+917337234824",
-              "altMobileNumber": "+919652336445",
-              "country": "india",
+              "lastName": "Minnathullah",
+              "emailAddress": "minnathullahmohammed@gmail.com",
+              "mobileNumber": "+916281089096",
+              "altMobileNumber": "",
+              "country": "nepal",
               "street": "Tappa Khana Chaurasta",
               "city": "Mumbai",
               "state": "Maharashtra",
               "pinCode": 506367,
               "dist": "Siddipet",
+              "mandal": "Hyderabad",
+              "village": "Maddur",
+              "_id": "64eefc02af40f6f925815211"
+            },
+            {
+              "firstName": "Mohammed",
+              "lastName": "Rehan",
+              "emailAddress": "minnathullahmohammed@gmail.com",
+              "mobileNumber": "+919652336445",
+              "altMobileNumber": "+916281089096",
+              "country": "india",
+              "street": "H-No: 5-16, Near royal function hall",
+              "city": "Hyderabad",
+              "state": "Telangana",
+              "pinCode": 506367,
+              "dist": "Siddipet",
               "mandal": "Maddur",
               "village": "Maddur",
-              "_id": "64f1579c2239b552d711a8b4"
+              "_id": "64f08194600cb79cca03fc5d"
             }
           ]
         },
         "totalItems": 1,
-        "totalAmount": 20,
+        "totalAmount": 899,
         "selectedUserAddress": {
           "firstName": "Mohammed",
-          "lastName": "Rehan",
-          "emailAddress": "rehan@rehan.com",
-          "mobileNumber": "+917337234824",
-          "altMobileNumber": "+919652336445",
-          "country": "india",
+          "lastName": "Minnathullah",
+          "emailAddress": "minnathullahmohammed@gmail.com",
+          "mobileNumber": "+916281089096",
+          "altMobileNumber": "",
+          "country": "nepal",
           "street": "Tappa Khana Chaurasta",
           "city": "Mumbai",
           "state": "Maharashtra",
           "pinCode": 506367,
           "dist": "Siddipet",
-          "mandal": "Maddur",
+          "mandal": "Hyderabad",
           "village": "Maddur",
-          "_id": "64f1579c2239b552d711a8b4"
+          "_id": "64eefc02af40f6f925815211"
         },
         "selectedPaymentMethod": "cash",
         "status": "Pending"
@@ -2929,81 +2961,191 @@
       "id": 4
     },
     {
-      "user_id": "64d9cca1fd210ef389e268a0",
+      "user_id": "64d9cbfefd210ef389e26898",
       "order": {
         "items": [
           {
-            "title": "MacBook Pro",
-            "description": "MacBook Pro 2021 with mini-LED display may launch between September, November",
-            "price": 1749,
-            "discountPercentage": 11.02,
-            "rating": 4.57,
-            "stock": 83,
-            "brand": "Apple",
-            "category": "laptops",
-            "thumbnail": "https://i.dummyjson.com/data/products/6/thumbnail.png",
+            "title": "OPPOF19",
+            "description": "OPPO F19 is officially announced on April 2021.",
+            "price": 280,
+            "discountPercentage": 17.91,
+            "rating": 4.3,
+            "stock": 123,
+            "brand": "OPPO",
+            "category": "smartphones",
+            "thumbnail": "https://i.dummyjson.com/data/products/4/thumbnail.jpg",
             "images": [
-              "https://i.dummyjson.com/data/products/6/1.png",
-              "https://i.dummyjson.com/data/products/6/2.jpg",
-              "https://i.dummyjson.com/data/products/6/3.png",
-              "https://i.dummyjson.com/data/products/6/4.jpg"
+              "https://i.dummyjson.com/data/products/4/1.jpg",
+              "https://i.dummyjson.com/data/products/4/2.jpg",
+              "https://i.dummyjson.com/data/products/4/3.jpg",
+              "https://i.dummyjson.com/data/products/4/4.jpg",
+              "https://i.dummyjson.com/data/products/4/thumbnail.jpg"
             ],
             "quantity": 1,
-            "user_id": "64d9cca1fd210ef389e268a0",
+            "user_id": "64d9cbfefd210ef389e26898",
             "id": 1
           }
         ],
         "user": {
-          "_id": "64d9cca1fd210ef389e268a0",
-          "user_name": "Minnathullah Rahmani",
-          "email": "minnathullahmohammed7337@gmail.com",
-          "password": "$2b$12$tsTg/qLRvxJYjq5sI1zQDedGHSDlK41w3ylYVbxQurPJ0Nkijurj6",
-          "phone": "+919652336445",
-          "createdAt": "2023-08-14T06:41:37.807Z",
-          "updatedAt": "2023-09-01T12:16:00.232Z",
-          "otpSecret": "$2b$12$Xu2SJOkUrOVMkBCO5yqvFeD.KUAYe8JM2ldl80xyruLOsFJ5Pq3V6",
-          "__v": 13,
+          "_id": "64d9cbfefd210ef389e26898",
+          "user_name": "Mohammed Minnathullah",
+          "email": "minnathullahmohammed@gmail.com",
+          "password": "$2b$12$0kIibtLu/zTlhS9XWb8hd.74OEYyns.qLncUb697CrkNmTWIdTsni",
+          "phone": "+916281089096",
+          "createdAt": "2023-08-14T06:38:54.297Z",
+          "updatedAt": "2023-08-31T12:03:43.719Z",
+          "otpSecret": "$2b$12$J9i9gWShsvTHXbvRB7ah3ep/ctfBkIriZZ5iE6YUmNYfMkAZ.KfjK",
+          "__v": 28,
           "addresses": [
             {
               "firstName": "Mohammed",
-              "lastName": "Rehan",
-              "emailAddress": "rehan@rehan.com",
-              "mobileNumber": "+917337234824",
-              "altMobileNumber": "+919652336445",
-              "country": "india",
+              "lastName": "Minnathullah",
+              "emailAddress": "minnathullahmohammed@gmail.com",
+              "mobileNumber": "+916281089096",
+              "altMobileNumber": "",
+              "country": "nepal",
               "street": "Tappa Khana Chaurasta",
               "city": "Mumbai",
               "state": "Maharashtra",
               "pinCode": 506367,
               "dist": "Siddipet",
+              "mandal": "Hyderabad",
+              "village": "Maddur",
+              "_id": "64eefc02af40f6f925815211"
+            },
+            {
+              "firstName": "Mohammed",
+              "lastName": "Rehan",
+              "emailAddress": "minnathullahmohammed@gmail.com",
+              "mobileNumber": "+919652336445",
+              "altMobileNumber": "+916281089096",
+              "country": "india",
+              "street": "H-No: 5-16, Near royal function hall",
+              "city": "Hyderabad",
+              "state": "Telangana",
+              "pinCode": 506367,
+              "dist": "Siddipet",
               "mandal": "Maddur",
               "village": "Maddur",
-              "_id": "64f1579c2239b552d711a8b4"
+              "_id": "64f08194600cb79cca03fc5d"
             }
           ]
         },
         "totalItems": 1,
-        "totalAmount": 1749,
+        "totalAmount": 280,
         "selectedUserAddress": {
           "firstName": "Mohammed",
-          "lastName": "Rehan",
-          "emailAddress": "rehan@rehan.com",
-          "mobileNumber": "+917337234824",
-          "altMobileNumber": "+919652336445",
-          "country": "india",
+          "lastName": "Minnathullah",
+          "emailAddress": "minnathullahmohammed@gmail.com",
+          "mobileNumber": "+916281089096",
+          "altMobileNumber": "",
+          "country": "nepal",
           "street": "Tappa Khana Chaurasta",
           "city": "Mumbai",
           "state": "Maharashtra",
           "pinCode": 506367,
           "dist": "Siddipet",
-          "mandal": "Maddur",
+          "mandal": "Hyderabad",
           "village": "Maddur",
-          "_id": "64f1579c2239b552d711a8b4"
+          "_id": "64eefc02af40f6f925815211"
         },
         "selectedPaymentMethod": "cash",
         "status": "Pending"
       },
       "id": 5
+    },
+    {
+      "user_id": "64d9cbfefd210ef389e26898",
+      "order": {
+        "items": [
+          {
+            "title": "iPhone X",
+            "description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
+            "price": 899,
+            "discountPercentage": 17.94,
+            "rating": 4.44,
+            "stock": 34,
+            "brand": "Apple",
+            "category": "smartphones",
+            "thumbnail": "https://i.dummyjson.com/data/products/2/thumbnail.jpg",
+            "images": [
+              "https://i.dummyjson.com/data/products/2/1.jpg",
+              "https://i.dummyjson.com/data/products/2/2.jpg",
+              "https://i.dummyjson.com/data/products/2/3.jpg",
+              "https://i.dummyjson.com/data/products/2/thumbnail.jpg"
+            ],
+            "quantity": 1,
+            "user_id": "64d9cbfefd210ef389e26898",
+            "id": 1
+          }
+        ],
+        "user": {
+          "_id": "64d9cbfefd210ef389e26898",
+          "user_name": "Mohammed Minnathullah",
+          "email": "minnathullahmohammed@gmail.com",
+          "password": "$2b$12$0kIibtLu/zTlhS9XWb8hd.74OEYyns.qLncUb697CrkNmTWIdTsni",
+          "phone": "+916281089096",
+          "createdAt": "2023-08-14T06:38:54.297Z",
+          "updatedAt": "2023-08-31T12:03:43.719Z",
+          "otpSecret": "$2b$12$J9i9gWShsvTHXbvRB7ah3ep/ctfBkIriZZ5iE6YUmNYfMkAZ.KfjK",
+          "__v": 28,
+          "addresses": [
+            {
+              "firstName": "Mohammed",
+              "lastName": "Minnathullah",
+              "emailAddress": "minnathullahmohammed@gmail.com",
+              "mobileNumber": "+916281089096",
+              "altMobileNumber": "",
+              "country": "nepal",
+              "street": "Tappa Khana Chaurasta",
+              "city": "Mumbai",
+              "state": "Maharashtra",
+              "pinCode": 506367,
+              "dist": "Siddipet",
+              "mandal": "Hyderabad",
+              "village": "Maddur",
+              "_id": "64eefc02af40f6f925815211"
+            },
+            {
+              "firstName": "Mohammed",
+              "lastName": "Rehan",
+              "emailAddress": "minnathullahmohammed@gmail.com",
+              "mobileNumber": "+919652336445",
+              "altMobileNumber": "+916281089096",
+              "country": "india",
+              "street": "H-No: 5-16, Near royal function hall",
+              "city": "Hyderabad",
+              "state": "Telangana",
+              "pinCode": 506367,
+              "dist": "Siddipet",
+              "mandal": "Maddur",
+              "village": "Maddur",
+              "_id": "64f08194600cb79cca03fc5d"
+            }
+          ]
+        },
+        "totalItems": 1,
+        "totalAmount": 899,
+        "selectedUserAddress": {
+          "firstName": "Mohammed",
+          "lastName": "Rehan",
+          "emailAddress": "minnathullahmohammed@gmail.com",
+          "mobileNumber": "+919652336445",
+          "altMobileNumber": "+916281089096",
+          "country": "india",
+          "street": "H-No: 5-16, Near royal function hall",
+          "city": "Hyderabad",
+          "state": "Telangana",
+          "pinCode": 506367,
+          "dist": "Siddipet",
+          "mandal": "Maddur",
+          "village": "Maddur",
+          "_id": "64f08194600cb79cca03fc5d"
+        },
+        "selectedPaymentMethod": "cash",
+        "status": "Pending"
+      },
+      "id": 6
     }
   ]
 }

@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 const CartPage = () => {
   const cartItems = useSelector((state) => state?.cart?.items);
   const navigate = useNavigate();
+  
   const handleCheckoutClick = (e) => {
     e.preventDefault();
     if (!cartItems.length) {

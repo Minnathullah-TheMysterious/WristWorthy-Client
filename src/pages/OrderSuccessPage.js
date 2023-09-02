@@ -14,7 +14,7 @@ const OrderSuccessPage = () => {
     const actionResult = dispatch(resetCartAsync(userId));
     actionResult
       .then(() => {
-        toast.success("Cart has been Reset");
+        console.log("Cart has been Reset");
       })
       .catch((error) => {
         console.error("Error resetting cart:", error);
