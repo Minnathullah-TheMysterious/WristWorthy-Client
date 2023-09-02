@@ -4,6 +4,8 @@ import { Route, Routes } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { fetchUserCartAsync } from "./features/cart/cartSlice";
 import { Toaster } from "react-hot-toast";
+import { getUserAsync } from './features/user/userSlice';
+import { getAuthDataAsync } from "./features/auth/authSlice";
 import Home from "./pages/Home";
 import CartPage from "./pages/CartPage";
 import LoginPage from "./pages/LoginPage";
@@ -14,8 +16,8 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 import PageNotFound from "./pages/PageNotFound";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
-import { getUserAsync } from './features/user/userSlice';
-import { getAuthDataAsync } from "./features/auth/authSlice";
+import UserOrdersPage from "./pages/UserOrdersPage";
+import UserProfilePage from "./pages/UserProfilePage";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,10 +34,12 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<ProtectedRoute />}>
+        <Route path="/dashboard/" element={<ProtectedRoute />}>
           <Route path="cart" element={<CartPage />} />
           <Route path="checkout" element={<CheckoutPage />} />
           <Route path="order-success" element={<OrderSuccessPage />} />
+          <Route path="user-orders" element={<UserOrdersPage />} />
+          <Route path="user-profile" element={<UserProfilePage />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />

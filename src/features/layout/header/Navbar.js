@@ -16,8 +16,8 @@ import { getAuthDataAsync } from "../../auth/authSlice";
 // const navigation = [{ name: "Home", href: "/", current: false }];
 
 const userNavigation = [
-  { id: 1, name: "My Profile", href: "/user/profile" },
-  { id: 2, name: "My Orders", href: "/user/orders" },
+  { id: 1, name: "My Profile", href: "/dashboard/user-profile" },
+  { id: 2, name: "My Orders", href: "/dashboard/user-orders" },
   { id: 3, name: "Wish List", href: "/user/wish-list" },
   { id: 4, name: "Manage Addresses", href: "/user/addresses" },
 ];

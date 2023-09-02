@@ -26,7 +26,9 @@ export const register = async (registrationData) => {
     }
   } catch (error) {
     if (error.response && error.response.status === 409) {
-      toast.error(error.response.data.message);
+      toast(error?.response?.data?.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
     } else if (error.response && error.response.status === 400) {
       toast(error?.response?.data?.message, {
         className: "font-serif bg-blue-900 text-white",
@@ -47,26 +49,27 @@ export const login = async (loginData) => {
       toast.success(message);
       const userWithOutAddressesArray = { ...user };
       delete userWithOutAddressesArray.addresses;
-      console.log(userWithOutAddressesArray);
-      console.log(user);
       localStorage.setItem(
         "user",
         JSON.stringify({ token, user_id: user?._id })
       );
-      return userWithOutAddressesArray;
+      return {success, message, userWithOutAddressesArray};
     } else {
       toast.error(message);
-      return response.data;
+      return {success, message}
     }
   } catch (error) {
     if (error.response.status === 401) {
       toast.error(error.response.data.message);
+      return {success:false, message: error.response.data.message}
     } else if (error.response.status === 404) {
       toast.error(error.response.data.message);
+      return {success:false, message: error.response.data.message}
     } else if (error.response.status === 400) {
       toast(error?.response?.data?.message, {
         className: "font-serif bg-blue-900 text-white",
       });
+      return {success:false, message: error.response.data.message}
     } else {
       toast.error("Something Went Wrong While login");
       console.error("Something Went Wrong While login - Client", error);
@@ -117,7 +120,7 @@ export const requestPasswordReset = async (reqResetData) => {
       return success;
     }
   } catch (error) {
-    if (error?.response?.status === 400) {
+    if (error?.response?.status === 404) {
       toast(error?.response?.data?.message, {
         className: "font-serif bg-blue-900 text-white",
       });

@@ -41,18 +41,21 @@ const Login = () => {
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    dispatch(loginAsync(loginData))
-      .then(() => {
+    try {
+      const actionResult = await dispatch(loginAsync(loginData));
+      if (loginAsync.fulfilled.match(actionResult)) {
         const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
-        const userId = userFromLocalStorage?.user?._id;
+        const userId = userFromLocalStorage?.user_id;
         dispatch(fetchUserCartAsync(userId));
-        dispatch(getUserAsync(userId))
+        dispatch(getUserAsync(userId));
         localStorage.removeItem("user_id");
         navigate(location.state || "/");
-      })
-      .catch((error) => {
-        console.error("Failed To Login", error);
-      });
+      } else {
+        console.error("Failed To Login");
+      }
+    } catch (error) {
+      console.error("Something Went Wrong dispatching the action", error);
+    }
   };
 
   return (
