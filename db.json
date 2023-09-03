@@ -2581,92 +2581,7 @@
       "checked": false
     }
   ],
-  "carts": [
-    {
-      "title": "Sneakers Joggers Shoes",
-      "description": "Gender: Men , Colors: Same as DisplayedCondition: 100% Brand New",
-      "price": 40,
-      "discountPercentage": 12.57,
-      "rating": 4.38,
-      "stock": 6,
-      "brand": "Sneakers",
-      "category": "mens-shoes",
-      "thumbnail": "https://i.dummyjson.com/data/products/56/thumbnail.jpg",
-      "images": [
-        "https://i.dummyjson.com/data/products/56/1.jpg",
-        "https://i.dummyjson.com/data/products/56/2.jpg",
-        "https://i.dummyjson.com/data/products/56/3.jpg",
-        "https://i.dummyjson.com/data/products/56/4.jpg",
-        "https://i.dummyjson.com/data/products/56/5.jpg",
-        "https://i.dummyjson.com/data/products/56/thumbnail.jpg"
-      ],
-      "quantity": 3,
-      "user_id": "64d9cbfefd210ef389e26898",
-      "id": 3
-    },
-    {
-      "title": "Royal Blue Premium Watch",
-      "description": "Men Silver Chain Royal Blue Premium Watch Latest Analog Watch",
-      "price": 50,
-      "discountPercentage": 2.56,
-      "rating": 4.89,
-      "stock": 142,
-      "brand": "SKMEI 9117",
-      "category": "mens-watches",
-      "thumbnail": "https://i.dummyjson.com/data/products/63/thumbnail.webp",
-      "images": [
-        "https://i.dummyjson.com/data/products/63/1.jpg",
-        "https://i.dummyjson.com/data/products/63/2.jpg",
-        "https://i.dummyjson.com/data/products/63/3.png",
-        "https://i.dummyjson.com/data/products/63/4.jpeg"
-      ],
-      "quantity": 10,
-      "user_id": "64d9cbfefd210ef389e26898",
-      "id": 4
-    },
-    {
-      "title": "Kabir Singh Square Sunglass",
-      "description": "Orignal Metal Kabir Singh design 2020 Sunglasses Men Brand Designer Sun Glasses Kabir Singh Square Sunglass",
-      "price": 50,
-      "discountPercentage": 15.6,
-      "rating": 4.62,
-      "stock": 78,
-      "brand": "Designer Sun Glasses",
-      "category": "sunglasses",
-      "thumbnail": "https://i.dummyjson.com/data/products/82/thumbnail.jpg",
-      "images": [
-        "https://i.dummyjson.com/data/products/82/1.jpg",
-        "https://i.dummyjson.com/data/products/82/2.webp",
-        "https://i.dummyjson.com/data/products/82/3.jpg",
-        "https://i.dummyjson.com/data/products/82/4.jpg",
-        "https://i.dummyjson.com/data/products/82/thumbnail.jpg"
-      ],
-      "quantity": 2,
-      "user_id": "64d9cbfefd210ef389e26898",
-      "id": 5
-    },
-    {
-      "title": "3 lights lndenpant kitchen islang",
-      "description": "3 lights lndenpant kitchen islang dining room pendant rice paper chandelier contemporary led pendant light modern chandelier",
-      "price": 34,
-      "discountPercentage": 5.92,
-      "rating": 4.99,
-      "stock": 44,
-      "brand": "DADAWU",
-      "category": "lighting",
-      "thumbnail": "https://i.dummyjson.com/data/products/98/thumbnail.jpg",
-      "images": [
-        "https://i.dummyjson.com/data/products/98/1.jpg",
-        "https://i.dummyjson.com/data/products/98/2.jpg",
-        "https://i.dummyjson.com/data/products/98/3.jpg",
-        "https://i.dummyjson.com/data/products/98/4.jpg",
-        "https://i.dummyjson.com/data/products/98/thumbnail.jpg"
-      ],
-      "quantity": 1,
-      "user_id": "64d9cbfefd210ef389e26898",
-      "id": 6
-    }
-  ],
+  "carts": [],
   "orders": [
     {
       "user_id": "64d9cbfefd210ef389e26898",
@@ -3036,6 +2951,179 @@
         "status": "Pending"
       },
       "id": 3
+    },
+    {
+      "user_id": "64d9cbfefd210ef389e26898",
+      "order": {
+        "items": [
+          {
+            "title": "Sneakers Joggers Shoes",
+            "description": "Gender: Men , Colors: Same as DisplayedCondition: 100% Brand New",
+            "price": 40,
+            "discountPercentage": 12.57,
+            "rating": 4.38,
+            "stock": 6,
+            "brand": "Sneakers",
+            "category": "mens-shoes",
+            "thumbnail": "https://i.dummyjson.com/data/products/56/thumbnail.jpg",
+            "images": [
+              "https://i.dummyjson.com/data/products/56/1.jpg",
+              "https://i.dummyjson.com/data/products/56/2.jpg",
+              "https://i.dummyjson.com/data/products/56/3.jpg",
+              "https://i.dummyjson.com/data/products/56/4.jpg",
+              "https://i.dummyjson.com/data/products/56/5.jpg",
+              "https://i.dummyjson.com/data/products/56/thumbnail.jpg"
+            ],
+            "quantity": 3,
+            "user_id": "64d9cbfefd210ef389e26898",
+            "id": 3
+          },
+          {
+            "title": "Royal Blue Premium Watch",
+            "description": "Men Silver Chain Royal Blue Premium Watch Latest Analog Watch",
+            "price": 50,
+            "discountPercentage": 2.56,
+            "rating": 4.89,
+            "stock": 142,
+            "brand": "SKMEI 9117",
+            "category": "mens-watches",
+            "thumbnail": "https://i.dummyjson.com/data/products/63/thumbnail.webp",
+            "images": [
+              "https://i.dummyjson.com/data/products/63/1.jpg",
+              "https://i.dummyjson.com/data/products/63/2.jpg",
+              "https://i.dummyjson.com/data/products/63/3.png",
+              "https://i.dummyjson.com/data/products/63/4.jpeg"
+            ],
+            "quantity": 10,
+            "user_id": "64d9cbfefd210ef389e26898",
+            "id": 4
+          },
+          {
+            "title": "Kabir Singh Square Sunglass",
+            "description": "Orignal Metal Kabir Singh design 2020 Sunglasses Men Brand Designer Sun Glasses Kabir Singh Square Sunglass",
+            "price": 50,
+            "discountPercentage": 15.6,
+            "rating": 4.62,
+            "stock": 78,
+            "brand": "Designer Sun Glasses",
+            "category": "sunglasses",
+            "thumbnail": "https://i.dummyjson.com/data/products/82/thumbnail.jpg",
+            "images": [
+              "https://i.dummyjson.com/data/products/82/1.jpg",
+              "https://i.dummyjson.com/data/products/82/2.webp",
+              "https://i.dummyjson.com/data/products/82/3.jpg",
+              "https://i.dummyjson.com/data/products/82/4.jpg",
+              "https://i.dummyjson.com/data/products/82/thumbnail.jpg"
+            ],
+            "quantity": 2,
+            "user_id": "64d9cbfefd210ef389e26898",
+            "id": 5
+          },
+          {
+            "title": "3 lights lndenpant kitchen islang",
+            "description": "3 lights lndenpant kitchen islang dining room pendant rice paper chandelier contemporary led pendant light modern chandelier",
+            "price": 34,
+            "discountPercentage": 5.92,
+            "rating": 4.99,
+            "stock": 44,
+            "brand": "DADAWU",
+            "category": "lighting",
+            "thumbnail": "https://i.dummyjson.com/data/products/98/thumbnail.jpg",
+            "images": [
+              "https://i.dummyjson.com/data/products/98/1.jpg",
+              "https://i.dummyjson.com/data/products/98/2.jpg",
+              "https://i.dummyjson.com/data/products/98/3.jpg",
+              "https://i.dummyjson.com/data/products/98/4.jpg",
+              "https://i.dummyjson.com/data/products/98/thumbnail.jpg"
+            ],
+            "quantity": 1,
+            "user_id": "64d9cbfefd210ef389e26898",
+            "id": 6
+          }
+        ],
+        "user": {
+          "_id": "64d9cbfefd210ef389e26898",
+          "user_name": "Mohammed Minnathullah",
+          "email": "minnathullahmohammed@gmail.com",
+          "password": "$2b$12$0kIibtLu/zTlhS9XWb8hd.74OEYyns.qLncUb697CrkNmTWIdTsni",
+          "phone": "+916281089096",
+          "createdAt": "2023-08-14T06:38:54.297Z",
+          "updatedAt": "2023-09-03T12:23:49.331Z",
+          "otpSecret": "$2b$12$2oVtCigBc89.unbTf.kaZeMzYAjDT9DDUZNnIisxHJ2gBg8umL1Wu",
+          "__v": 35,
+          "addresses": [
+            {
+              "firstName": "Mohammed",
+              "lastName": "Rehan",
+              "emailAddress": "minnathullahmohammed@gmail.com",
+              "mobileNumber": "+919652336445",
+              "altMobileNumber": "+916281089096",
+              "country": "india",
+              "street": "H-No: 5-16, Near royal function hall",
+              "city": "Hyderabad",
+              "state": "Telangana",
+              "pinCode": 506367,
+              "dist": "Siddipet",
+              "mandal": "Maddur",
+              "village": "Maddur",
+              "_id": "64f08194600cb79cca03fc5d"
+            },
+            {
+              "firstName": "Mohammed",
+              "lastName": "Minnathullah",
+              "emailAddress": "minnathullahmohammed@gmail.com",
+              "mobileNumber": "+916281089096",
+              "altMobileNumber": "+919652336445",
+              "country": "india",
+              "street": "Near Royal Function Hall",
+              "city": "Hyderabad",
+              "state": "Telangana",
+              "pinCode": 506367,
+              "dist": "Siddipet",
+              "mandal": "Maddur",
+              "village": "Maddur",
+              "_id": "64f4004f0e933bd159557f7f"
+            },
+            {
+              "firstName": "Arbaz",
+              "lastName": "Ali",
+              "emailAddress": "arbaz@ali.com",
+              "mobileNumber": "+919494971877",
+              "altMobileNumber": "",
+              "country": "india",
+              "street": "5-16, Near Royal Function Hall",
+              "city": "Hyderabad",
+              "state": "Telangana",
+              "pinCode": 506367,
+              "dist": "Siddipet",
+              "mandal": "Maddur",
+              "village": "Maddur",
+              "_id": "64f47a4f481e084bc818f8ed"
+            }
+          ]
+        },
+        "totalItems": 16,
+        "totalAmount": 754,
+        "selectedUserAddress": {
+          "firstName": "Arbaz",
+          "lastName": "Ali",
+          "emailAddress": "arbaz@ali.com",
+          "mobileNumber": "+919494971877",
+          "altMobileNumber": "",
+          "country": "india",
+          "street": "5-16, Near Royal Function Hall",
+          "city": "Hyderabad",
+          "state": "Telangana",
+          "pinCode": 506367,
+          "dist": "Siddipet",
+          "mandal": "Maddur",
+          "village": "Maddur",
+          "_id": "64f47a4f481e084bc818f8ed"
+        },
+        "selectedPaymentMethod": "cash",
+        "status": "Pending"
+      },
+      "id": 4
     }
   ]
 }
