@@ -1,11 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { deleteUserAddress, fetchAllOrders, getUser, placeOrder } from "./userAPI";
-import { addUserAddress } from "../checkout/checkoutAPI";
+import {
+  deleteUserAddress,
+  fetchAllOrders,
+  getUser,
+  placeOrder,
+  addUserAddress,
+} from "./userAPI";
 
 const initialState = {
   loading: false,
-  userInfo:null,
-  selectedUserAddress:null,
+  userInfo: null,
+  selectedUserAddress: null,
   orders: [],
   currentOrder: null,
   error: null,
@@ -23,12 +28,18 @@ export const getUserAsync = createAsyncThunk("auth/getUser", async (userId) => {
 
 export const addUserAddressAsync = createAsyncThunk(
   "auth/addUserAddress",
-  async ({ addressData, userId, token }) => {
+  async ({ addressData, userId }) => {
     try {
-      const response = await addUserAddress(addressData, userId, token);
-      return response?.user?.addresses;
+      const response = await addUserAddress(addressData, userId);
+      if (response.success) {
+        console.log(response?.user?.addresses);
+        return response?.user?.addresses;
+      } else {
+        throw new Error(response.message);
+      }
     } catch (error) {
-      console.error("Something Went Wrong Add-Address-User Thunk", error);
+      console.error("Something Went Wrong in Add-Address-User Thunk", error);
+      throw new Error(error);
     }
   }
 );
@@ -42,10 +53,7 @@ export const deleteUserAddressAsync = createAsyncThunk(
       console.log(response);
       return response;
     } catch (error) {
-      console.error(
-        "Something went wrong in delete-user-address thunk",
-        error
-      );
+      console.error("Something went wrong in delete-user-address thunk", error);
     }
   }
 );
@@ -79,32 +87,34 @@ const userSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
-    setSelectedUserAddress: (state, action)=>{
-      state.selectedUserAddress= action.payload
-    }
+    setSelectedUserAddress: (state, action) => {
+      state.selectedUserAddress = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
-    .addCase(getUserAsync.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(getUserAsync.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.error.message;
-    })
-    .addCase(getUserAsync.fulfilled, (state, action) => {
-      state.loading = false;
-      state.userInfo = action.payload;
-    })
+      .addCase(getUserAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getUserAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getUserAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userInfo = action.payload;
+      })
 
       .addCase(addUserAddressAsync.pending, (state) => {
         state.loading = true;
       })
       .addCase(addUserAddressAsync.rejected, (state, action) => {
+        console.log("rejected");
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.error ? action.error.message : "Error in response";
       })
       .addCase(addUserAddressAsync.fulfilled, (state, action) => {
+        console.log("fulfilled");
         state.loading = false;
         state.userInfo.addresses = action.payload;
       })
@@ -148,5 +158,5 @@ const userSlice = createSlice({
   },
 });
 
-export const {setSelectedUserAddress} = userSlice.actions
+export const { setSelectedUserAddress } = userSlice.actions;
 export default userSlice.reducer;

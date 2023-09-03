@@ -25,8 +25,6 @@ const Checkout = () => {
   const [altMobileNumber, setAltMobileNumber] = useState("");
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("cash");
 
-  const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
-  const token = userFromLocalStorage?.token;
   const userId = user?._id;
 
   const userAddressReducer = (state, action) => {
@@ -68,7 +66,7 @@ const Checkout = () => {
   const handleAddAddressClick = async (e) => {
     e.preventDefault();
     try {
-      dispatchAsync(addUserAddressAsync({ addressData, userId, token }));
+        dispatchAsync(addUserAddressAsync({ addressData, userId }));
     } catch (error) {
       console.error(
         "Something Went Wrong in dispatching the add-user-address",
@@ -145,6 +143,7 @@ const Checkout = () => {
         <div className="lg:col-span-3  bg-gray-100">
           <form>
             <div className="space-y-12">
+            {/* Address Form */}
               <div className="border-b border-gray-900/10 pb-12">
                 <h2 className="text-base font-semibold leading-7 text-gray-900">
                   Personal Information

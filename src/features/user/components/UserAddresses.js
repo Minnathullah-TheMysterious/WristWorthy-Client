@@ -22,7 +22,7 @@ const UserAddresses = () => {
     try {
       dispatch(deleteUserAddressAsync({ userId, addressId }));
     } catch (error) {
-      console.error("Something Went Wrong while dispatching the function", error);
+      console.error("Something Went Wrong while dispatching the delete-user-address action", error);
     }
   };
 

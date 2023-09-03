@@ -10,6 +10,43 @@ export const getUser = async (userId) => {
   }
 };
 
+export const addUserAddress = async (addressData, uId) => {
+  console.log("Address: ", addressData, "\n user id:", uId);
+  try {
+    const {data} = await axios.post(
+      `/api/v1/auth/add-user-address/${uId}`,
+      addressData
+    );
+
+    console.log(data);
+    const { success, message } = data;
+
+    if (success) {
+      console.log(message);
+      toast.success(message);
+      return data;
+    } else {
+      console.log(message);
+      toast.error(message);
+      return {success, message};
+    }
+  } catch (error) {
+    if (error?.response?.status === 400) {
+      toast(error.response.data.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
+      return {success:false, message: 'Please Fill All the required Fields'}
+    } else if (error?.response?.status === 404) {
+      toast.error(error.response.data.message);
+      return {success:false, message: 'User Not Found'}
+    } else {
+      console.log(error);
+      toast.error("Something Went Wrong in adding the address - Client");
+      return {success: false, message:'Something Went Wrong in API Call for adding the address'}
+    }
+  }
+};
+
 export const deleteUserAddress = async (userId, addressId) => {
   try {
     const response = await axios.delete(
