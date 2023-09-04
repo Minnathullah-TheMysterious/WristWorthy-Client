@@ -4,7 +4,7 @@ import PhoneInput from "react-phone-number-input";
 import { useDispatch, useSelector } from "react-redux";
 import { addUserAddressAsync } from "../userSlice";
 
-const AddressForm = () => {
+const AddAddressForm = ({ setIsAddAddressEnabled }) => {
   const dispatchAsync = useDispatch();
   const userId = useSelector((state) => state?.auth?.user?._id);
   const [mobileNumber, setMobileNumber] = useState("");
@@ -14,14 +14,14 @@ const AddressForm = () => {
     firstName: "",
     lastName: "",
     emailAddress: "",
-    country: "",
+    country: "india",
     state: "",
     city: "",
     dist: "",
     village: "",
     mandal: "",
     street: "",
-    pinCode: 0,
+    pinCode: 506367,
   };
 
   const userAddressReducer = (state, action) => {
@@ -49,7 +49,9 @@ const AddressForm = () => {
   const handleAddAddressClick = async (e) => {
     e.preventDefault();
     try {
-      dispatchAsync(addUserAddressAsync({ addressData, userId }));
+      dispatchAsync(addUserAddressAsync({ addressData, userId })).then(() =>
+        setIsAddAddressEnabled(false)
+      );
     } catch (error) {
       console.error(
         "Something Went Wrong in dispatching the add-user-address",
@@ -343,7 +345,7 @@ const AddressForm = () => {
         </div>
         <div className="flex justify-end mt-6 space-x-6">
           <button
-            className="bg-sky-800 py-2 px-4 rounded-lg text-white font-serif"
+            className="bg-sky-800 py-2 px-4 rounded-lg text-white font-serif hover:bg-sky-700 active:bg-sky-800"
             onClick={(e) => handleAddAddressClick(e)}
           >
             Add Address
@@ -360,4 +362,4 @@ const AddressForm = () => {
   );
 };
 
-export default AddressForm;
+export default AddAddressForm;

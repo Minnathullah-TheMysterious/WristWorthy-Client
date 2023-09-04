@@ -9,7 +9,7 @@ import {
 } from "../user/userSlice";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import AddressForm from "../user/components/AddressForm";
+import AddAddressForm from "../user/components/AddAddressForm";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -86,7 +86,7 @@ const Checkout = () => {
           <form>
             <div className="space-y-12">
               {/* Address Form */}
-              <AddressForm/>
+              <AddAddressForm/>
               <div className="border-b border-gray-900/10 pb-12">
                 <h2 className="text-base font-semibold leading-7 text-gray-900">
                   Address
