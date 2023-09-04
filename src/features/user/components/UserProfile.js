@@ -1,8 +1,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUserAddressAsync } from "../userSlice";
+import { useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user?.userInfo);
   const userId = useSelector((state) => state?.auth?.user?._id);
@@ -17,7 +19,8 @@ const UserProfile = () => {
       );
     }
   };
-  const handleEditAddress = () => {};
+
+  const handleEditAddress = () => {navigate('/dashboard/user-addresses')};
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10 bg-white py-4 space-y-12">
