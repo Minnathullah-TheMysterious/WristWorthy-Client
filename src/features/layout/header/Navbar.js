@@ -19,7 +19,7 @@ const userNavigation = [
   { id: 1, name: "My Profile", href: "/dashboard/user-profile" },
   { id: 2, name: "My Orders", href: "/dashboard/user-orders" },
   { id: 3, name: "Wish List", href: "/user/wish-list" },
-  { id: 4, name: "Manage Addresses", href: "/user/addresses" },
+  { id: 4, name: "Manage Addresses", href: "/dashboard/user-addresses" },
 ];
 
 function classNames(...classes) {

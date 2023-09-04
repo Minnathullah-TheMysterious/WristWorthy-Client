@@ -83,12 +83,6 @@ export const getAuthData = async (uId) => {
     const { success, user } = response.data;
 
     if (success) {
-      console.log({
-        _id: user?._id,
-        user_name: user?.user_name,
-        email: user?.email,
-        phone: user?.phone,
-      });
       return {
         _id: user?._id,
         user_name: user?.user_name,

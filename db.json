@@ -2581,7 +2581,47 @@
       "checked": false
     }
   ],
-  "carts": [],
+  "carts": [
+    {
+      "title": "American Vintage Wood Pendant Light",
+      "description": "American Vintage Wood Pendant Light Farmhouse Antique Hanging Lamp Lampara Colgante",
+      "price": 46,
+      "discountPercentage": 8.84,
+      "rating": 4.32,
+      "stock": 138,
+      "brand": "Ifei Home",
+      "category": "lighting",
+      "thumbnail": "https://i.dummyjson.com/data/products/99/thumbnail.jpg",
+      "images": [
+        "https://i.dummyjson.com/data/products/99/1.jpg",
+        "https://i.dummyjson.com/data/products/99/2.jpg",
+        "https://i.dummyjson.com/data/products/99/3.jpg",
+        "https://i.dummyjson.com/data/products/99/4.jpg",
+        "https://i.dummyjson.com/data/products/99/thumbnail.jpg"
+      ],
+      "quantity": 1,
+      "user_id": "64d9cbfefd210ef389e26898",
+      "id": 1
+    },
+    {
+      "title": "Stylish Luxury Digital Watch",
+      "description": "Stylish Luxury Digital Watch For Girls / Women - Led Smart Ladies Watches For Girls",
+      "price": 57,
+      "discountPercentage": 9.03,
+      "rating": 4.55,
+      "stock": 77,
+      "brand": "Luxury Digital",
+      "category": "womens-watches",
+      "thumbnail": "https://i.dummyjson.com/data/products/68/thumbnail.webp",
+      "images": [
+        "https://i.dummyjson.com/data/products/68/1.jpg",
+        "https://i.dummyjson.com/data/products/68/2.jpg"
+      ],
+      "quantity": 1,
+      "user_id": "64d9cbfefd210ef389e26898",
+      "id": 2
+    }
+  ],
   "orders": [
     {
       "user_id": "64d9cbfefd210ef389e26898",

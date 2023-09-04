@@ -13,7 +13,7 @@ export const getUser = async (userId) => {
 export const addUserAddress = async (addressData, uId) => {
   console.log("Address: ", addressData, "\n user id:", uId);
   try {
-    const {data} = await axios.post(
+    const { data } = await axios.post(
       `/api/v1/auth/add-user-address/${uId}`,
       addressData
     );
@@ -28,21 +28,24 @@ export const addUserAddress = async (addressData, uId) => {
     } else {
       console.log(message);
       toast.error(message);
-      return {success, message};
+      return { success, message };
     }
   } catch (error) {
     if (error?.response?.status === 400) {
       toast(error.response.data.message, {
         className: "font-serif bg-blue-900 text-white",
       });
-      return {success:false, message: 'Please Fill All the required Fields'}
+      return { success: false, message: "Please Fill All the required Fields" };
     } else if (error?.response?.status === 404) {
       toast.error(error.response.data.message);
-      return {success:false, message: 'User Not Found'}
+      return { success: false, message: "User Not Found" };
     } else {
       console.log(error);
       toast.error("Something Went Wrong in adding the address - Client");
-      return {success: false, message:'Something Went Wrong in API Call for adding the address'}
+      return {
+        success: false,
+        message: "Something Went Wrong in API Call for adding the address",
+      };
     }
   }
 };
@@ -52,12 +55,12 @@ export const deleteUserAddress = async (userId, addressId) => {
     const response = await axios.delete(
       `/api/v1/auth/delete-user-address/${userId}/${addressId}`
     );
-    const { success, message, userDataPostDelete } = response.data;
+    const { success, message, userPostDelete } = response.data;
     console.log(success, message);
 
     if (success) {
       toast.success(message);
-      return userDataPostDelete;
+      return userPostDelete;
     } else {
       toast.error(message);
       return success;
@@ -75,11 +78,49 @@ export const deleteUserAddress = async (userId, addressId) => {
   }
 };
 
+export const updateUserAddress = async (userId, addressId, addressData) => {
+  try {
+    const { data } = await axios.put(
+      `/api/v1/auth/update-user-address/${userId}/${addressId}`,
+      JSON.parse(addressData)
+    );
+    const { success, message } = data;
+
+    if (success) {
+      toast.success(message);
+      return data;
+    } else {
+      toast.error(message);
+      return { success, message };
+    }
+  } catch (error) {
+    if (error?.response?.status === 404) {
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else if (error?.response?.status === 400) {
+      toast(error.response.data.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      toast.error("Something Went Wrong While Deleting The Address");
+      console.error(
+        "Something Went Wrong while deleting the address - Client",
+        error
+      );
+      return {
+        success: false,
+        message: "Something Went Wrong While Deleting The Address",
+      };
+    }
+  }
+};
+
 export const placeOrder = async (userId, order) => {
   try {
     const response = await fetch("http://localhost:5000/orders", {
       method: "POST",
-      body: JSON.stringify({user_id:userId, order}),
+      body: JSON.stringify({ user_id: userId, order }),
       headers: { "content-type": "application/json" },
     });
 
@@ -98,9 +139,11 @@ export const placeOrder = async (userId, order) => {
   }
 };
 
-export const fetchAllOrders = async(userId)=>{
+export const fetchAllOrders = async (userId) => {
   try {
-    const response = await fetch(`http://localhost:5000/orders?user_id=${userId}`);
+    const response = await fetch(
+      `http://localhost:5000/orders?user_id=${userId}`
+    );
 
     if (response.ok) {
       const data = await response.json();
@@ -114,4 +157,4 @@ export const fetchAllOrders = async(userId)=>{
   } catch (error) {
     console.error("Something Went Wrong While fetching orders", error);
   }
-}
+};

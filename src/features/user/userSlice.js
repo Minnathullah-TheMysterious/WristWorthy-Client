@@ -5,6 +5,7 @@ import {
   getUser,
   placeOrder,
   addUserAddress,
+  updateUserAddress,
 } from "./userAPI";
 
 const initialState = {
@@ -47,13 +48,31 @@ export const addUserAddressAsync = createAsyncThunk(
 export const deleteUserAddressAsync = createAsyncThunk(
   "auth/deleteUserAddress",
   async ({ userId, addressId }) => {
-    console.log(userId, addressId);
     try {
       const response = await deleteUserAddress(userId, addressId);
-      console.log(response);
       return response;
     } catch (error) {
       console.error("Something went wrong in delete-user-address thunk", error);
+    }
+  }
+);
+
+export const updateUserAddressAsync = createAsyncThunk(
+  "auth/updateUserAddress",
+  async ({ userId, addressId, addressData }) => {
+    console.log(
+      `user_id: ${userId} \naddress_id: ${addressId} \naddress_data: ${addressData}`
+    );
+    try {
+      const response = await updateUserAddress(userId, addressId, addressData);
+      if (response.success) {
+        return response.updatedUser;
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      console.error("Something went wrong in delete-user-address thunk", error);
+      throw new Error(error);
     }
   }
 );
@@ -127,6 +146,18 @@ const userSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(deleteUserAddressAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userInfo = action.payload;
+      })
+
+      .addCase(updateUserAddressAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUserAddressAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(updateUserAddressAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.userInfo = action.payload;
       })
