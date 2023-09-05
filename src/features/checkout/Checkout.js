@@ -3,10 +3,7 @@ import UserAddresses from "../user/components/UserAddresses";
 import Cart from "../cart/Cart";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  placeOrderAsync,
-  setSelectedUserAddress,
-} from "../user/userSlice";
+import { placeOrderAsync, setSelectedUserAddress } from "../user/userSlice";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import AddAddressForm from "../user/components/AddAddressForm";
@@ -21,6 +18,7 @@ const Checkout = () => {
   );
 
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("cash");
+  const [, setIsAddAddressEnabled] = useState("cash");
 
   const userId = user?._id;
 
@@ -85,8 +83,8 @@ const Checkout = () => {
         <div className="lg:col-span-3  bg-gray-100">
           <form>
             <div className="space-y-12">
-              {/* Address Form */}
-              <AddAddressForm/>
+              {/*Add Address Form */}
+              <AddAddressForm setIsAddAddressEnabled={setIsAddAddressEnabled} />
               <div className="border-b border-gray-900/10 pb-12">
                 <h2 className="text-base font-semibold leading-7 text-gray-900">
                   Address

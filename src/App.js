@@ -19,6 +19,7 @@ import OrderSuccessPage from "./pages/OrderSuccessPage";
 import UserOrdersPage from "./pages/UserOrdersPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import UserAddressesPage from "./pages/UserAddressesPage";
+import WishListPage from "./pages/WishListPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ function App() {
           <Route path="user-orders" element={<UserOrdersPage />} />
           <Route path="user-profile" element={<UserProfilePage />} />
           <Route path="user-addresses" element={<UserAddressesPage />} />
+          <Route path="user-wishList" element={<WishListPage />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />

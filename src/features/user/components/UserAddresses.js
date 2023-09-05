@@ -1,28 +1,26 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUserAddressAsync, setSelectedUserAddress } from "../../user/userSlice";
+import { setSelectedUserAddress } from "../../user/userSlice";
 
 const UserAddresses = () => {
   const dispatch = useDispatch();
-  const userAddresses = useSelector((state) => state?.user?.userInfo?.addresses);
-  const userId = useSelector((state) => state?.auth?.user?._id);
+  const userAddresses = useSelector(
+    (state) => state?.user?.userInfo?.addresses
+  );
 
   const handleSelectedAddressChange = (e) => {
     try {
       const selectedAddressIndex = e?.target?.value;
-    dispatch(setSelectedUserAddress(userAddresses && userAddresses[selectedAddressIndex]))
+      dispatch(
+        setSelectedUserAddress(
+          userAddresses && userAddresses[selectedAddressIndex]
+        )
+      );
     } catch (error) {
-      console.error("Something Went Wrong while dispatching the user-selected-address", error);
-    }
-    
-  };
-
-  const handleDeleteUserAddressClick = async (e, addressId) => {
-    e.preventDefault()
-    try {
-      dispatch(deleteUserAddressAsync({ userId, addressId }));
-    } catch (error) {
-      console.error("Something Went Wrong while dispatching the delete-user-address action", error);
+      console.error(
+        "Something Went Wrong while dispatching the user-selected-address",
+        error
+      );
     }
   };
 
@@ -71,14 +69,6 @@ const UserAddresses = () => {
                     </p>
                   </div>
                 </label>
-              </div>
-              <div className="flex justify-end">
-                <button
-                  className="hover:bg-red-700 hover:text-white active:bg-red-800 active:text-gray-200 text-base font-semibold font-serif rounded-lg py-1 px-2 mb-1"
-                  onClick={(e) => handleDeleteUserAddressClick(e, user?._id)}
-                >
-                  Delete
-                </button>
               </div>
             </li>
           ))}

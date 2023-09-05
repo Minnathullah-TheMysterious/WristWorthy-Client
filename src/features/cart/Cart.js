@@ -29,9 +29,9 @@ const Cart = ({ btnText, destination }) => {
   const totalAmount = calculatedSubTotal?.totalPrice;
   const totalItems = calculatedSubTotal?.totalItems;
 
-  const handleRemoveClick = async (e, pId) => {
+  const handleRemoveClick = async (e, cartItemId) => {
     e.preventDefault();
-    const deleteItem = dispatch(deleteUserCartItemAsync(pId));
+    const deleteItem = dispatch(deleteUserCartItemAsync(cartItemId));
     deleteItem
       .then(() => {
         toast.success("Item Removed Successfully");
@@ -67,14 +67,14 @@ const Cart = ({ btnText, destination }) => {
         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
           <div className="flow-root">
             <ul className="-my-6 divide-y divide-gray-200">
-              {userCartItems?.map((product) => (
-                <li key={product?.id} className="flex py-6">
+              {userCartItems?.map((item) => (
+                <li key={item?.id} className="flex py-6">
                   {/* The Link is Not getting the product Id instead it is getting the cart-item Id. On server we will consider it */}
-                  <Link to={`/product-details/${product?.id}`}>
+                  <Link to={`/product-details/${item?.product_id}`}>
                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                       <img
-                        src={product?.thumbnail}
-                        alt={product?.title}
+                        src={item?.thumbnail}
+                        alt={item?.title}
                         className="h-full w-full object-cover object-center"
                       />
                     </div>
@@ -84,13 +84,13 @@ const Cart = ({ btnText, destination }) => {
                     <div>
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         {/* The Link is Not getting the product Id instead it is getting the cart-item Id. On server we will consider it */}
-                        <Link to={`/product-details/${product?.id}`}>
-                          <h3>{product?.title}</h3>
+                        <Link to={`/product-details/${item?.product_id}`}>
+                          <h3>{item?.title}</h3>
                         </Link>
-                        <p className="ml-4">${product?.price}</p>
+                        <p className="ml-4">${item?.price}</p>
                       </div>
                       <p className="mt-1 text-sm text-gray-500">
-                        {product?.color || "Color UnSpecified"}
+                        {item?.color || "Color UnSpecified"}
                       </p>
                     </div>
                     <div className="flex flex-1 items-end justify-between text-sm">
@@ -104,9 +104,9 @@ const Cart = ({ btnText, destination }) => {
                         <Select
                           size="medium"
                           onChange={(value) => {
-                            handleItemQuantityChange(value, product);
+                            handleItemQuantityChange(value, item);
                           }}
-                          value={product?.quantity}
+                          value={item?.quantity}
                         >
                           <Select.Option value={1}>1</Select.Option>
                           <Select.Option value={2}>2</Select.Option>
@@ -123,7 +123,7 @@ const Cart = ({ btnText, destination }) => {
                       <div className="flex">
                         <button
                           onClick={(e) => {
-                            handleRemoveClick(e, product?.id);
+                            handleRemoveClick(e, item?.id);
                           }}
                           type="button"
                           className="font-medium text-indigo-600 hover:text-indigo-500"

@@ -76,25 +76,18 @@ const ProductDetails = () => {
 
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
-  // const [productFound, setProductFound] = useState(false);
 
   useEffect(() => {
     dispatch(fetchSelectedProductsAsync(params.id));
   }, [dispatch, params.id]);
 
-  // useEffect(() => {
-  //   setProductFound(carts?.some((cart) => cart?.id === selectedProduct?.id));
-  //   console.log('setting the productFound State')
-  // }, [carts, selectedProduct?.id]);
-
-  //Need to fix this in the server. as the selected Product Id is actual products id and cart?.id is a cart id. and this is happening because we have deleted the product id while adding to cart item
-  const productFound = carts?.some((cart) => cart?.id === selectedProduct?.id);
+  const productFound = carts?.some((cart) => cart?.product_id === selectedProduct?.id);
 
   const handleAddToCartClick = async (e) => {
     e.preventDefault();
     const userId = user?._id;
     const cartItem = { ...selectedProduct, quantity: 1, user_id: userId };
-    //deleting the product id from the product array, since it will clash for different users. database will generate an id.
+    cartItem.product_id = cartItem.id
     delete cartItem["id"];
 
     if (user && !productFound) {

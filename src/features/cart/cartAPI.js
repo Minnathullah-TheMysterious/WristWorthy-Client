@@ -17,7 +17,7 @@ export const addItemToCart = async (cartItem) => {
       const errorData = await response.json();
       console.error(errorData);
       toast.error("Failed To Add To Cart");
-      throw new Error(errorData.message || "Failed to add item to cart");
+      return (errorData.message || "Failed to add item to cart");
     }
   } catch (error) {
     console.error("Something Went Wrong While adding item to Cart", error);

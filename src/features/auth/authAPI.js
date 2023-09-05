@@ -115,6 +115,9 @@ export const requestPasswordReset = async (reqResetData) => {
     }
   } catch (error) {
     if (error?.response?.status === 404) {
+      /* The `toast` function is used to display a notification message to the user. In this case,
+      `toast(error?.response?.data?.message, { className: "font-serif bg-blue-900 text-white" })` is
+      displaying an error message to the user. */
       toast(error?.response?.data?.message, {
         className: "font-serif bg-blue-900 text-white",
       });

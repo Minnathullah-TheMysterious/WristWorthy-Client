@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
@@ -22,6 +22,12 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import { PRODUCT_LIMIT_PER_PAGE } from "../../../app/constants";
+import { TbJewishStar } from "react-icons/tb";
+import {
+  addToWishListAsync,
+  fetchWishListAsync,
+} from "../../wishList/wishListSlice";
+import toast from "react-hot-toast";
 
 const sortOptions = [
   { name: "Best Rating", sort: "rating", order: "desc", current: false },
@@ -536,6 +542,40 @@ function Pagination({
 }
 
 function ProductGrid({ products }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userId = useSelector((state) => state?.auth?.user?._id);
+  const wishList = useSelector((state) => state?.wishList?.list);
+
+  useEffect(() => {
+    dispatch(fetchWishListAsync(userId));
+  }, [dispatch, userId]);
+
+  const handleAddToWishListClick = (productIndex, productId) => {
+    const itemExistsInWishList = wishList.some(
+      (item) => item.product_id === productId
+    );
+    if (itemExistsInWishList) {
+      toast("Item Is Already Present In Your WishList", {
+        className: "font-serif bg-blue-900 text-white",
+      });
+    } else {
+      const product = products?.products[productIndex];
+      const wishListItem = { user_id: userId, ...product };
+      wishListItem.product_id = wishListItem.id;
+      delete wishListItem["id"];
+
+      if (userId) {
+        dispatch(addToWishListAsync(wishListItem));
+      } else {
+        toast("Please Login To Add To WishList", {
+          className: "font-serif bg-blue-900 text-white",
+        });
+        navigate("/login");
+      }
+    }
+  };
+
   return (
     <div className="lg:col-span-3">
       <div className="bg-white">
@@ -552,9 +592,12 @@ function ProductGrid({ products }) {
               <p>Error: {products.error}</p>
             ) : null}
             {!products.loading && products.products.length
-              ? products.products.map((product) => (
-                  <Link to={`/product-details/${product.id}`} key={product.id}>
-                    <div className="group relative border border-solid border-black p-1 rounded-lg">
+              ? products.products.map((product, index) => (
+                  <div
+                    key={product.id}
+                    className="group relative border border-solid border-black p-1 rounded-lg"
+                  >
+                    <Link to={`/product-details/${product.id}`}>
                       <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-80 lg:h-60">
                         <img
                           src={product.thumbnail}
@@ -585,8 +628,16 @@ function ProductGrid({ products }) {
                           </p>
                         </div>
                       </div>
+                    </Link>
+                    <div
+                      onClick={() =>
+                        handleAddToWishListClick(index, product.id)
+                      }
+                      className="flex justify-center items-center space-x-4 rounded-lg bg-sky-800 text-white hover:cursor-pointer"
+                    >
+                      <span>{'Add To WishList'}</span> <TbJewishStar />
                     </div>
-                  </Link>
+                  </div>
                 ))
               : null}
           </div>
