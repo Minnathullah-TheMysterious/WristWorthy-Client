@@ -45,7 +45,7 @@ const Login = () => {
       const actionResult = await dispatch(loginAsync(loginData));
       if (loginAsync.fulfilled.match(actionResult)) {
         const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
-        const userId = userFromLocalStorage?.user_id;
+        const userId = userFromLocalStorage?._id;
         dispatch(fetchUserCartAsync(userId));
         dispatch(getUserAsync(userId));
         localStorage.removeItem("user_id");

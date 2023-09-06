@@ -51,25 +51,25 @@ export const login = async (loginData) => {
       delete userWithOutAddressesArray.addresses;
       localStorage.setItem(
         "user",
-        JSON.stringify({ token, user_id: user?._id })
+        JSON.stringify({ token, _id: user?._id })
       );
-      return {success, message, userWithOutAddressesArray};
+      return { success, message, userWithOutAddressesArray };
     } else {
       toast.error(message);
-      return {success, message}
+      return { success, message };
     }
   } catch (error) {
     if (error.response.status === 401) {
       toast.error(error.response.data.message);
-      return {success:false, message: error.response.data.message}
+      return { success: false, message: error.response.data.message };
     } else if (error.response.status === 404) {
       toast.error(error.response.data.message);
-      return {success:false, message: error.response.data.message}
+      return { success: false, message: error.response.data.message };
     } else if (error.response.status === 400) {
       toast(error?.response?.data?.message, {
         className: "font-serif bg-blue-900 text-white",
       });
-      return {success:false, message: error.response.data.message}
+      return { success: false, message: error.response.data.message };
     } else {
       toast.error("Something Went Wrong While login");
       console.error("Something Went Wrong While login - Client", error);
@@ -88,6 +88,7 @@ export const getAuthData = async (uId) => {
         user_name: user?.user_name,
         email: user?.email,
         phone: user?.phone,
+        role: user?.role,
       };
     } else {
       toast.error("Error in fetching auth data");

@@ -4,7 +4,7 @@ import {
   fetchCategories,
   fetchPrices,
   fetchProductsByFilters,
-  fetchSelectedProduct
+  fetchSelectedProduct,
 } from "./productAPI";
 
 const initialState = {
@@ -77,6 +77,7 @@ const productSlice = createSlice({
         state.products = action.payload.data.products;
         state.totalProductsCount = action.payload.data.totalProductsCount;
       })
+
       .addCase(fetchCategoriesAsync.pending, (state) => {
         state.loading = true;
       })
@@ -88,6 +89,7 @@ const productSlice = createSlice({
         state.loading = false;
         state.categories = action.payload;
       })
+
       .addCase(fetchBrandsAsync.pending, (state) => {
         state.loading = true;
       })
@@ -99,6 +101,7 @@ const productSlice = createSlice({
         state.loading = false;
         state.brands = action.payload;
       })
+
       .addCase(fetchPricesAsync.pending, (state) => {
         state.loading = true;
       })
@@ -110,17 +113,18 @@ const productSlice = createSlice({
         state.loading = false;
         state.prices = action.payload;
       })
+
       .addCase(fetchSelectedProductsAsync.pending, (state) => {
         state.loading = true;
+      })
+      .addCase(fetchSelectedProductsAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(fetchSelectedProductsAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedProduct = action.payload;
       });
-    builder.addCase(fetchSelectedProductsAsync.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.error.message;
-    });
-    builder.addCase(fetchSelectedProductsAsync.fulfilled, (state, action) => {
-      state.loading = false;
-      state.selectedProduct = action.payload;
-    });
   },
 });
 

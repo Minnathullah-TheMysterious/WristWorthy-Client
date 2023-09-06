@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
@@ -8,7 +8,7 @@ import {
   fetchCategoriesAsync,
   fetchFilteredProductsAsync,
   fetchPricesAsync,
-} from "../productSlice";
+} from "../../products/productSlice";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -21,14 +21,10 @@ import {
   PlusIcon,
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
-import { PRODUCT_LIMIT_PER_PAGE_FOR_USER } from "../../../app/constants";
-import { TbJewishStar } from "react-icons/tb";
-import {
-  addToWishListAsync,
-  fetchWishListAsync,
-} from "../../wishList/wishListSlice";
-import toast from "react-hot-toast";
+import { PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN } from "../../../app/constants";
 import Loader from "../../../loaders/Loader";
+import { Modal } from "antd";
+import { FiAlertTriangle } from "react-icons/fi";
 
 const sortOptions = [
   { name: "Best Rating", sort: "rating", order: "desc", current: false },
@@ -40,7 +36,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const ProductListing = () => {
+const AdminProductListing = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [filter, setFilter] = useState({});
   const [pageNum, setPageNum] = useState(1);
@@ -117,7 +113,7 @@ const ProductListing = () => {
   useEffect(() => {
     const pagination = {
       _page: pageNum,
-      _limit: PRODUCT_LIMIT_PER_PAGE_FOR_USER,
+      _limit: PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN,
     };
     dispatch(fetchFilteredProductsAsync({ filter, sort, pagination }));
   }, [filter, sort, dispatch, pageNum]);
@@ -153,6 +149,9 @@ const ProductListing = () => {
             <h2 id="products-heading" className="sr-only">
               Products
             </h2>
+            <p className="font-bold font-serif text-center bg-blue-800 text-white py-3 rounded-lg hover:cursor-pointer tracking-widest hover:bg-blue-900 active:bg-blue-800">
+              Add New Product
+            </p>
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
               {/*Laptop Filters */}
@@ -170,7 +169,9 @@ const ProductListing = () => {
               handlePagination={handlePagination}
               pageNum={pageNum}
               setPageNum={setPageNum}
-              PRODUCT_LIMIT_PER_PAGE_FOR_USER={PRODUCT_LIMIT_PER_PAGE_FOR_USER}
+              PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN={
+                PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN
+              }
               totalProductsCount={totalProductsCount}
             />
           </section>
@@ -431,13 +432,13 @@ function DesktopFilter({ handleFilterChange, filters }) {
 
 function Pagination({
   handlePagination,
-  PRODUCT_LIMIT_PER_PAGE_FOR_USER,
+  PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN,
   setPageNum,
   pageNum,
   totalProductsCount,
 }) {
   const totalPages = Math.ceil(
-    totalProductsCount / PRODUCT_LIMIT_PER_PAGE_FOR_USER
+    totalProductsCount / PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN
   );
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
@@ -460,7 +461,7 @@ function Pagination({
           }}
           disabled={
             Math.ceil(totalProductsCount / pageNum) <=
-            PRODUCT_LIMIT_PER_PAGE_FOR_USER
+            PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN
               ? true
               : false
           }
@@ -475,13 +476,13 @@ function Pagination({
           <p className="text-sm text-gray-700">
             Showing{" "}
             <span className="font-medium">
-              {(pageNum - 1) * PRODUCT_LIMIT_PER_PAGE_FOR_USER + 1}
+              {(pageNum - 1) * PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN + 1}
             </span>{" "}
             to{" "}
             <span className="font-medium">
-              {pageNum * PRODUCT_LIMIT_PER_PAGE_FOR_USER > totalProductsCount
+              {pageNum * PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN > totalProductsCount
                 ? totalProductsCount
-                : pageNum * PRODUCT_LIMIT_PER_PAGE_FOR_USER}
+                : pageNum * PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN}
             </span>{" "}
             of <span className="font-medium">{totalProductsCount}</span> results
           </p>
@@ -533,7 +534,7 @@ function Pagination({
               }}
               disabled={
                 Math.ceil(totalProductsCount / pageNum) <=
-                PRODUCT_LIMIT_PER_PAGE_FOR_USER
+                PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN
                   ? true
                   : false
               }
@@ -549,58 +550,38 @@ function Pagination({
 }
 
 function ProductGrid({ products }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const userId = useSelector((state) => state?.auth?.user?._id);
-  const wishList = useSelector((state) => state?.wishList?.list);
+  const { confirm } = Modal;
 
-  useEffect(() => {
-    dispatch(fetchWishListAsync(userId));
-  }, [dispatch, userId]);
-
-  const handleAddToWishListClick = (productIndex, productId) => {
-    const itemExistsInWishList = wishList.some(
-      (item) => item.product_id === productId
-    );
-    if (itemExistsInWishList) {
-      toast("Item Is Already Present In Your WishList", {
-        className: "font-serif bg-blue-900 text-white",
-      });
-    } else {
-      const product = products?.products[productIndex];
-      const wishListItem = { user_id: userId, ...product };
-      wishListItem.product_id = wishListItem.id;
-      delete wishListItem["id"];
-
-      if (userId) {
-        dispatch(addToWishListAsync(wishListItem));
-      } else {
-        toast("Please Login To Add To WishList", {
-          className: "font-serif bg-blue-900 text-white",
-        });
-        navigate("/login");
-      }
-    }
+  const showDeleteConfirm = (productName) => {
+    confirm({
+      title: `Are you sure to delete '${productName}' Product?`,
+      icon: <FiAlertTriangle className="font-bold text-red-700 text-2xl" />,
+      content: "Be Careful! The Product Will Be Deleted permanently",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        console.log("OK");
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
   };
-
   return (
     <div className="lg:col-span-3">
       <div className="bg-white">
-        <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-            Customers also purchased
-          </h2>
-
-          <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-4">
+        <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 lg:max-w-7xl lg:px-8">
+          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-4">
             {products.loading && <Loader />}
             {!products.loading && products.error ? (
               <p>Error: {products.error}</p>
             ) : null}
             {!products.loading && products.products.length
-              ? products.products.map((product, index) => (
-                  <div key={product.id} className="relative">
+              ? products.products.map((product) => (
+                  <div key={product.id} className="group relative ">
                     <Link to={`/product-details/${product.id}`}>
-                      <div className="group border-2 border-solid border-black p-[1px] rounded-lg">
+                      <div className="border border-solid border-black p-1 rounded-lg">
                         <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-80 lg:h-60">
                           <img
                             src={product.thumbnail}
@@ -633,13 +614,14 @@ function ProductGrid({ products }) {
                         </div>
                       </div>
                     </Link>
+                    <div className="mt-3 py-2 flex justify-center items-center rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800">
+                      Edit Product
+                    </div>
                     <div
-                      onClick={() =>
-                        handleAddToWishListClick(index, product.id)
-                      }
-                      className="py-1 mt-1 flex justify-center items-center space-x-4 rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800"
+                      onClick={() => showDeleteConfirm(product.title)}
+                      className="mt-1 py-2 flex justify-center items-center rounded-lg bg-red-800 text-white hover:cursor-pointer hover:bg-red-900 active:bg-red-800"
                     >
-                      <span>{"Add To WishList"}</span> <TbJewishStar />
+                      Delete Product
                     </div>
                   </div>
                 ))
@@ -651,4 +633,4 @@ function ProductGrid({ products }) {
   );
 }
 
-export default ProductListing;
+export default AdminProductListing;

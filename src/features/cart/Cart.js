@@ -71,7 +71,7 @@ const Cart = ({ btnText, destination }) => {
                 <li key={item?.id} className="flex py-6">
                   {/* The Link is Not getting the product Id instead it is getting the cart-item Id. On server we will consider it */}
                   <Link to={`/product-details/${item?.product_id}`}>
-                    <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                    <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 hover:opacity-80 active:opacity-100">
                       <img
                         src={item?.thumbnail}
                         alt={item?.title}
@@ -85,7 +85,7 @@ const Cart = ({ btnText, destination }) => {
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         {/* The Link is Not getting the product Id instead it is getting the cart-item Id. On server we will consider it */}
                         <Link to={`/product-details/${item?.product_id}`}>
-                          <h3>{item?.title}</h3>
+                          <h3 className="hover:text-gray-600 active:text-gray-900">{item?.title}</h3>
                         </Link>
                         <p className="ml-4">${item?.price}</p>
                       </div>

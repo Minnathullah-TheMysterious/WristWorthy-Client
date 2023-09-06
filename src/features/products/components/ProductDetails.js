@@ -94,7 +94,7 @@ const ProductDetails = () => {
       dispatch(addItemToCartAsync(cartItem))
         .then(() => {
           toast.success("Item Added To Cart");
-          navigate("/dashboard/cart");
+          navigate("/dashboard/user/cart");
         })
         .catch((error) => {
           toast.error("Failed To Add To Cart");
@@ -104,7 +104,7 @@ const ProductDetails = () => {
           );
         });
     } else if (user && productFound) {
-      navigate("/dashboard/cart");
+      navigate("/dashboard/user/cart");
     } else {
       toast("Login To Add To Cart", {
         className: "font-serif bg-blue-900 text-white",

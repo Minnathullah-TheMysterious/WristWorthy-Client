@@ -16,7 +16,7 @@ const CartPage = () => {
         className: "font-serif bg-blue-900 text-white",
       });
     }
-    navigate("/dashboard/checkout");
+    navigate("/dashboard/user/checkout");
   };
   return (
     <Layout pageTitle={"WristWorthy - Cart"}>

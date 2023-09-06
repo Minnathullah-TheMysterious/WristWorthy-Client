@@ -7,6 +7,8 @@ import {
   updateUserAddressAsync,
 } from "../userSlice";
 import AddAddressForm from "./AddAddressForm";
+import { Modal } from "antd";
+import {FiAlertTriangle} from 'react-icons/fi'
 
 const ManageUserAddresses = () => {
   const dispatchAsync = useDispatch();
@@ -57,16 +59,30 @@ const ManageUserAddresses = () => {
 
   const addressData = { ...userAddressData, mobileNumber, altMobileNumber };
 
+  const { confirm } = Modal;
+
   const handleDeleteAddress = (addressId) => {
-    console.log(addressId);
-    try {
-      dispatchAsync(deleteUserAddressAsync({ userId, addressId }));
-    } catch (error) {
-      console.error(
-        "Something Went Wrong while dispatching the delete-user-address action",
-        error
-      );
-    }
+    confirm({
+      title: `Are you sure to delete this Address?`,
+      icon: <FiAlertTriangle className="font-bold text-red-700 text-2xl"/>,
+      content: "Be Careful! The Address will be deleted permanently",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        try {
+          dispatchAsync(deleteUserAddressAsync({ userId, addressId }));
+        } catch (error) {
+          console.error(
+            "Something Went Wrong while dispatching the delete-user-address action",
+            error
+          );
+        }
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
   };
 
   const handleUpdateAddressClick = (e, addressId) => {

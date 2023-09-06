@@ -62,11 +62,11 @@ const Checkout = () => {
         dispatch(placeOrderAsync({ userId, order }))
           .then(() => {
             dispatch(setSelectedUserAddress(null));
-            navigate("/dashboard/order-success");
+            navigate("/dashboard/user/order-success");
             //server: change in stock items
           })
           .catch(() => {
-            navigate("/dashboard/cart");
+            navigate("/dashboard/user/cart");
           });
       }
     } catch (error) {

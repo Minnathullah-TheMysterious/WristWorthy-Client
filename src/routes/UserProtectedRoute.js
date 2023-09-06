@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import Loader from "../app/Loader";
+import LoggedInCheckLoader from "../loaders/LoggedInCheckLoader";
 
-const ProtectedRoute = () => {
-  const [ok, setOk] = useState();
+const UserProtectedRoute = () => {
+  const [ok, setOk] = useState(false);
 
-  const user = JSON.parse(localStorage.getItem('user'))
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const authCheck = async () => {
@@ -24,7 +24,7 @@ const ProtectedRoute = () => {
     if (user?.token) authCheck();
   }, [user?.token]);
 
-  return ok? <Outlet/> : <Loader/>
+  return ok ? <Outlet /> : <LoggedInCheckLoader />;
 };
 
-export default ProtectedRoute;
+export default UserProtectedRoute;

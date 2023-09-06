@@ -1,26 +1,46 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUserAddressAsync } from "../userSlice";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { Modal } from "antd";
+import { FiAlertTriangle } from "react-icons/fi";
 
 const UserProfile = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user?.userInfo);
   const userId = useSelector((state) => state?.auth?.user?._id);
 
+  const { confirm } = Modal;
+
   const handleDeleteAddress = (addressId) => {
-    try {
-      dispatch(deleteUserAddressAsync({ userId, addressId }));
-    } catch (error) {
-      console.error(
-        "Something Went Wrong while dispatching the delete-user-address action",
-        error
-      );
-    }
+    confirm({
+      title: `Are you sure to delete this address?`,
+      icon: <FiAlertTriangle className="font-bold text-red-700 text-2xl" />,
+      content:
+        "Be Careful! The address will be deleted permanently",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        try {
+          dispatch(deleteUserAddressAsync({ userId, addressId }));
+        } catch (error) {
+          console.error(
+            "Something Went Wrong while dispatching the delete-user-address action",
+            error
+          );
+        }
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
   };
 
-  const handleEditAddress = () => {navigate('/dashboard/user-addresses')};
+  const handleEditAddress = () => {
+    navigate("/dashboard/user/addresses");
+  };
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10 bg-white py-4 space-y-12">

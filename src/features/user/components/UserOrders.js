@@ -30,9 +30,8 @@ const UserOrders = () => {
               <ul className="-my-6 divide-y divide-gray-200">
                 {item?.order?.items?.map((order) => (
                   <li key={order?.id} className="flex py-6">
-                    {/* The Link is Not getting the product Id instead it is getting the cart-item Id. On server we will consider it */}
                     <Link to={`/product-details/${order?.product_id}`}>
-                      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 hover:opacity-80 active:opacity-100">
                         <img
                           src={order?.thumbnail}
                           alt={order?.title}
@@ -44,9 +43,8 @@ const UserOrders = () => {
                     <div className="ml-4 flex flex-1 flex-col">
                       <div>
                         <div className="flex justify-between text-base font-medium text-gray-900">
-                          {/* The Link is Not getting the product Id instead it is getting the cart-item Id. On server we will consider it */}
                           <Link to={`/product-details/${order?.product_id}`}>
-                            <h3 className="text-md text-blue-700 shadow-lg px-4 py-1">
+                            <h3 className="text-md text-blue-700 shadow-md px-4 py-1 hover:shadow active:shadow-md">
                               {order?.title}
                             </h3>
                           </Link>

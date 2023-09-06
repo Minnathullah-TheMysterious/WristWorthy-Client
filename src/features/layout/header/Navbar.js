@@ -10,16 +10,30 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserAsync } from "../../user/userSlice";
+import {
+  fetchAllOrdersAsync,
+  getUserAsync,
+  placeOrderAsync,
+  setSelectedUserAddress,
+} from "../../user/userSlice";
 import { getAuthDataAsync } from "../../auth/authSlice";
+import { fetchWishListAsync } from "../../wishList/wishListSlice";
+import { fetchUserCartAsync } from "../../cart/cartSlice";
+import { fetchSelectedProductsAsync } from "../../products/productSlice";
 
 // const navigation = [{ name: "Home", href: "/", current: false }];
 
 const userNavigation = [
-  { id: 1, name: "My Profile", href: "/dashboard/user-profile" },
-  { id: 2, name: "My Orders", href: "/dashboard/user-orders" },
-  { id: 3, name: "My WishList", href: "/dashboard/user-wishList" },
-  { id: 4, name: "Manage Addresses", href: "/dashboard/user-addresses" },
+  { id: 1, name: "My Profile", href: "/dashboard/user/profile" },
+  { id: 2, name: "My Orders", href: "/dashboard/user/orders" },
+  { id: 3, name: "My WishList", href: "/dashboard/user/wishList" },
+  { id: 4, name: "Manage Addresses", href: "/dashboard/user/addresses" },
+];
+
+const adminNavigation = [
+  { id: 3, name: "Categories", href: "/dashboard/admin/categories" },
+  { id: 1, name: "products", href: "/dashboard/admin/products" },
+  { id: 2, name: "Orders", href: "/dashboard/admin/orders" },
 ];
 
 function classNames(...classes) {
@@ -28,14 +42,14 @@ function classNames(...classes) {
 
 const Navbar = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const cart = useSelector((state) => state.cart.items);
-  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("user");
+    dispatch(getAuthDataAsync());
     dispatch(getUserAsync());
-    dispatch(getAuthDataAsync())
     navigate("/login");
   };
 
@@ -69,8 +83,9 @@ const Navbar = () => {
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-4 flex items-center md:ml-6 md:space-x-6">
-                      {cart.length ? (
-                        <Link to={"/dashboard/cart"}>
+                      {/* Cart (Laptop) */}
+                      {user?.role === "user" && cart.length ? (
+                        <Link to={"/dashboard/user/cart"}>
                           <button
                             type="button"
                             className=" rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -89,10 +104,10 @@ const Navbar = () => {
                             </Badge>
                           </button>
                         </Link>
-                      ) : (
+                      ) : user?.role === "user" && !cart.length ? (
                         <button
                           type="button"
-                          className=" rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                          className=" rounded-full bg-gray-800 p-1 text-gray-400  hover:cursor-default"
                         >
                           <span className="sr-only">View notifications</span>
                           <Badge count={0}>
@@ -107,10 +122,32 @@ const Navbar = () => {
                             </div>
                           </Badge>
                         </button>
+                      ) : !user ? (
+                        <button
+                          type="button"
+                          className="hover:cursor-default rounded-full bg-gray-800 p-1 text-gray-400 "
+                        >
+                          <span className="sr-only">View notifications</span>
+                          <Badge count={0}>
+                            <div className="flex space-x-1 text-gray-300">
+                              <div className="text-base">Cart</div>
+                              <div>
+                                <ShoppingCartIcon
+                                  className="h-6 w-6"
+                                  aria-hidden="true"
+                                />
+                              </div>
+                            </div>
+                          </Badge>
+                        </button>
+                      ) : (
+                        <div className="cursor-default rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                          ADMIN
+                        </div>
                       )}
 
-                      {/* Profile dropdown */}
-                      {user ? (
+                      {/* Profile dropdown (Laptop)*/}
+                      {user && user?.role === "user" ? (
                         <Menu as="div" className="relative ml-3 ">
                           <div>
                             <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
@@ -132,6 +169,53 @@ const Navbar = () => {
                           >
                             <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                               {userNavigation.map((item) => (
+                                <Menu.Item key={item.name}>
+                                  {({ active }) => (
+                                    <Link
+                                      to={item.href}
+                                      className={classNames(
+                                        active ? "bg-gray-100" : "",
+                                        "block px-4 py-2 text-sm text-gray-700"
+                                      )}
+                                    >
+                                      {item.name}
+                                    </Link>
+                                  )}
+                                </Menu.Item>
+                              ))}
+                              <Menu.Item className={"flex justify-center"}>
+                                <Button
+                                  onClick={handleLogout}
+                                  className="mx-auto font-serif"
+                                >
+                                  Logout
+                                </Button>
+                              </Menu.Item>
+                            </Menu.Items>
+                          </Transition>
+                        </Menu>
+                      ) : user && user?.role === "admin" ? (
+                        <Menu as="div" className="relative ml-3 ">
+                          <div>
+                            <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                              <span className="absolute -inset-1.5" />
+                              <span className="sr-only">Open user menu</span>
+                              <p className="text-white font-bold">
+                                {user?.user_name}
+                              </p>
+                            </Menu.Button>
+                          </div>
+                          <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-100"
+                            enterFrom="transform opacity-0 scale-95"
+                            enterTo="transform opacity-100 scale-100"
+                            leave="transition ease-in duration-75"
+                            leaveFrom="transform opacity-100 scale-100"
+                            leaveTo="transform opacity-0 scale-95"
+                          >
+                            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                              {adminNavigation.map((item) => (
                                 <Menu.Item key={item.name}>
                                   {({ active }) => (
                                     <Link
@@ -276,8 +360,9 @@ const Navbar = () => {
                       </>
                     )}
 
-                    {cart.length && (
-                      <Link to={"/dashboard/cart"}>
+                    {/* Mobile Cart */}
+                    {user?.role === "user" && cart.length ? (
+                      <Link to={"/dashboard/user/cart"}>
                         <button
                           type="button"
                           className=" rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -296,19 +381,70 @@ const Navbar = () => {
                           </Badge>
                         </button>
                       </Link>
+                    ) : user?.role === "user" && !cart.length ? (
+                      <button
+                        type="button"
+                        className=" rounded-full bg-gray-800 p-1 text-gray-400  hover:cursor-default"
+                      >
+                        <span className="sr-only">View notifications</span>
+                        <Badge count={0}>
+                          <div className="flex space-x-1 text-gray-300">
+                            <div className="text-base">Cart</div>
+                            <div>
+                              <ShoppingCartIcon
+                                className="h-6 w-6"
+                                aria-hidden="true"
+                              />
+                            </div>
+                          </div>
+                        </Badge>
+                      </button>
+                    ) : !user ? (
+                      <button
+                        type="button"
+                        className="hover:cursor-default rounded-full bg-gray-800 p-1 text-gray-400 "
+                      >
+                        <span className="sr-only">View notifications</span>
+                        <Badge count={0}>
+                          <div className="flex space-x-1 text-gray-300">
+                            <div className="text-base">Cart</div>
+                            <div>
+                              <ShoppingCartIcon
+                                className="h-6 w-6"
+                                aria-hidden="true"
+                              />
+                            </div>
+                          </div>
+                        </Badge>
+                      </button>
+                    ) : (
+                      <div className="cursor-default rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                        ADMIN
+                      </div>
                     )}
                   </div>
                   <div className="mt-3 space-y-1 px-2">
-                    {userNavigation.map((item) => (
-                      <Disclosure.Button
-                        key={item.name}
-                        as="Link"
-                        to={item.href}
-                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                      >
-                        {item.name}
-                      </Disclosure.Button>
-                    ))}
+                    {user?.role === "user"
+                      ? userNavigation.map((item) => (
+                          <Disclosure.Button
+                            key={item.name}
+                            as="Link"
+                            to={item.href}
+                            className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                          >
+                            {item.name}
+                          </Disclosure.Button>
+                        ))
+                      : adminNavigation.map((item) => (
+                          <Disclosure.Button
+                            key={item.name}
+                            as="Link"
+                            to={item.href}
+                            className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                          >
+                            {item.name}
+                          </Disclosure.Button>
+                        ))}
                   </div>
                 </div>
               </Disclosure.Panel>

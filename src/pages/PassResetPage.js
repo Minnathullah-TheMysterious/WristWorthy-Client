@@ -1,5 +1,5 @@
 import React from 'react'
-import PassReset from './../features/auth/auth-components/PassReset';
+import PassReset from './../features/auth/components/PassReset';
 import Layout from '../features/layout/Layout';
 
 const PassResetPage = () => {

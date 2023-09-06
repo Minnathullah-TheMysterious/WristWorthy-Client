@@ -39,47 +39,46 @@ const WishList = () => {
             ) : null}
             {!wishListItems.loading && wishListItems?.list?.length ? (
               wishListItems?.list?.map((product) => (
-                <div
-                  key={product.id}
-                  className="group relative border border-solid border-black p-1 rounded-lg"
-                >
+                <div key={product.id} className="relative">
                   <Link to={`/product-details/${product.product_id}`}>
-                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-80 lg:h-60">
-                      <img
-                        src={product.thumbnail}
-                        alt={product.title}
-                        className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                      />
-                    </div>
-                    <div className="mt-4 flex justify-between space-x-4">
-                      <div>
-                        <p className="mt-1 text-sm text-gray-500 font-bold font-mono line-through">
-                          ${product.price}
-                        </p>
-                        <p className="mt-1 text-sm text-black font-bold font-mono">
-                          $
-                          {Math.round(
-                            product.price *
-                              (1 - product.discountPercentage / 100)
-                          )}
-                        </p>
+                    <div className="group border-2 border-solid border-black p-[2px] rounded-lg">
+                      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-80 lg:h-60">
+                        <img
+                          src={product.thumbnail}
+                          alt={product.title}
+                          className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                        />
                       </div>
-                      <div>
-                        <p className="text-sm font-bold font-serif text-purple-900">
-                          {product.title}
-                        </p>
-                        <p className=" text-sm font-medium text-gray-900">
-                          <StarIcon className="w-5 inline mb-1" />
-                          {product.rating}
-                        </p>
+                      <div className="mt-4 flex justify-between space-x-4">
+                        <div>
+                          <p className="mt-1 text-sm text-gray-500 font-bold font-mono line-through">
+                            ${product.price}
+                          </p>
+                          <p className="mt-1 text-sm text-black font-bold font-mono">
+                            $
+                            {Math.round(
+                              product.price *
+                                (1 - product.discountPercentage / 100)
+                            )}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold font-serif text-purple-900">
+                            {product.title}
+                          </p>
+                          <p className=" text-sm font-medium text-gray-900">
+                            <StarIcon className="w-5 inline mb-1" />
+                            {product.rating}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </Link>
                   <div
                     onClick={() => handleDeleteWishListItemClick(product.id)}
-                    className="flex justify-center items-center space-x-4 rounded-lg bg-sky-800 text-white hover:cursor-pointer"
+                    className="mt-1 rounded-lg bg-sky-800 py-1 text-white text-center hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800"
                   >
-                    <span>Remove From WishList</span>
+                    Remove From WishList
                   </div>
                 </div>
               ))

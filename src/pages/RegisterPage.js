@@ -1,5 +1,5 @@
 import React from 'react'
-import Register from '../features/auth/auth-components/Register'
+import Register from '../features/auth/components/Register'
 import Layout from '../features/layout/Layout'
 
 const RegisterPage = () => {
