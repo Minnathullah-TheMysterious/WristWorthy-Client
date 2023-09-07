@@ -21,6 +21,8 @@ import UserProfilePage from "./pages/UserProfilePage";
 import UserAddressesPage from "./pages/UserAddressesPage";
 import WishListPage from "./pages/WishListPage";
 import AdminProtectedRoute from "./routes/AdminProtectedRoute";
+import AdminProductDetailsPage from "./pages/adminPages/AdminProductDetailsPage";
+import CreateProductPage from "./pages/adminPages/CreateProductPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -53,7 +55,8 @@ function App() {
         </Route>
         {/* Admin Routes */}
         <Route path="/dashboard/admin" element={<AdminProtectedRoute />}>
-          
+          <Route path="product-details/:id" element={<AdminProductDetailsPage />}/>
+          <Route path="create-product" element={<CreateProductPage />}/>
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

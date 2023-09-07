@@ -13,8 +13,6 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   StarIcon,
-} from "@heroicons/react/20/solid";
-import {
   ChevronDownIcon,
   FunnelIcon,
   MinusIcon,

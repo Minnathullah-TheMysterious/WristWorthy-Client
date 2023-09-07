@@ -3,28 +3,26 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import {
-  fetchBrandsAsync,
-  fetchCategoriesAsync,
-  fetchFilteredProductsAsync,
-  fetchPricesAsync,
-} from "../../products/productSlice";
+import { Modal } from "antd";
+import { FiAlertTriangle } from "react-icons/fi";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   StarIcon,
-} from "@heroicons/react/20/solid";
-import {
   ChevronDownIcon,
   FunnelIcon,
   MinusIcon,
   PlusIcon,
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
+import {
+  fetchBrandsAsync,
+  fetchCategoriesAsync,
+  fetchFilteredProductsAsync,
+  fetchPricesAsync,
+} from "../../products/productSlice";
 import { PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN } from "../../../app/constants";
 import Loader from "../../../loaders/Loader";
-import { Modal } from "antd";
-import { FiAlertTriangle } from "react-icons/fi";
 
 const sortOptions = [
   { name: "Best Rating", sort: "rating", order: "desc", current: false },
@@ -580,7 +578,7 @@ function ProductGrid({ products }) {
             {!products.loading && products.products.length
               ? products.products.map((product) => (
                   <div key={product.id} className="group relative ">
-                    <Link to={`/product-details/${product.id}`}>
+                    <Link to={`/dashboard/admin/product-details/${product.id}`}>
                       <div className="border border-solid border-black p-1 rounded-lg">
                         <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-80 lg:h-60">
                           <img
@@ -614,14 +612,16 @@ function ProductGrid({ products }) {
                         </div>
                       </div>
                     </Link>
-                    <div className="mt-3 py-2 flex justify-center items-center rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800">
-                      Edit Product
-                    </div>
-                    <div
-                      onClick={() => showDeleteConfirm(product.title)}
-                      className="mt-1 py-2 flex justify-center items-center rounded-lg bg-red-800 text-white hover:cursor-pointer hover:bg-red-900 active:bg-red-800"
-                    >
-                      Delete Product
+                    <div className="flex justify-between space-x-1">
+                      <div className="mt-1 py-2 text-center w-[50%] rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800">
+                        Edit
+                      </div>
+                      <div
+                        onClick={() => showDeleteConfirm(product.title)}
+                        className="mt-1 py-2 text-center w-[50%] rounded-lg bg-red-800 text-white hover:cursor-pointer hover:bg-red-900 active:bg-red-800"
+                      >
+                        Delete
+                      </div>
                     </div>
                   </div>
                 ))

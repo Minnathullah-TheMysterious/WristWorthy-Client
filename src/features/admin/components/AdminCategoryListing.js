@@ -1,10 +1,8 @@
 import React from "react";
 import { Modal } from "antd";
-import {FiAlertTriangle} from 'react-icons/fi'
+import { FiAlertTriangle } from "react-icons/fi";
 
 const { confirm } = Modal;
-
-
 
 const callouts = [
   {
@@ -71,8 +69,9 @@ const AdminCategoryListing = () => {
   const showDeleteConfirm = (categoryName) => {
     confirm({
       title: `Are you sure to delete '${categoryName}' category?`,
-      icon: <FiAlertTriangle className="font-bold text-red-700 text-2xl"/>,
-      content: "Be Careful! All The Filters and all the related products etc,. may not work expectedly",
+      icon: <FiAlertTriangle className="font-bold text-red-700 text-2xl" />,
+      content:
+        "Be Careful! All The Filters and all the related products etc,. may not work expectedly",
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
@@ -117,14 +116,16 @@ const AdminCategoryListing = () => {
                     {callout.description}
                   </p>
                 </div>
-                <div className="mt-3 py-2 flex justify-center items-center rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800">
-                  Edit Category
-                </div>
-                <div
-                  onClick={()=>showDeleteConfirm(callout.name)}
-                  className="mt-1 py-2 flex justify-center items-center rounded-lg bg-red-800 text-white hover:cursor-pointer hover:bg-red-900 active:bg-red-800"
-                >
-                  Delete Category
+                <div className="flex justify-between space-x-1">
+                  <div className="w-[50%] text-center mt-1 py-2  rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800">
+                    Edit
+                  </div>
+                  <div
+                    onClick={() => showDeleteConfirm(callout.name)}
+                    className="mt-1 w-[50%] text-center py-2 rounded-lg bg-red-800 text-white hover:cursor-pointer hover:bg-red-900 active:bg-red-800"
+                  >
+                    Delete
+                  </div>
                 </div>
               </div>
             ))}

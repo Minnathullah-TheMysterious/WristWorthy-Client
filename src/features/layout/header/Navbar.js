@@ -11,15 +11,9 @@ import {
 } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchAllOrdersAsync,
   getUserAsync,
-  placeOrderAsync,
-  setSelectedUserAddress,
 } from "../../user/userSlice";
 import { getAuthDataAsync } from "../../auth/authSlice";
-import { fetchWishListAsync } from "../../wishList/wishListSlice";
-import { fetchUserCartAsync } from "../../cart/cartSlice";
-import { fetchSelectedProductsAsync } from "../../products/productSlice";
 
 // const navigation = [{ name: "Home", href: "/", current: false }];
 
@@ -31,9 +25,10 @@ const userNavigation = [
 ];
 
 const adminNavigation = [
-  { id: 3, name: "Categories", href: "/dashboard/admin/categories" },
-  { id: 1, name: "products", href: "/dashboard/admin/products" },
-  { id: 2, name: "Orders", href: "/dashboard/admin/orders" },
+  { id: 1, name: "Categories", href: "/dashboard/admin/categories" },
+  { id: 2, name: "products", href: "/dashboard/admin/products" },
+  { id: 3, name: "Add Product", href: "/dashboard/admin/create-product" },
+  { id: 4, name: "Orders", href: "/dashboard/admin/orders" },
 ];
 
 function classNames(...classes) {
