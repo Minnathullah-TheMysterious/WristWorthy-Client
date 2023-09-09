@@ -147,9 +147,11 @@ const AdminProductListing = () => {
             <h2 id="products-heading" className="sr-only">
               Products
             </h2>
-            <p className="font-bold font-serif text-center bg-blue-800 text-white py-3 rounded-lg hover:cursor-pointer tracking-widest hover:bg-blue-900 active:bg-blue-800">
-              Add New Product
-            </p>
+            <Link to={'/dashboard/admin/create-product'}>
+              <p className="font-bold font-serif text-center bg-blue-800 text-white py-3 rounded-lg hover:cursor-pointer tracking-widest hover:bg-blue-900 active:bg-blue-800">
+                Add New Product
+              </p>
+            </Link>
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
               {/*Laptop Filters */}

@@ -42,30 +42,58 @@ export const fetchProductsByFilters = async (filter, sort, pagination) => {
   }
 };
 
-export const fetchCategories = async()=>{
-  const URL = 'http://localhost:5000/categories'
-  const response = await axios.get(URL)
-  return response.data
-}
+export const fetchCategories = async () => {
+  const URL = "http://localhost:5000/categories";
+  const response = await axios.get(URL);
+  return response.data;
+};
 
-export const fetchBrands = async()=>{
-  const URL = 'http://localhost:5000/brands'
-  const response = await axios.get(URL)
-  return response.data
-}
+export const fetchBrands = async () => {
+  const URL = "http://localhost:5000/brands";
+  const response = await axios.get(URL);
+  return response.data;
+};
 
-export const fetchPrices = async()=>{
-  const URL = 'http://localhost:5000/prices'
-  const response = await axios.get(URL)
-  return response.data
-}
+//Brands are coming from my backend.
+export const fetchMyBrands = async () => {
+  try {
+    const { data } = await axios.get("/api/v1/brand/get-all-brands");
+    console.log(data)
+    return data;
+  } catch (error) {
+    console.error(
+      "Something Went Wrong in fetching the brands - client",
+      error
+    );
+  }
+};
 
-export const fetchSelectedProduct = async(id)=>{
-  const URL = `http://localhost:5000/products/${id}`
-  const response = await axios.get(URL)
-  const product = response.data 
-  return product
-}
+//Categories are coming from my backend.
+export const fetchMyCategories = async () => {
+  try {
+    const { data } = await axios.get("/api/v1/category/get-all-categories");
+    console.log(data)
+    return data;
+  } catch (error) {
+    console.error(
+      "Something Went Wrong in fetching the categories - client",
+      error
+    );
+  }
+};
+
+export const fetchPrices = async () => {
+  const URL = "http://localhost:5000/prices";
+  const response = await axios.get(URL);
+  return response.data;
+};
+
+export const fetchSelectedProduct = async (id) => {
+  const URL = `http://localhost:5000/products/${id}`;
+  const response = await axios.get(URL);
+  const product = response.data;
+  return product;
+};
 
 //*******sample data ************** */
 

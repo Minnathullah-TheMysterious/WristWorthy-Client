@@ -10,9 +10,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getUserAsync,
-} from "../../user/userSlice";
+import { getUserAsync } from "../../user/userSlice";
 import { getAuthDataAsync } from "../../auth/authSlice";
 
 // const navigation = [{ name: "Home", href: "/", current: false }];
@@ -27,7 +25,7 @@ const userNavigation = [
 const adminNavigation = [
   { id: 1, name: "Categories", href: "/dashboard/admin/categories" },
   { id: 2, name: "products", href: "/dashboard/admin/products" },
-  { id: 3, name: "Add Product", href: "/dashboard/admin/create-product" },
+  { id: 3, name: "Create Product", href: "/dashboard/admin/create-product" },
   { id: 4, name: "Orders", href: "/dashboard/admin/orders" },
 ];
 
