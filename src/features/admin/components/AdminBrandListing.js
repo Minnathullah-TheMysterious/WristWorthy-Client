@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal } from "antd";
 import { FiAlertTriangle } from "react-icons/fi";
 import { useDispatch } from "react-redux";
-import { createCategoryAsync } from "../../products/productSlice";
+import { createBrandAsync } from "../../products/productSlice";
 
 const { confirm } = Modal;
 
@@ -16,16 +16,6 @@ const callouts = [
       "Desk with leather desk pad, walnut desk organizer, wireless keyboard and mouse, and porcelain mug.",
     href: "#",
     id: 1,
-  },
-  {
-    name: "Self-Improvement",
-    description: "Journals and note-taking",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/home-page-02-edition-02.jpg",
-    imageAlt:
-      "Wood table with porcelain mug, leather journal, brass pen, leather key ring, and a houseplant.",
-    href: "#",
-    id: 2,
   },
   {
     name: "Self-Improvement",
@@ -67,6 +57,16 @@ const callouts = [
     id: 4,
   },
   {
+    name: "Desk and Office",
+    description: "Work from home accessories",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/home-page-02-edition-01.jpg",
+    imageAlt:
+      "Desk with leather desk pad, walnut desk organizer, wireless keyboard and mouse, and porcelain mug.",
+    href: "#",
+    id: 4,
+  },
+  {
     name: "Self-Improvement",
     description: "Journals and note-taking",
     imageSrc:
@@ -87,16 +87,16 @@ const callouts = [
   },
 ];
 
-const AdminCategoryListing = ({ wrapClass }) => {
+const AdminBrandListing = ({ wrapClass }) => {
   const dispatch = useDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [category_image, setCategory_image] = useState(null);
-  const [category_name, setCategory_name] = useState("");
+  const [brand_image, setBrand_image] = useState(null);
+  const [brand_name, setBrand_name] = useState("");
 
-  const showDeleteConfirm = (categoryName) => {
+  const showDeleteConfirm = (brandName) => {
     confirm({
-      title: `Are you sure to delete '${categoryName}' category?`,
+      title: `Are you sure to delete '${brandName}' brand?`,
       icon: <FiAlertTriangle className="font-bold text-red-700 text-2xl" />,
       content:
         "Be Careful! All The Filters and all the related products etc,. may not work expectedly",
@@ -117,22 +117,22 @@ const AdminCategoryListing = ({ wrapClass }) => {
   };
   const handleOk = () => {
     setIsModalOpen(false);
-    console.log(category_name, category_image);
+    console.log(brand_name, brand_image);
     const formData = new FormData();
-    formData.append("category_name", category_name);
-    formData.append("image", category_image);
-    dispatch(createCategoryAsync(formData));
+    formData.append("brand_name", brand_name);
+    formData.append("image", brand_image);
+    dispatch(createBrandAsync(formData));
   };
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
   return (
-    <div className="bg-gray-100">
+    <div className="bg-gray-300">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl py-3 sm:py-2 lg:max-w-none lg:py-4">
           <h2 className="text-2xl font-bold text-gray-900 font-serif">
-            Categories
+            Brands
           </h2>
           {/* Create Category Modal */}
           <section>
@@ -141,14 +141,14 @@ const AdminCategoryListing = ({ wrapClass }) => {
               type="primary"
               onClick={showModal}
             >
-              Add New Category
+              Add New Brand
             </Button>
             <Modal
               // title="Create A New Category"
               open={isModalOpen}
               onOk={handleOk}
               onCancel={handleCancel}
-              okText={"Create Category"}
+              okText={"Create Brand"}
               okButtonProps={{
                 style: {
                   color: "black",
@@ -165,41 +165,41 @@ const AdminCategoryListing = ({ wrapClass }) => {
             >
               <form preserve={false} className="space-y-5" onSubmit={handleOk}>
                 <h1 className="text-center font-serif font-bold text-xl">
-                  Create A New Category
+                  Create A New Brand
                 </h1>
-                <label htmlFor="category_name" className="flex flex-col">
+                <label htmlFor="brand_name" className="flex flex-col">
                   <input
                     type="text"
-                    id="category_name"
-                    name="category_name"
+                    id="brand_name"
+                    name="brand_name"
                     className="rounded-lg min-h-full"
-                    placeholder="Enter Category Name"
-                    onChange={(e) => setCategory_name(e.target.value)}
+                    placeholder="Enter Brand Name"
+                    onChange={(e) => setBrand_name(e.target.value)}
                   />
                 </label>
 
                 <div className="space-y-2">
-                  {category_image && (
+                  {brand_image && (
                     <div className="flex justify-center">
                       <img
-                        src={URL.createObjectURL(category_image)}
+                        src={URL.createObjectURL(brand_image)}
                         alt="category"
                         className="h-52 w-52 "
                       />
                     </div>
                   )}
                   <label
-                    htmlFor="category_image"
+                    htmlFor="brand_image"
                     className="bg-blue-800 block text-white py-1 text-center rounded-lg hover:cursor-pointer hover:bg-blue-700 active:bg-blue-800"
                   >
-                    {category_image ? category_image.name : "Upload Image for category"}
+                    {brand_image ? brand_image.name : "Upload Brand Logo or Image"}
                     <input
                       type="file"
-                      id="category_image"
-                      name="category_image"
+                      id="brand_image"
+                      name="brand_image"
                       accept="image/*"
                       hidden
-                      onChange={(e) => setCategory_image(e.target.files[0])}
+                      onChange={(e) => setBrand_image(e.target.files[0])}
                     />
                   </label>
                 </div>
@@ -248,4 +248,4 @@ const AdminCategoryListing = ({ wrapClass }) => {
   );
 };
 
-export default AdminCategoryListing;
+export default AdminBrandListing;

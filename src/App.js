@@ -23,6 +23,9 @@ import WishListPage from "./pages/WishListPage";
 import AdminProtectedRoute from "./routes/AdminProtectedRoute";
 import AdminProductDetailsPage from "./pages/adminPages/AdminProductDetailsPage";
 import CreateProductPage from "./pages/adminPages/CreateProductPage";
+import AdminProductsPage from "./pages/adminPages/AdminProductsPage";
+import AdminCategoriesPage from "./pages/adminPages/AdminCategoriesPage";
+import AdminBrandsPage from "./pages/adminPages/AdminBrandsPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -56,7 +59,10 @@ function App() {
         {/* Admin Routes */}
         <Route path="/dashboard/admin" element={<AdminProtectedRoute />}>
           <Route path="product-details/:id" element={<AdminProductDetailsPage />}/>
-          <Route path="create-product" element={<CreateProductPage />}/>
+          <Route path="create-product" element={<CreateProductPage />} />
+          <Route path="products" element={<AdminProductsPage />} />
+          <Route path="categories" element={<AdminCategoriesPage />} />
+          <Route path="brands" element={<AdminBrandsPage />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

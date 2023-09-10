@@ -148,7 +148,7 @@ const AdminProductListing = () => {
               Products
             </h2>
             <Link to={'/dashboard/admin/create-product'}>
-              <p className="font-bold font-serif text-center bg-blue-800 text-white py-3 rounded-lg hover:cursor-pointer tracking-widest hover:bg-blue-900 active:bg-blue-800">
+              <p className="font-bold font-serif text-center bg-sky-800 text-white py-3 rounded-lg hover:cursor-pointer tracking-widest hover:bg-blue-600 active:bg-sky-800">
                 Add New Product
               </p>
             </Link>
@@ -574,9 +574,9 @@ function ProductGrid({ products }) {
         <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-4">
             {products.loading && <Loader />}
-            {!products.loading && products.error ? (
+            {/* {!products.loading && products.error ? (
               <p>Error: {products.error}</p>
-            ) : null}
+            ) : null} */}
             {!products.loading && products.products.length
               ? products.products.map((product) => (
                   <div key={product.id} className="group relative ">

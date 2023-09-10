@@ -8,7 +8,7 @@ import {
   fetchProductsByFilters,
   fetchSelectedProduct,
 } from "./productAPI";
-import { createProduct } from "./../admin/adminAPI";
+import { createBrand, createCategory, createProduct } from "./../admin/adminAPI";
 
 const initialState = {
   loading: false,
@@ -89,6 +89,38 @@ export const createProductAsync = createAsyncThunk(
       const response = await createProduct(product);
       if (response.success) {
         return response?.product;
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      throw new Error(error?.message);
+    }
+  }
+);
+
+export const createCategoryAsync = createAsyncThunk(
+  "products/createCategory",
+  async (category) => {
+    try {
+      const response = await createCategory(category);
+      if (response.success) {
+        return response?.category;
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      throw new Error(error?.message);
+    }
+  }
+);
+
+export const createBrandAsync = createAsyncThunk(
+  "products/createBrand",
+  async (brand) => {
+    try {
+      const response = await createBrand(brand);
+      if (response.success) {
+        return response?.brand;
       } else {
         throw new Error(response.message);
       }
@@ -201,6 +233,34 @@ const productSlice = createSlice({
       .addCase(createProductAsync.fulfilled, (state, action) => {
         state.loading = false;
         state?.myProducts?.push(action.payload);
+      })
+
+      .addCase(createCategoryAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createCategoryAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error
+          ? action.error.message
+          : "Encountered an error";
+      })
+      .addCase(createCategoryAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state?.myCategories?.push(action.payload);
+      })
+
+      .addCase(createBrandAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createBrandAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error
+          ? action.error.message
+          : "Encountered an error";
+      })
+      .addCase(createBrandAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state?.myBrands?.push(action.payload);
       });
   },
 });

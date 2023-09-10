@@ -24,8 +24,8 @@ const userNavigation = [
 
 const adminNavigation = [
   { id: 1, name: "Categories", href: "/dashboard/admin/categories" },
-  { id: 2, name: "products", href: "/dashboard/admin/products" },
-  { id: 3, name: "Create Product", href: "/dashboard/admin/create-product" },
+  { id: 2, name: "Products", href: "/dashboard/admin/products" },
+  { id: 3, name: "Brands", href: "/dashboard/admin/brands" },
   { id: 4, name: "Orders", href: "/dashboard/admin/orders" },
 ];
 
@@ -75,8 +75,8 @@ const Navbar = () => {
                     </div>
                   </div>
                   <div className="hidden md:block">
+                  {/* Cart (Laptop) */}
                     <div className="ml-4 flex items-center md:ml-6 md:space-x-6">
-                      {/* Cart (Laptop) */}
                       {user?.role === "user" && cart.length ? (
                         <Link to={"/dashboard/user/cart"}>
                           <button
@@ -286,24 +286,6 @@ const Navbar = () => {
               </div>
 
               <Disclosure.Panel className="md:hidden">
-                {/* <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                  {navigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      as={Link}
-                      to={item.href}
-                      className={classNames(
-                        item.current
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                        "block rounded-md px-3 py-2 text-base font-medium"
-                      )}
-                      aria-current={item.current ? "page" : undefined}
-                    >
-                      {item.name}
-                    </Disclosure.Button>
-                  ))}
-                </div> */}
                 <div className="px-2 pb-3 pt-2 sm:px-3">
                   <Input
                     type="text"
@@ -421,7 +403,7 @@ const Navbar = () => {
                       ? userNavigation.map((item) => (
                           <Disclosure.Button
                             key={item.name}
-                            as="Link"
+                            as={Link}
                             to={item.href}
                             className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                           >
@@ -431,7 +413,7 @@ const Navbar = () => {
                       : adminNavigation.map((item) => (
                           <Disclosure.Button
                             key={item.name}
-                            as="Link"
+                            as={Link}
                             to={item.href}
                             className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                           >
