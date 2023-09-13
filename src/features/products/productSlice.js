@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
+  fetchAllProducts,
   fetchBrands,
   fetchCategories,
   fetchMyBrands,
@@ -20,6 +21,7 @@ const initialState = {
   myBrands: [],
   prices: [],
   totalProductsCount: 0,
+  totalMyProductsCount: 0,
   selectedProduct: null,
   error: null,
 };
@@ -30,6 +32,15 @@ export const fetchFilteredProductsAsync = createAsyncThunk(
     const data = await fetchProductsByFilters(filter, sort, pagination);
     console.log("Products In The Page:", data);
     return data;
+  }
+);
+
+export const fetchAllProductsAsync = createAsyncThunk(
+  "products/fetchAllProducts",
+  async () => {
+    const response = await fetchAllProducts();
+    console.log(response)
+    return response;
   }
 );
 
@@ -147,6 +158,19 @@ const productSlice = createSlice({
         state.loading = false;
         state.products = action.payload.data.products;
         state.totalProductsCount = action.payload.data.totalProductsCount;
+      })
+
+      .addCase(fetchAllProductsAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAllProductsAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(fetchAllProductsAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.myProducts = action.payload?.products;
+        state.totalMyProductsCount = action.payload?.totalCount;
       })
 
       .addCase(fetchCategoriesAsync.pending, (state) => {

@@ -42,6 +42,23 @@ export const fetchProductsByFilters = async (filter, sort, pagination) => {
   }
 };
 
+//products are coming from backend
+export const fetchAllProducts = async () => {
+  try {
+    const { data } = await axios.get("/api/v1/product/get-all-products");
+    const { success } = data;
+    if (success) {
+      console.log("products fetched successfully");
+      return data;
+    }
+  } catch (error) {
+    console.error(
+      "Something Went Wrong While fetching all products",
+      error
+    );
+  }
+};
+
 export const fetchCategories = async () => {
   const URL = "http://localhost:5000/categories";
   const response = await axios.get(URL);
@@ -58,7 +75,7 @@ export const fetchBrands = async () => {
 export const fetchMyBrands = async () => {
   try {
     const { data } = await axios.get("/api/v1/brand/get-all-brands");
-    console.log(data)
+    console.log(data);
     return data;
   } catch (error) {
     console.error(
@@ -72,7 +89,7 @@ export const fetchMyBrands = async () => {
 export const fetchMyCategories = async () => {
   try {
     const { data } = await axios.get("/api/v1/category/get-all-categories");
-    console.log(data)
+    console.log(data);
     return data;
   } catch (error) {
     console.error(

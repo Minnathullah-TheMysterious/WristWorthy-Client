@@ -32,43 +32,54 @@ const ProductForm = () => {
     stock: 1,
   };
 
-  const selectedImagesReducer = (productData, action) => {
+  const createProductReducer = (state, action) => {
     switch (action.type) {
-      case "ADD_IMAGE":
-        return { ...productData, [action.key]: action.value };
+      case "ADD_PRODUCT":
+        return { ...state, [action.key]: action.value };
+      case "RESET_FORM":
+        return initialState;
       default:
-        return productData;
+        return state;
     }
   };
 
-  const [productData, dispatch] = useReducer(selectedImagesReducer, initialState);
-  console.log(productData)
+  const [productData, dispatch] = useReducer(
+    createProductReducer,
+    initialState
+  );
+  console.log(productData);
 
   const handleFieldChange = (key, value) => {
-    dispatch({ type: "ADD_IMAGE", key, value });
+    dispatch({ type: "ADD_PRODUCT", key, value });
+  };
+
+  const handleResetForm = () => {
+    dispatch({ type: "RESET_FORM" });
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData()
-    formData.append('thumbnail', productData.thumbnail)
-    formData.append('image_1', productData.image_1)
-    formData.append('image_2', productData.image_2)
-    formData.append('image_3', productData.image_3)
-    formData.append('image_4', productData.image_4)
-    formData.append('brand', productData.brand)
-    formData.append('category', productData.category)
-    formData.append('product_name', productData.product_name)
-    formData.append('description', productData.description)
-    formData.append('price', productData.price)
-    formData.append('discountPercentage', productData.discountPercentage)
-    formData.append('stock', productData.stock)
+    const formData = new FormData();
+    formData.append("thumbnail", productData.thumbnail);
+    formData.append("image_1", productData.image_1);
+    formData.append("image_2", productData.image_2);
+    formData.append("image_3", productData.image_3);
+    formData.append("image_4", productData.image_4);
+    formData.append("brand", productData.brand);
+    formData.append("category", productData.category);
+    formData.append("product_name", productData.product_name);
+    formData.append("description", productData.description);
+    formData.append("price", productData.price);
+    formData.append("discountPercentage", productData.discountPercentage);
+    formData.append("stock", productData.stock);
     dispatchAsync(createProductAsync(formData))
+      .then(() => handleResetForm())
+      .catch((err) => console.error(err));
   };
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8  py-5">
-      <form onSubmit={(e) => handleFormSubmit(e)}>
+      <form noValidate onSubmit={(e) => handleFormSubmit(e)}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
             <h2 className="rounded-sm shadow-gray-400 shadow-lg text-center text-white text-xl font-serif font-bold py-2 tracking-widest leading-7  bg-gray-700">
@@ -90,8 +101,9 @@ const ProductForm = () => {
                     autoComplete="brand"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     onChange={(e) => handleFieldChange("brand", e.target.value)}
+                    value={productData.brand}
                   >
-                  <option className="text-center">--Select Brand--</option>
+                    <option className="text-center">--Select Brand--</option>
                     {myBrands?.map((myBrand) => (
                       <option key={myBrand._id} value={myBrand._id}>
                         {myBrand.brand_name}
@@ -117,8 +129,9 @@ const ProductForm = () => {
                     onChange={(e) =>
                       handleFieldChange("category", e.target.value)
                     }
+                    value={productData.category}
                   >
-                  <option className="text-center">--Select Category--</option>
+                    <option className="text-center">--Select Category--</option>
                     {myCategories?.map((myCategory) => (
                       <option key={myCategory._id} value={myCategory._id}>
                         {myCategory.category_name}
@@ -297,6 +310,7 @@ const ProductForm = () => {
                       onChange={(e) =>
                         handleFieldChange("product_name", e.target.value)
                       }
+                      value={productData.product_name}
                     />
                   </div>
                 </div>
@@ -319,6 +333,7 @@ const ProductForm = () => {
                     onChange={(e) =>
                       handleFieldChange("description", e.target.value)
                     }
+                    value={productData.description}
                   />
                 </div>
                 <p className="mt-3 text-sm leading-6 text-gray-600">
@@ -341,6 +356,7 @@ const ProductForm = () => {
                     autoComplete="price"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     onChange={(e) => handleFieldChange("price", e.target.value)}
+                    value={productData.price}
                   />
                 </div>
               </div>
@@ -362,6 +378,7 @@ const ProductForm = () => {
                     onChange={(e) =>
                       handleFieldChange("discountPercentage", e.target.value)
                     }
+                    value={productData.discountPercentage}
                   />
                 </div>
               </div>
@@ -381,6 +398,7 @@ const ProductForm = () => {
                     autoComplete="stock"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     onChange={(e) => handleFieldChange("stock", e.target.value)}
+                    value={productData.stock}
                   />
                 </div>
               </div>
@@ -394,9 +412,7 @@ const ProductForm = () => {
             </h2>
             <p className="mt-1 text-sm leading-6 text-gray-600">
               We'll always let you know about important changes, but you pick
-              what else you want to hear aboutimport { useDispatch } from 'react-redux';
-.import { useDispatch } from 'react-redux';
-
+              what else you want to hear about
             </p>
 
             <div className="mt-10 space-y-10">

@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
+  fetchAllProductsAsync,
   fetchBrandsAsync,
   fetchCategoriesAsync,
   fetchFilteredProductsAsync,
@@ -128,6 +129,7 @@ const ProductListing = () => {
     dispatch(fetchCategoriesAsync());
     dispatch(fetchBrandsAsync());
     dispatch(fetchPricesAsync());
+    dispatch(fetchAllProductsAsync())
   }, [dispatch]);
 
   return (
