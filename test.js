@@ -1946,11 +1946,18 @@ const products = [
 // const filter = {
 //   category: ["smartphones", "laptops"],
 //   brand: ["Apple", "Samsung"],
+//   lowerPriceLimit: [11],
+//   higherPriceLimit:[20]
 // };
 // const entries = Object.entries(filter);
+// console.log(entries)
 
-// console.log(entries);
-// console.log(entries.map(([key, values]) => values.map((value) => `${key}=${value}`)).flat().join('&'));
+// console.log(
+//   entries
+//     .map(([key, values]) => values.map((value) => `${key}=${value}`))
+//     .flat()
+//     .join("&")
+// );
 
 // //////////////
 // const array = [1,2,3,4,5,6,7,8,9,]
@@ -1962,9 +1969,9 @@ const products = [
 
 ///////////////
 const carts = [
-  { id: 1, user_id: 11, items: [{ price: 10, id:1 }] },
-  { id: 2, user_id: 12, items: [{ price: 10, id:2 }] },
-  { id: 3, user_id: 13, items: [{ price: 10, id:3 }] },
+  { id: 1, user_id: 11, items: [{ price: 10, id: 1 }] },
+  { id: 2, user_id: 12, items: [{ price: 10, id: 2 }] },
+  { id: 3, user_id: 13, items: [{ price: 10, id: 3 }] },
 ];
 
 // const totalPrice = carts
@@ -1990,5 +1997,13 @@ const carts = [
 //   }, {totalPrice:0, totalItem:0});
 // console.log(totalPrice);
 
-const productFound = carts.flatMap(cart=>cart.items).some((cart)=>cart.id === 1)
-console.log(productFound)
+// const productFound = carts.flatMap(cart=>cart.items).some((cart)=>cart.id === 1)
+// console.log(productFound)
+
+////////////////////
+// let findObject = {}
+// findObject = {brand:'Apple'}
+// console.log(findObject)
+
+
+

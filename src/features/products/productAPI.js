@@ -1,9 +1,12 @@
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export const fetchProductsByFilters = async (filter, sort, pagination) => {
   //filter = {category:['smartphones', 'laptops'], brand:['apple', 'samsung']}
   //sort = {_sort: 'price', _order: 'desc'}
   //pagination = {_page: 1, _limit: 10}
+
+  console.log(filter, sort, pagination);
 
   const filterQueryParams = Object.entries(filter)
     .map(([key, values]) => values.map((value) => `${key}=${value}`))
@@ -42,6 +45,52 @@ export const fetchProductsByFilters = async (filter, sort, pagination) => {
   }
 };
 
+////products are coming from backend
+export const fetchAllProductsByFilters = async (filter, sort, pagination) => {
+  //filter = {category:['smartphones', 'laptops'], brand:['apple', 'samsung'], lowerPriceLimit: [number], higherPriceLimit: [number]}
+  //sort = {_sort: 'price', _order: 'desc'}
+  //pagination = {_page: 1, _limit: 10}
+
+  console.log(filter, sort, pagination);
+
+  const filterQueryParams = Object.entries(filter)
+    .map(([key, values]) => values.map((value) => `${key}=${value}`))
+    .flat()
+    .join("&");
+
+  console.log("Filter Query Params: ", filterQueryParams);
+
+  let sortingQueryParams = "";
+  for (const key in sort) {
+    const sortingValue = sort[key];
+    sortingQueryParams = sortingQueryParams + `${key}=${sortingValue}&`;
+  }
+  console.log("Sorting Query Params: ", sortingQueryParams);
+
+  let paginationQueryParams = "";
+  for (const key in pagination) {
+    const paginationValue = pagination[key];
+    paginationQueryParams =
+      paginationQueryParams + `${key}=${paginationValue}&`;
+  }
+  console.log("Pagination Query Params: ", paginationQueryParams);
+
+  const filteredProductsAPI = `/api/v1/product/get-filtered-products?${paginationQueryParams}&${filterQueryParams}&${sortingQueryParams}`;
+
+  try {
+    const {data} = await axios.get(filteredProductsAPI);
+    const {success, message} = data
+    if(success){
+      toast.success(message)
+      return data
+    }
+  } catch (error) {
+    toast.error(error.message)
+    console.error("Error fetching filtered products:", error);
+    throw new Error({success: false, error:error.message});
+  }
+};
+
 //products are coming from backend
 export const fetchAllProducts = async () => {
   try {
@@ -52,10 +101,7 @@ export const fetchAllProducts = async () => {
       return data;
     }
   } catch (error) {
-    console.error(
-      "Something Went Wrong While fetching all products",
-      error
-    );
+    console.error("Something Went Wrong While fetching all products", error);
   }
 };
 

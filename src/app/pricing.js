@@ -1,8 +1,13 @@
 export const Prices = [
     {
+        _id : 27,
+        label: 'All',
+        value: [0, 40000]
+    },
+    {
         _id : 0,
-        label: '$0 to 10',
-        value: [0, 10]
+        label: '$1 to 10',
+        value: [1, 10]
     },
     {
         _id : 1,
@@ -134,4 +139,5 @@ export const Prices = [
         label: '$3001 to 4000',
         value: [3001, 4000]
     },
+   
 ]
