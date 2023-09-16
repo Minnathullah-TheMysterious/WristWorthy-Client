@@ -1,13 +1,13 @@
 import React from 'react'
-import WishList from '../features/wishList/WishList'
-import Layout from './../features/layout/Layout';
+import Wishlist from '../features/wishlist/Wishlist'
+import Layout from '../features/layout/Layout';
 
-const WishListPage = () => {
+const WishlistPage = () => {
   return (
-    <Layout pageTitle={'WristWorthy - WishList'}>
-      <WishList/>
+    <Layout pageTitle={'WristWorthy - Wishlist'}>
+      <Wishlist/>
     </Layout>
   )
 }
 
-export default WishListPage
+export default WishlistPage

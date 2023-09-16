@@ -19,7 +19,7 @@ import OrderSuccessPage from "./pages/OrderSuccessPage";
 import UserOrdersPage from "./pages/UserOrdersPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import UserAddressesPage from "./pages/UserAddressesPage";
-import WishListPage from "./pages/WishListPage";
+import WishlistPage from "./pages/WishlistPage";
 import AdminProtectedRoute from "./routes/AdminProtectedRoute";
 import AdminProductDetailsPage from "./pages/adminPages/AdminProductDetailsPage";
 import CreateProductPage from "./pages/adminPages/CreateProductPage";
@@ -45,7 +45,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/req-password-reset" element={<PassResetPage />} />
-        <Route path="/product-details/:id" element={<ProductDetailsPage />} />
+        <Route path="/product-details/:_id" element={<ProductDetailsPage />} />
         {/* LoggedIn User Routes */}
         <Route path="/dashboard/user" element={<UserProtectedRoute />}>
           <Route path="cart" element={<CartPage />} />
@@ -54,11 +54,11 @@ function App() {
           <Route path="orders" element={<UserOrdersPage />} />
           <Route path="profile" element={<UserProfilePage />} />
           <Route path="addresses" element={<UserAddressesPage />} />
-          <Route path="wishList" element={<WishListPage />} />
+          <Route path="wishlist" element={<WishlistPage />} />
         </Route>
         {/* Admin Routes */}
         <Route path="/dashboard/admin" element={<AdminProtectedRoute />}>
-          <Route path="product-details/:id" element={<AdminProductDetailsPage />}/>
+          <Route path="product-details/:_id" element={<AdminProductDetailsPage />}/>
           <Route path="create-product" element={<CreateProductPage />} />
           <Route path="products" element={<AdminProductsPage />} />
           <Route path="categories" element={<AdminCategoriesPage />} />

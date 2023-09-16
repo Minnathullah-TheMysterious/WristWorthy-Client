@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
-  addToWishList,
-  deleteWishListItem,
-  fetchWishList,
-} from "./wishListAPI";
+  addToWishlist,
+  deleteWishlistItem,
+  fetchWishlist,
+} from "./wishlistAPI";
 
 const initialState = {
   loading: false,
@@ -11,85 +11,86 @@ const initialState = {
   error: null,
 };
 
-export const addToWishListAsync = createAsyncThunk(
-  "wishList/addToWishList",
-  async (product) => {
-    console.log(product);
+export const addToWishlistAsync = createAsyncThunk(
+  "wishlist/addToWishlist",
+  async ({ userId, productId }) => {
     try {
-      const response = await addToWishList(product);
-      return response;
+      const response = await addToWishlist(userId, productId);
+      if (response.success) {
+        return response.wishlist;
+      }
     } catch (error) {
-      console.error("Something Went Wrong in add-to-wishList thunk", error);
+      console.error("Something Went Wrong in add-to-wishlist thunk", error);
     }
   }
 );
 
-export const fetchWishListAsync = createAsyncThunk(
-  "wishList/fetchWishList",
+export const fetchWishlistAsync = createAsyncThunk(
+  "wishlist/fetchWishlist",
   async (userId) => {
     try {
-      const response = await fetchWishList(userId);
+      const response = await fetchWishlist(userId);
       return response;
     } catch (error) {
-      console.error("Something Went Wrong in fetch-wishList thunk", error);
+      console.error("Something Went Wrong in fetch-wishlist thunk", error);
     }
   }
 );
 
-export const deleteWishListItemAsync = createAsyncThunk(
-  "wishList/deleteWishListItem",
-  async (wishListId) => {
+export const deleteWishlistItemAsync = createAsyncThunk(
+  "wishlist/deleteWishlistItem",
+  async ({ userId, productId }) => {
     try {
-      const response = await deleteWishListItem(wishListId);
+      const response = await deleteWishlistItem(userId, productId);
       return response;
     } catch (error) {
-      console.error("Something Went Wrong in fetch-wishList thunk", error);
+      console.error("Something Went Wrong in fetch-wishlist thunk", error);
     }
   }
 );
 
-const wishListSlice = createSlice({
-  name: "wishList",
+const wishlistSlice = createSlice({
+  name: "wishlist",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(addToWishListAsync.pending, (state) => {
+      .addCase(addToWishlistAsync.pending, (state) => {
         state.loading = true;
       })
-      .addCase(addToWishListAsync.rejected, (state, action) => {
+      .addCase(addToWishlistAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error ? action.error.message : "Error";
       })
-      .addCase(addToWishListAsync.fulfilled, (state, action) => {
-        state.loading = false;
-        state.list.push(action.payload);
-      })
-
-      .addCase(fetchWishListAsync.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchWishListAsync.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error ? action.error.message : "Error";
-      })
-      .addCase(fetchWishListAsync.fulfilled, (state, action) => {
+      .addCase(addToWishlistAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.list = action.payload;
       })
 
-      .addCase(deleteWishListItemAsync.pending, (state) => {
+      .addCase(fetchWishlistAsync.pending, (state) => {
         state.loading = true;
       })
-      .addCase(deleteWishListItemAsync.rejected, (state, action) => {
+      .addCase(fetchWishlistAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error ? action.error.message : "Error";
       })
-      .addCase(deleteWishListItemAsync.fulfilled, (state, action) => {
+      .addCase(fetchWishlistAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.list = state?.list?.filter((item) => item?.id !== action.payload);
+        state.list = action.payload;
+      })
+
+      .addCase(deleteWishlistItemAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteWishlistItemAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error ? action.error.message : "Error";
+      })
+      .addCase(deleteWishlistItemAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.list = action.payload;
       });
   },
 });
 
-export default wishListSlice.reducer;
+export default wishlistSlice.reducer;

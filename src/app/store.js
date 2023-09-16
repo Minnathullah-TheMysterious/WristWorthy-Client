@@ -3,13 +3,13 @@ import productReducer from "../features/products/productSlice";
 import authReducer from '../features/auth/authSlice'
 import cartReducer from '../features/cart/cartSlice'
 import userReducer from '../features/user/userSlice'
-import wishListReducer from '../features/wishList/wishListSlice'
+import wishlistReducer from '../features/wishlist/wishlistSlice'
 
 export const store = configureStore({
   reducer: {
     product: productReducer,
     cart: cartReducer,
-    wishList: wishListReducer,
+    wishlist: wishlistReducer,
     auth: authReducer,
     user: userReducer
   },

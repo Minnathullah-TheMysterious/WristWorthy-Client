@@ -26,9 +26,9 @@ import {
 import { PRODUCT_LIMIT_PER_PAGE_FOR_USER } from "../../../app/constants";
 import { TbJewishStar } from "react-icons/tb";
 import {
-  addToWishListAsync,
-  fetchWishListAsync,
-} from "../../wishList/wishListSlice";
+  addToWishlistAsync,
+  fetchWishlistAsync,
+} from "../../wishlist/wishlistSlice";
 import toast from "react-hot-toast";
 import Loader from "../../../loaders/Loader";
 import { Prices } from "../../../app/pricing";
@@ -52,9 +52,9 @@ const ProductListing = () => {
   const categories = useSelector((state) => state?.product?.myCategories);
   const brands = useSelector((state) => state?.product?.myBrands);
   const prices = useSelector((state) => state.product.prices);
-  const products = useSelector((state) => state.product);
+  const products = useSelector((state) => state?.product);
   const totalProductsCount = useSelector(
-    (state) => state.product.totalMyProductsCount
+    (state) => state?.product?.totalMyProductsCount
   );
   const dispatch = useDispatch();
 
@@ -131,6 +131,7 @@ const ProductListing = () => {
   const handleSorting = (e, option) => {
     const sort = { _sort: option.sort, _order: option.order };
     setSort(sort);
+    console.log(sort);
   };
 
   const handlePagination = (e, pageNum) => {
@@ -391,7 +392,7 @@ function MobileFilterDialog({
 function Sorting({ setFiltersOpen, handleSorting }) {
   return (
     <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-14">
-      <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+      <h1 className="text-3xl font-bold tracking-tight text-gray-900 font-serif">
         Products
       </h1>
 
@@ -694,34 +695,19 @@ function ProductGrid({ products }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userId = useSelector((state) => state?.auth?.user?._id);
-  const wishList = useSelector((state) => state?.wishList?.list);
 
   useEffect(() => {
-    dispatch(fetchWishListAsync(userId));
+    userId && dispatch(fetchWishlistAsync(userId));
   }, [dispatch, userId]);
 
-  const handleAddToWishListClick = (productIndex, productId) => {
-    const itemExistsInWishList = wishList.some(
-      (item) => item.product_id === productId
-    );
-    if (itemExistsInWishList) {
-      toast("Item Is Already Present In Your WishList", {
+  const handleAddToWishlistClick = (productId) => {
+    if (userId) {
+      dispatch(addToWishlistAsync({ userId, productId }));
+    } else {
+      toast("Please Login To Add To Wishlist", {
         className: "font-serif bg-blue-900 text-white",
       });
-    } else {
-      const product = products?.products[productIndex];
-      const wishListItem = { user_id: userId, ...product };
-      wishListItem.product_id = wishListItem.id;
-      delete wishListItem["id"];
-
-      if (userId) {
-        dispatch(addToWishListAsync(wishListItem));
-      } else {
-        toast("Please Login To Add To WishList", {
-          className: "font-serif bg-blue-900 text-white",
-        });
-        navigate("/login");
-      }
+      navigate("/login");
     }
   };
 
@@ -776,12 +762,10 @@ function ProductGrid({ products }) {
                       </div>
                     </Link>
                     <div
-                      onClick={() =>
-                        handleAddToWishListClick(index, product.id)
-                      }
+                      onClick={() => handleAddToWishlistClick(product._id)}
                       className="py-1 mt-1 flex justify-center items-center space-x-4 rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800"
                     >
-                      <span>{"Add To WishList"}</span> <TbJewishStar />
+                      <span>{"Add To Wishlist"}</span> <TbJewishStar />
                     </div>
                   </div>
                 ))
