@@ -2602,6 +2602,79 @@
       "user_id": "64d9cca1fd210ef389e268a0",
       "product_id": 30,
       "id": 1
+    },
+    {
+      "thumbnail": {
+        "location": "public\\product\\images\\thumbnail-1694915224807-750002355-Tree Oil 30ml_thumbnail.jpg",
+        "contentType": "image/jpeg",
+        "originalname": "Tree Oil 30ml_thumbnail.jpg",
+        "size": 23819
+      },
+      "_id": "65065a9993e70066374ebc99",
+      "product_name": "Tree Oil 50ml",
+      "slug": "tree-oil-50ml",
+      "brand": "65065987bcfb06a078524156",
+      "category": "6505d5dba306b1351d0fbe93",
+      "description": "Tea tree oil contains a number of compounds, including terpinen-4-ol, that have been shown to kill certain bacteria,",
+      "stock": 52,
+      "price": 12,
+      "discountPercentage": 4.09,
+      "images": [
+        {
+          "location": "public\\product\\images\\image_1-1694915224808-681098119-Tree Oil 30ml_image1.jpg",
+          "contentType": "image/jpeg",
+          "originalname": "Tree Oil 30ml_image1.jpg",
+          "size": 10218,
+          "_id": "65065a9993e70066374ebc9a"
+        },
+        {
+          "location": "public\\product\\images\\image_2-1694915224808-487940320-Tree Oil 30ml_image2.jpg",
+          "contentType": "image/jpeg",
+          "originalname": "Tree Oil 30ml_image2.jpg",
+          "size": 15592,
+          "_id": "65065a9993e70066374ebc9b"
+        },
+        {
+          "location": "public\\product\\images\\image_3-1694915224813-324509085-Tree Oil 30ml_image3.jpg",
+          "contentType": "image/jpeg",
+          "originalname": "Tree Oil 30ml_image3.jpg",
+          "size": 15853,
+          "_id": "65065a9993e70066374ebc9c"
+        },
+        {
+          "location": "public\\product\\images\\image_4-1694915224814-680451692-Tree Oil 30ml_thumbnail.jpg",
+          "contentType": "image/jpeg",
+          "originalname": "Tree Oil 30ml_thumbnail.jpg",
+          "size": 23819,
+          "_id": "65065a9993e70066374ebc9d"
+        }
+      ],
+      "createdAt": "2023-09-17T01:47:05.194Z",
+      "updatedAt": "2023-09-17T01:47:05.194Z",
+      "__v": 0,
+      "quantity": 1,
+      "user_id": "64d9cca1fd210ef389e268a0",
+      "id": 2
+    },
+    {
+      "userId": "64d9cca1fd210ef389e268a0",
+      "productId": "65065a9993e70066374ebc99",
+      "id": 3
+    },
+    {
+      "userId": "64d9cca1fd210ef389e268a0",
+      "productId": "65013f3a4f41af7936475ac8",
+      "id": 4
+    },
+    {
+      "userId": "64d9cca1fd210ef389e268a0",
+      "productId": "65013f3a4f41af7936475ac8",
+      "id": 5
+    },
+    {
+      "userId": "64d9cca1fd210ef389e268a0",
+      "productId": "65013f3a4f41af7936475ac8",
+      "id": 6
     }
   ],
   "orders": [

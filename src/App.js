@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { fetchUserCartAsync } from "./features/cart/cartSlice";
+import { fetchUserCartAsync, fetchUserCartItemsAsync } from "./features/cart/cartSlice";
 import { Toaster } from "react-hot-toast";
 import { getUserAsync } from "./features/user/userSlice";
 import { getAuthDataAsync } from "./features/auth/authSlice";
@@ -35,6 +35,7 @@ function App() {
 
   useEffect(() => {
     userId && dispatch(fetchUserCartAsync(userId));
+    userId && dispatch(fetchUserCartItemsAsync(userId));
     userId && dispatch(getUserAsync(userId));
     userId && dispatch(getAuthDataAsync(userId));
   }, [dispatch, userId]);

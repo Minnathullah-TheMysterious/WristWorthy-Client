@@ -9,7 +9,7 @@ import {
 } from "../productSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { addItemToCartAsync } from "../../cart/cartSlice";
+import { addItemToCartAsync, addMyItemToCartAsync, fetchUserCartItemsAsync } from "../../cart/cartSlice";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -76,29 +76,29 @@ const ProductDetails = () => {
   const selectedProduct = useSelector(
     (state) => state?.product?.mySelectedProduct
   );
-  const user = useSelector((state) => state.auth.user);
-  const carts = useSelector((state) => state.cart.items);
+  const user = useSelector((state) => state?.auth?.user);
+  const carts = useSelector((state) => state?.cart?.myItems);
 
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
 
+  const userId = user?._id;
+  const productId = selectedProduct?._id;
+
   useEffect(() => {
     dispatch(fetchMySelectedProductsAsync(params.productId));
-  }, [dispatch, params.productId]);
+    dispatch(fetchUserCartItemsAsync(userId))
+  }, [dispatch, params.productId, userId]);
 
-  const productFound = carts?.some(
-    (cart) => cart?.product_id === selectedProduct?.id
+  const productFound = carts?.items?.some(
+    (item) => item?.product?._id === selectedProduct?._id
   );
 
   const handleAddToCartClick = async (e) => {
     e.preventDefault();
-    const userId = user?._id;
-    const cartItem = { ...selectedProduct, quantity: 1, user_id: userId };
-    cartItem.product_id = cartItem.id;
-    delete cartItem["id"];
 
     if (user && !productFound) {
-      dispatch(addItemToCartAsync(cartItem))
+      dispatch(addMyItemToCartAsync({ userId, productId }))
         .then(() => {
           toast.success("Item Added To Cart");
           navigate("/dashboard/user/cart");

@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Select } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteMyUserCartItemAsync,
   deleteUserCartItemAsync,
   fetchUserCartAsync,
+  fetchUserCartItemsAsync,
   updateCartItemQuantityAsync,
+  updateMyCartItemQuantityAsync,
 } from "./cartSlice";
 import toast from "react-hot-toast";
 
@@ -13,13 +16,17 @@ const Cart = ({ btnText, destination }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const userCartItems = useSelector((state) => state.cart.items);
+  const userCart = useSelector((state) => state?.cart?.myItems);
 
   const userId = user?._id;
 
-  const calculatedSubTotal = userCartItems?.reduce(
+  useEffect(() => {
+    dispatch(fetchUserCartItemsAsync(userId));
+  }, [dispatch, userId]);
+
+  const calculatedSubTotal = userCart?.items?.reduce(
     (total, item) => {
-      total.totalPrice += item?.price * item?.quantity;
+      total.totalPrice += item?.product?.price * item?.quantity;
       total.totalItems += item?.quantity;
       return total;
     },
@@ -29,32 +36,32 @@ const Cart = ({ btnText, destination }) => {
   const totalAmount = calculatedSubTotal?.totalPrice;
   const totalItems = calculatedSubTotal?.totalItems;
 
-  const handleRemoveClick = async (e, cartItemId) => {
+  const handleRemoveClick = async (e, productId) => {
     e.preventDefault();
-    const deleteItem = dispatch(deleteUserCartItemAsync(cartItemId));
+    console.log(userId, productId);
+    const deleteItem = dispatch(
+      deleteMyUserCartItemAsync({ userId, productId })
+    );
     deleteItem
       .then(() => {
-        toast.success("Item Removed Successfully");
-        console.log(userCartItems.length);
-        if (userCartItems.length <= 1) {
+        if (userCart.length <= 1) {
           navigate("/");
         }
       })
       .catch((error) => {
-        toast("Failed To Remove The Item", {
-          className: "font-serif bg-blue-900 text-white",
-        });
-        console.error('Something Went Wrong While removing the cart Item', error)
+        console.error(
+          "Something Went Wrong While removing the cart Item",
+          error
+        );
       });
   };
 
-  const handleItemQuantityChange = async (value, product) => {
-    console.log(value);
+  const handleItemQuantityChange = async (quantity, productId) => {
     const actionResult = await dispatch(
-      updateCartItemQuantityAsync({ ...product, quantity: value })
+      updateMyCartItemQuantityAsync({ userId, productId, quantity })
     );
-    if (updateCartItemQuantityAsync.fulfilled.match(actionResult)) {
-      dispatch(fetchUserCartAsync(userId));
+    if (updateMyCartItemQuantityAsync.fulfilled.match(actionResult)) {
+      dispatch(fetchUserCartItemsAsync(userId));
     }
   };
   return (
@@ -67,14 +74,14 @@ const Cart = ({ btnText, destination }) => {
         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
           <div className="flow-root">
             <ul className="-my-6 divide-y divide-gray-200">
-              {userCartItems?.map((item) => (
-                <li key={item?.id} className="flex py-6">
+              {userCart?.items?.map((item) => (
+                <li key={item?.product?._id} className="flex py-6">
                   {/* The Link is Not getting the product Id instead it is getting the cart-item Id. On server we will consider it */}
-                  <Link to={`/product-details/${item?.product_id}`}>
+                  <Link to={`/product-details/${item?.product?._id}`}>
                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 hover:opacity-80 active:opacity-100">
                       <img
-                        src={item?.thumbnail}
-                        alt={item?.title}
+                        src={`${process.env.REACT_APP_API}/${item?.product?.thumbnail?.location}`}
+                        alt={item?.product?.product_name}
                         className="h-full w-full object-cover object-center"
                       />
                     </div>
@@ -84,13 +91,15 @@ const Cart = ({ btnText, destination }) => {
                     <div>
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         {/* The Link is Not getting the product Id instead it is getting the cart-item Id. On server we will consider it */}
-                        <Link to={`/product-details/${item?.product_id}`}>
-                          <h3 className="hover:text-gray-600 active:text-gray-900">{item?.title}</h3>
+                        <Link to={`/product-details/${item?.product?._id}`}>
+                          <h3 className="hover:text-gray-600 active:text-gray-900">
+                            {item?.product?.product_name}
+                          </h3>
                         </Link>
-                        <p className="ml-4">${item?.price}</p>
+                        <p className="ml-4">${item?.product?.price}</p>
                       </div>
                       <p className="mt-1 text-sm text-gray-500">
-                        {item?.color || "Color UnSpecified"}
+                        {item?.product?.color || "Color UnSpecified"}
                       </p>
                     </div>
                     <div className="flex flex-1 items-end justify-between text-sm">
@@ -103,10 +112,10 @@ const Cart = ({ btnText, destination }) => {
                         </label>
                         <Select
                           size="medium"
-                          onChange={(value) => {
-                            handleItemQuantityChange(value, item);
-                          }}
                           value={item?.quantity}
+                          onChange={(value) => {
+                            handleItemQuantityChange(value, item?.product?._id);
+                          }}
                         >
                           <Select.Option value={1}>1</Select.Option>
                           <Select.Option value={2}>2</Select.Option>
@@ -123,7 +132,7 @@ const Cart = ({ btnText, destination }) => {
                       <div className="flex">
                         <button
                           onClick={(e) => {
-                            handleRemoveClick(e, item?.id);
+                            handleRemoveClick(e, item?.product?._id);
                           }}
                           type="button"
                           className="font-medium text-indigo-600 hover:text-indigo-500"

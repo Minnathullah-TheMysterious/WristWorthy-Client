@@ -1,15 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   addItemToCart,
+  addMyItemToCart,
+  deleteMyUserCartItem,
   deleteUserCartItem,
   fetchUserCart,
+  fetchUserCartItems,
   resetCart,
   updateCartItemQuantity,
+  updateMyCartItemQuantity,
 } from "./cartAPI";
 
 const initialState = {
   loading: false,
   items: [],
+  myItems: [],
   error: null,
 };
 
@@ -20,6 +25,19 @@ export const addItemToCartAsync = createAsyncThunk(
       const response = await addItemToCart(cartItem);
       console.log(response);
       return response;
+    } catch (error) {
+      console.error("Something Went Wrong in Add-to-Cart thunk", error);
+    }
+  }
+);
+
+//backend
+export const addMyItemToCartAsync = createAsyncThunk(
+  "cart/addMyItemToCart",
+  async ({ userId, productId }) => {
+    try {
+      const response = await addMyItemToCart(userId, productId);
+      return response?.cart;
     } catch (error) {
       console.error("Something Went Wrong in Add-to-Cart thunk", error);
     }
@@ -38,6 +56,19 @@ export const fetchUserCartAsync = createAsyncThunk(
   }
 );
 
+//backend
+export const fetchUserCartItemsAsync = createAsyncThunk(
+  "cart/fetchUserCartItems",
+  async (userId) => {
+    try {
+      const response = await fetchUserCartItems(userId);
+      return response?.cart;
+    } catch (error) {
+      console.error("Something Went Wrong in fetch-Cart thunk", error);
+    }
+  }
+);
+
 export const updateCartItemQuantityAsync = createAsyncThunk(
   "cart/updateCartItemQuantity",
   async (update) => {
@@ -50,12 +81,43 @@ export const updateCartItemQuantityAsync = createAsyncThunk(
   }
 );
 
+//backend
+export const updateMyCartItemQuantityAsync = createAsyncThunk(
+  "cart/updateMyCartItemQuantity",
+  async ({ userId, productId, quantity }) => {
+    try {
+      const response = await updateMyCartItemQuantity(
+        userId,
+        productId,
+        quantity
+      );
+      return response.cart;
+    } catch (error) {
+      console.error("Something Went Wrong in fetch-Cart thunk", error);
+    }
+  }
+);
+
 export const deleteUserCartItemAsync = createAsyncThunk(
   "cart/deleteUserCartItem",
   async (cartId) => {
     try {
       const response = await deleteUserCartItem(cartId);
       return response;
+    } catch (error) {
+      console.error("Something Went Wrong in fetch-Cart thunk", error);
+    }
+  }
+);
+
+//backend
+export const deleteMyUserCartItemAsync = createAsyncThunk(
+  "cart/deleteMyUserCartItem",
+  async ({userId, productId}) => {
+    console.log(userId, productId)
+    try {
+      const response = await deleteMyUserCartItem(userId, productId);
+      return response?.cart;
     } catch (error) {
       console.error("Something Went Wrong in fetch-Cart thunk", error);
     }
@@ -80,6 +142,18 @@ const cartSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(addMyItemToCartAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addMyItemToCartAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(addMyItemToCartAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.myItems = action.payload;
+      })
+
       .addCase(addItemToCartAsync.pending, (state) => {
         state.loading = true;
       })
@@ -91,6 +165,7 @@ const cartSlice = createSlice({
         state.loading = false;
         state.items.push(action.payload);
       })
+
       .addCase(fetchUserCartAsync.pending, (state) => {
         state.loading = true;
       })
@@ -102,6 +177,31 @@ const cartSlice = createSlice({
         state.loading = false;
         state.items = action.payload;
       })
+
+      .addCase(fetchUserCartItemsAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchUserCartItemsAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(fetchUserCartItemsAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.myItems = action.payload;
+      })
+
+      .addCase(deleteMyUserCartItemAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteMyUserCartItemAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(deleteMyUserCartItemAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.myItems = action.payload;
+      })
+
       .addCase(deleteUserCartItemAsync.pending, (state) => {
         state.loading = true;
       })
@@ -116,6 +216,7 @@ const cartSlice = createSlice({
           (item) => item?.id !== action.payload
         );
       })
+
       .addCase(resetCartAsync.pending, (state) => {
         state.loading = true;
       })
@@ -127,6 +228,7 @@ const cartSlice = createSlice({
         state.loading = false;
         state.items = [];
       })
+
       .addCase(updateCartItemQuantityAsync.pending, (state) => {
         state.loading = true;
       })
@@ -140,6 +242,18 @@ const cartSlice = createSlice({
           (item) => item.id === action?.payload?.id
         );
         state.items[updateItemIndex] = action.payload;
+      })
+
+      .addCase(updateMyCartItemQuantityAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateMyCartItemQuantityAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(updateMyCartItemQuantityAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.myItems = action.payload;
       });
   },
 });
