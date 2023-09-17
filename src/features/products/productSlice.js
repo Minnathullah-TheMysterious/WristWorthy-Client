@@ -6,6 +6,7 @@ import {
   fetchCategories,
   fetchMyBrands,
   fetchMyCategories,
+  fetchMySelectedProduct,
   fetchPrices,
   fetchProductsByFilters,
   fetchSelectedProduct,
@@ -24,6 +25,7 @@ const initialState = {
   totalProductsCount: 0,
   totalMyProductsCount: 0,
   selectedProduct: null,
+  mySelectedProduct: null,
   error: null,
 };
 
@@ -85,6 +87,15 @@ export const fetchSelectedProductsAsync = createAsyncThunk(
   async (id) => {
     const product = await fetchSelectedProduct(id);
     return product;
+  }
+);
+
+//backend
+export const fetchMySelectedProductsAsync = createAsyncThunk(
+  "products/fetchMySelectedProduct",
+  async (productId) => {
+    const response = await fetchMySelectedProduct(productId);
+    return response;
   }
 );
 
@@ -270,6 +281,18 @@ const productSlice = createSlice({
       .addCase(fetchSelectedProductsAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.selectedProduct = action.payload;
+      })
+
+      .addCase(fetchMySelectedProductsAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchMySelectedProductsAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(fetchMySelectedProductsAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.mySelectedProduct = action.payload;
       })
 
       .addCase(createProductAsync.pending, (state) => {

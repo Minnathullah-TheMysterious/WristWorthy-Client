@@ -3,7 +3,10 @@ import { useState } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSelectedProductsAsync } from "../productSlice";
+import {
+  fetchMySelectedProductsAsync,
+  fetchSelectedProductsAsync,
+} from "../productSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { addItemToCartAsync } from "../../cart/cartSlice";
@@ -70,7 +73,9 @@ const ProductDetails = () => {
   const navigate = useNavigate();
   const params = useParams();
   const dispatch = useDispatch();
-  const selectedProduct = useSelector((state) => state.product.selectedProduct);
+  const selectedProduct = useSelector(
+    (state) => state?.product?.mySelectedProduct
+  );
   const user = useSelector((state) => state.auth.user);
   const carts = useSelector((state) => state.cart.items);
 
@@ -78,16 +83,18 @@ const ProductDetails = () => {
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
 
   useEffect(() => {
-    dispatch(fetchSelectedProductsAsync(params.id));
-  }, [dispatch, params.id]);
+    dispatch(fetchMySelectedProductsAsync(params.productId));
+  }, [dispatch, params.productId]);
 
-  const productFound = carts?.some((cart) => cart?.product_id === selectedProduct?.id);
+  const productFound = carts?.some(
+    (cart) => cart?.product_id === selectedProduct?.id
+  );
 
   const handleAddToCartClick = async (e) => {
     e.preventDefault();
     const userId = user?._id;
     const cartItem = { ...selectedProduct, quantity: 1, user_id: userId };
-    cartItem.product_id = cartItem.id
+    cartItem.product_id = cartItem.id;
     delete cartItem["id"];
 
     if (user && !productFound) {
@@ -148,7 +155,7 @@ const ProductDetails = () => {
                 aria-current="page"
                 className="font-medium text-gray-500 hover:text-gray-600"
               >
-                {selectedProduct?.title}
+                {selectedProduct?.product_name}
               </a>
             </li>
           </ol>
@@ -158,41 +165,47 @@ const ProductDetails = () => {
         <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
           <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
             <img
-              src={selectedProduct?.images[0]}
-              alt={selectedProduct?.title}
+              src={`${process.env.REACT_APP_API}/${selectedProduct?.images[0]?.location}`}
+              alt={selectedProduct?.product_name}
               className="h-full w-full object-cover object-center"
             />
           </div>
           <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-            <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+            {selectedProduct?.images[1] && (
+              <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+                <img
+                  src={`${process.env.REACT_APP_API}/${selectedProduct?.images[1]?.location}`}
+                  alt={selectedProduct?.product_name}
+                  className="h-full w-full object-cover object-center"
+                />
+              </div>
+            )}
+            {selectedProduct?.images[2] && (
+              <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+                <img
+                  src={`${process.env.REACT_APP_API}/${selectedProduct?.images[2]?.location}`}
+                  alt={selectedProduct?.product_name}
+                  className="h-full w-full object-cover object-center"
+                />
+              </div>
+            )}
+          </div>
+          {selectedProduct?.images[3] && (
+            <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
               <img
-                src={selectedProduct?.images[1]}
-                alt={selectedProduct?.title}
+                src={`${process.env.REACT_APP_API}/${selectedProduct?.images[3]?.location}`}
+                alt={selectedProduct?.product_name}
                 className="h-full w-full object-cover object-center"
               />
             </div>
-            <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-              <img
-                src={selectedProduct?.images[2]}
-                alt={selectedProduct?.title}
-                className="h-full w-full object-cover object-center"
-              />
-            </div>
-          </div>
-          <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-            <img
-              src={selectedProduct?.images[3]}
-              alt={selectedProduct?.title}
-              className="h-full w-full object-cover object-center"
-            />
-          </div>
+          )}
         </div>
 
         {/* Product info */}
         <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-              {selectedProduct?.title}
+              {selectedProduct?.product_name}
             </h1>
           </div>
 
@@ -212,7 +225,7 @@ const ProductDetails = () => {
                     <StarIcon
                       key={rating}
                       className={classNames(
-                        selectedProduct?.rating > rating
+                        selectedProduct?.rating || 3.5 > rating
                           ? "text-gray-900"
                           : "text-gray-200",
                         "h-5 w-5 flex-shrink-0"
@@ -222,7 +235,7 @@ const ProductDetails = () => {
                   ))}
                 </div>
                 <p className="sr-only">
-                  {selectedProduct?.rating} out of 5 stars
+                  {selectedProduct?.rating || 4.5} out of 5 stars
                 </p>
                 <a
                   href={reviews.href}

@@ -34,9 +34,9 @@ const Wishlist = () => {
         <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8">
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-4">
             {wishlistItems.loading && <Loader />}
-            {!wishlistItems.loading && wishlistItems.error ? (
+            {/* {!wishlistItems.loading && wishlistItems.error ? (
               <p>Error: {wishlistItems.error}</p>
-            ) : null}
+            ) : null} */}
             {!wishlistItems.loading && wishlistItems?.list ? (
               wishlistItems?.list?.products?.map((product) => (
                 <div key={product._id} className="relative">

@@ -78,16 +78,16 @@ export const fetchAllProductsByFilters = async (filter, sort, pagination) => {
   const filteredProductsAPI = `/api/v1/product/get-filtered-products?${paginationQueryParams}&${filterQueryParams}&${sortingQueryParams}`;
 
   try {
-    const {data} = await axios.get(filteredProductsAPI);
-    const {success, message} = data
-    if(success){
-      toast.success(message)
-      return data
+    const { data } = await axios.get(filteredProductsAPI);
+    const { success, message } = data;
+    if (success) {
+      toast.success(message);
+      return data;
     }
   } catch (error) {
-    toast.error(error.message)
+    toast.error(error.message);
     console.error("Error fetching filtered products:", error);
-    throw new Error({success: false, error:error.message});
+    throw new Error({ success: false, error: error.message });
   }
 };
 
@@ -156,6 +156,36 @@ export const fetchSelectedProduct = async (id) => {
   const response = await axios.get(URL);
   const product = response.data;
   return product;
+};
+
+//Backend
+export const fetchMySelectedProduct = async (productId) => {
+  try {
+    const { data } = await axios.get(
+      `/api/v1/product/get-selected-product/${productId}`
+    );
+    const { success, message, selectedProduct } = data;
+    if (success) {
+      toast.success(message);
+      return selectedProduct;
+    } else {
+      return toast.error(message);
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      toast(error?.response?.data?.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      console.error(
+        "Something Went Wrong while fetching the selected product",
+        error
+      );
+      toast.error("Something Went Wrong while fetching the selected product");
+      return { success: false, message: error?.response?.data?.message };
+    }
+  }
 };
 
 //*******sample data ************** */

@@ -721,9 +721,9 @@ function ProductGrid({ products }) {
 
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-4">
             {products.loading && <Loader />}
-            {!products.loading && products.error ? (
+            {/* {!products.loading && products.error ? (
               <p>Error: {products.error}</p>
-            ) : null}
+            ) : null} */}
             {!products.loading && products.myProducts.length
               ? products.myProducts.map((product, index) => (
                   <div key={product._id} className="relative">

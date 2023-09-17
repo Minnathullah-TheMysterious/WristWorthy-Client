@@ -45,7 +45,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/req-password-reset" element={<PassResetPage />} />
-        <Route path="/product-details/:_id" element={<ProductDetailsPage />} />
+        <Route path="/product-details/:productId" element={<ProductDetailsPage />} />
         {/* LoggedIn User Routes */}
         <Route path="/dashboard/user" element={<UserProtectedRoute />}>
           <Route path="cart" element={<CartPage />} />
