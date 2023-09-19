@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {  fetchAllUserOrdersAsync } from "../userSlice";
+import {  fetchUserOrdersAsync } from "../userSlice";
 
 const UserOrders = () => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state?.auth?.user?._id);
   console.log(userId);
-  const orders = useSelector((state) => state?.user?.myOrders?.orders);
+  const orders = useSelector((state) => state?.user?.orders?.orders);
   console.log(orders);
 
   useEffect(() => {
-    dispatch(fetchAllUserOrdersAsync(userId));
+    dispatch(fetchUserOrdersAsync(userId));
   }, [dispatch, userId]);
 
   return (

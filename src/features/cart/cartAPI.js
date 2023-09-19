@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
 import axios from "axios";
 
-export const addMyItemToCart = async (userId, productId) => {
+export const addItemToCart = async (userId, productId) => {
   try {
     const { data } = await axios.post(
       `/api/v1/cart/add-to-cart/${userId}/${productId}`
@@ -56,7 +56,7 @@ export const fetchUserCartItems = async (userId) => {
   }
 };
 
-export const deleteMyUserCartItem = async (userId, productId) => {
+export const deleteUserCartItem = async (userId, productId) => {
   try {
     const { data } = await axios.delete(
       `/api/v1/cart/delete-cart-item/${userId}/${productId}`
@@ -86,7 +86,7 @@ export const deleteMyUserCartItem = async (userId, productId) => {
   }
 };
 
-export const resetMyCart = async (userId) => {
+export const resetCart = async (userId) => {
   try {
     const { data } = await axios.delete(`/api/v1/cart/delete-cart/${userId}`);
     const { success, message } = data;
@@ -113,7 +113,7 @@ export const resetMyCart = async (userId) => {
   }
 };
 
-export const updateMyCartItemQuantity = async (userId, productId, quantity) => {
+export const updateCartItemQuantity = async (userId, productId, quantity) => {
   try {
     const { data } = await axios.put(
       `/api/v1/cart/update-product-quantity/${userId}/${productId}/${quantity}`

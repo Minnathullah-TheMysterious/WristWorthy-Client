@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
 const CartPage = () => {
-  const cartItems = useSelector((state) => state?.cart?.myItems);
+  const cartItems = useSelector((state) => state?.cart?.items);
   const navigate = useNavigate();
   
   const handleCheckoutClick = (e) => {

@@ -3,16 +3,16 @@ import { Select } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  deleteMyUserCartItemAsync,
+  deleteUserCartItemAsync,
   fetchUserCartItemsAsync,
-  updateMyCartItemQuantityAsync,
+  updateCartItemQuantityAsync,
 } from "./cartSlice";
 
 const Cart = ({ btnText, destination }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const userCart = useSelector((state) => state?.cart?.myItems);
+  const userCart = useSelector((state) => state?.cart?.items);
 
   const userId = user?._id;
 
@@ -36,7 +36,7 @@ const Cart = ({ btnText, destination }) => {
     e.preventDefault();
     console.log(userId, productId);
     const deleteItem = dispatch(
-      deleteMyUserCartItemAsync({ userId, productId })
+      deleteUserCartItemAsync({ userId, productId })
     );
     deleteItem
       .then(() => {
@@ -54,9 +54,9 @@ const Cart = ({ btnText, destination }) => {
 
   const handleItemQuantityChange = async (quantity, productId) => {
     const actionResult = await dispatch(
-      updateMyCartItemQuantityAsync({ userId, productId, quantity })
+      updateCartItemQuantityAsync({ userId, productId, quantity })
     );
-    if (updateMyCartItemQuantityAsync.fulfilled.match(actionResult)) {
+    if (updateCartItemQuantityAsync.fulfilled.match(actionResult)) {
       dispatch(fetchUserCartItemsAsync(userId));
     }
   };

@@ -4,21 +4,21 @@ import Cart from "../cart/Cart";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  myPlaceOrderAsync,
+  placeOrderAsync,
   mySetSelectedUserAddress,
 } from "../user/userSlice";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import AddAddressForm from "../user/components/AddAddressForm";
-import { resetMyCartAsync } from "../cart/cartSlice";
+import { resetCartAsync } from "../cart/cartSlice";
 
 const Checkout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user?.userInfo);
-  const cartItems = useSelector((state) => state?.cart?.myItems);
+  const cartItems = useSelector((state) => state?.cart?.items);
   const selectedUserAddress = useSelector(
-    (state) => state?.user?.mySelectedUserAddress
+    (state) => state?.user?.selectedUserAddress
   );
 
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("cash");
@@ -60,7 +60,7 @@ const Checkout = () => {
         });
       } else {
         dispatch(
-          myPlaceOrderAsync({
+          placeOrderAsync({
             userId,
             products,
             totalItems,
@@ -71,7 +71,7 @@ const Checkout = () => {
         )
           .then(() => {
             dispatch(mySetSelectedUserAddress(null));
-            dispatch(resetMyCartAsync(userId));
+            dispatch(resetCartAsync(userId));
             navigate("/dashboard/user/order-success");
             //server: change in stock items
           })

@@ -116,7 +116,7 @@ export const updateUserAddress = async (userId, addressId, addressData) => {
   }
 };
 
-export const myPlaceOrder = async (
+export const placeOrder = async (
   userId,
   products,
   totalItems,
@@ -161,7 +161,7 @@ export const myPlaceOrder = async (
   }
 };
 
-export const fetchAllUserOrders = async (userId) => {
+export const fetchUserOrders = async (userId) => {
   try {
     console.log(userId);
     const { data } = await axios.get(`/api/v1/order/get-user-orders/${userId}`);

@@ -4,19 +4,16 @@ import {
   getUser,
   addUserAddress,
   updateUserAddress,
-  myPlaceOrder,
-  fetchAllUserOrders,
+  placeOrder,
+  fetchUserOrders,
 } from "./userAPI";
 
 const initialState = {
   loading: false,
   userInfo: null,
   selectedUserAddress: null,
-  mySelectedUserAddress: null,
   orders: [],
-  myOrders: [],
   currentOrder: null,
-  myCurrentOrder: null,
   error: null,
 };
 //we may need more info of current order
@@ -80,11 +77,11 @@ export const updateUserAddressAsync = createAsyncThunk(
   }
 );
 
-export const fetchAllUserOrdersAsync = createAsyncThunk(
-  "order/fetchAllUserOrders",
+export const fetchUserOrdersAsync = createAsyncThunk(
+  "order/fetchUserOrders",
   async (userId) => {
     try {
-      const response = await fetchAllUserOrders(userId);
+      const response = await fetchUserOrders(userId);
       if (response.success) {
         console.log(response.orders);
         return response.orders;
@@ -98,8 +95,8 @@ export const fetchAllUserOrdersAsync = createAsyncThunk(
   }
 );
 
-export const myPlaceOrderAsync = createAsyncThunk(
-  "order/myPlaceOrder",
+export const placeOrderAsync = createAsyncThunk(
+  "order/placeOrder",
   async ({
     userId,
     products,
@@ -109,7 +106,7 @@ export const myPlaceOrderAsync = createAsyncThunk(
     selectedPaymentMethod,
   }) => {
     try {
-      const response = await myPlaceOrder(
+      const response = await placeOrder(
         userId,
         products,
         totalItems,
@@ -132,7 +129,7 @@ const userSlice = createSlice({
       state.selectedUserAddress = action.payload;
     },
     mySetSelectedUserAddress: (state, action) => {
-      state.mySelectedUserAddress = action.payload;
+      state.selectedUserAddress = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -187,30 +184,30 @@ const userSlice = createSlice({
         state.userInfo = action.payload;
       })
 
-      .addCase(myPlaceOrderAsync.pending, (state) => {
+      .addCase(placeOrderAsync.pending, (state) => {
         state.loading = true;
       })
-      .addCase(myPlaceOrderAsync.rejected, (state, action) => {
+      .addCase(placeOrderAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(myPlaceOrderAsync.fulfilled, (state, action) => {
+      .addCase(placeOrderAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.myOrders = action.payload;
-        state.myCurrentOrder =
+        state.orders = action.payload;
+        state.currentOrder =
           action?.payload?.orders[action.payload.orders.length - 1];
       })
 
-      .addCase(fetchAllUserOrdersAsync.pending, (state) => {
+      .addCase(fetchUserOrdersAsync.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchAllUserOrdersAsync.rejected, (state, action) => {
+      .addCase(fetchUserOrdersAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "error";
       })
-      .addCase(fetchAllUserOrdersAsync.fulfilled, (state, action) => {
+      .addCase(fetchUserOrdersAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.myOrders = action.payload;
+        state.orders = action.payload;
       });
   },
 });

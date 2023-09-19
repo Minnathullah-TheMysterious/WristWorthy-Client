@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMySelectedProductsAsync } from "../../products/productSlice";
+import { fetchSelectedProductAsync } from "../../products/productSlice";
 import { useParams } from "react-router-dom";
 
 const product = {
@@ -66,13 +66,13 @@ function classNames(...classes) {
 const AdminProductDetails = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  const selectedProduct = useSelector((state) => state.product.mySelectedProduct);
+  const selectedProduct = useSelector((state) => state.product.selectedProduct);
 
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
 
   useEffect(() => {
-    dispatch(fetchMySelectedProductsAsync(params.productId));
+    dispatch(fetchSelectedProductAsync(params.productId));
   }, [dispatch, params.productId]);
 
   return (

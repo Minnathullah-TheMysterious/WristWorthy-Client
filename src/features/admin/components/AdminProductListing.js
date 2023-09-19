@@ -17,8 +17,8 @@ import {
 } from "@heroicons/react/20/solid";
 import {
   fetchAllProductsByFiltersAsync,
-  fetchMyBrandsAsync,
-  fetchMyCategoriesAsync,
+  fetchBrandsAsync,
+  fetchCategoriesAsync,
 } from "../../products/productSlice";
 import { PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN } from "../../../app/constants";
 import Loader from "../../../loaders/Loader";
@@ -40,11 +40,11 @@ const AdminProductListing = () => {
   const [pageNum, setPageNum] = useState(1);
   const [sort, setSort] = useState({});
 
-  const categories = useSelector((state) => state.product.myCategories);
-  const brands = useSelector((state) => state.product.myBrands);
+  const categories = useSelector((state) => state.product.categories);
+  const brands = useSelector((state) => state.product.brands);
   const products = useSelector((state) => state.product);
   const totalProductsCount = useSelector(
-    (state) => state?.product?.totalMyProductsCount
+    (state) => state?.product?.totalProductsCount
   );
   const dispatch = useDispatch();
 
@@ -144,8 +144,8 @@ const AdminProductListing = () => {
   }, [totalProductsCount, sort]);
 
   useEffect(() => {
-    dispatch(fetchMyCategoriesAsync());
-    dispatch(fetchMyBrandsAsync());
+    dispatch(fetchCategoriesAsync());
+    dispatch(fetchBrandsAsync());
   }, [dispatch]);
 
   return (
@@ -717,8 +717,8 @@ function ProductGrid({ products }) {
             {/* {!products.loading && products.error ? (
               <p>Error: {products.error}</p>
             ) : null} */}
-            {!products.loading && products.myProducts.length
-              ? products.myProducts.map((product) => (
+            {!products.loading && products.products.length
+              ? products.products.map((product) => (
                   <div key={product._id} className="group relative ">
                     <Link to={`/dashboard/admin/product-details/${product._id}`}>
                       <div className="border border-solid border-black p-1 rounded-lg">

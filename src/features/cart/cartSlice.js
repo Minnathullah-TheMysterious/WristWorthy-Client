@@ -1,25 +1,24 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
-  addMyItemToCart,
-  deleteMyUserCartItem,
+  addItemToCart,
+  deleteUserCartItem,
   fetchUserCartItems,
-  resetMyCart,
-  updateMyCartItemQuantity,
+  resetCart,
+  updateCartItemQuantity,
 } from "./cartAPI";
 
 const initialState = {
   loading: false,
   items: [],
-  myItems: [],
   error: null,
 };
 
 //backend
-export const addMyItemToCartAsync = createAsyncThunk(
-  "cart/addMyItemToCart",
+export const addItemToCartAsync = createAsyncThunk(
+  "cart/addItemToCart",
   async ({ userId, productId }) => {
     try {
-      const response = await addMyItemToCart(userId, productId);
+      const response = await addItemToCart(userId, productId);
       return response?.cart;
     } catch (error) {
       console.error("Something Went Wrong in Add-to-Cart thunk", error);
@@ -41,11 +40,11 @@ export const fetchUserCartItemsAsync = createAsyncThunk(
 );
 
 //backend
-export const updateMyCartItemQuantityAsync = createAsyncThunk(
-  "cart/updateMyCartItemQuantity",
+export const updateCartItemQuantityAsync = createAsyncThunk(
+  "cart/updateCartItemQuantity",
   async ({ userId, productId, quantity }) => {
     try {
-      const response = await updateMyCartItemQuantity(
+      const response = await updateCartItemQuantity(
         userId,
         productId,
         quantity
@@ -58,12 +57,12 @@ export const updateMyCartItemQuantityAsync = createAsyncThunk(
 );
 
 //backend
-export const deleteMyUserCartItemAsync = createAsyncThunk(
-  "cart/deleteMyUserCartItem",
+export const deleteUserCartItemAsync = createAsyncThunk(
+  "cart/deleteUserCartItem",
   async ({ userId, productId }) => {
     console.log(userId, productId);
     try {
-      const response = await deleteMyUserCartItem(userId, productId);
+      const response = await deleteUserCartItem(userId, productId);
       return response?.cart;
     } catch (error) {
       console.error("Something Went Wrong in fetch-Cart thunk", error);
@@ -72,11 +71,11 @@ export const deleteMyUserCartItemAsync = createAsyncThunk(
 );
 
 //backend
-export const resetMyCartAsync = createAsyncThunk(
-  "cart/resetMyCart",
+export const resetCartAsync = createAsyncThunk(
+  "cart/resetCart",
   async (userId) => {
     try {
-      const response = await resetMyCart(userId);
+      const response = await resetCart(userId);
       if (response) {
         return [];
       }
@@ -92,16 +91,16 @@ const cartSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(addMyItemToCartAsync.pending, (state) => {
+      .addCase(addItemToCartAsync.pending, (state) => {
         state.loading = true;
       })
-      .addCase(addMyItemToCartAsync.rejected, (state, action) => {
+      .addCase(addItemToCartAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(addMyItemToCartAsync.fulfilled, (state, action) => {
+      .addCase(addItemToCartAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.myItems = action.payload;
+        state.items = action.payload;
       })
 
       .addCase(fetchUserCartItemsAsync.pending, (state) => {
@@ -113,43 +112,43 @@ const cartSlice = createSlice({
       })
       .addCase(fetchUserCartItemsAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.myItems = action.payload;
+        state.items = action.payload;
       })
 
-      .addCase(deleteMyUserCartItemAsync.pending, (state) => {
+      .addCase(deleteUserCartItemAsync.pending, (state) => {
         state.loading = true;
       })
-      .addCase(deleteMyUserCartItemAsync.rejected, (state, action) => {
+      .addCase(deleteUserCartItemAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(deleteMyUserCartItemAsync.fulfilled, (state, action) => {
+      .addCase(deleteUserCartItemAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.myItems = action.payload;
+        state.items = action.payload;
       })
 
-      .addCase(resetMyCartAsync.pending, (state) => {
+      .addCase(resetCartAsync.pending, (state) => {
         state.loading = true;
       })
-      .addCase(resetMyCartAsync.rejected, (state, action) => {
+      .addCase(resetCartAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(resetMyCartAsync.fulfilled, (state, action) => {
+      .addCase(resetCartAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.myItems = action.payload;
+        state.items = action.payload;
       })
 
-      .addCase(updateMyCartItemQuantityAsync.pending, (state) => {
+      .addCase(updateCartItemQuantityAsync.pending, (state) => {
         state.loading = true;
       })
-      .addCase(updateMyCartItemQuantityAsync.rejected, (state, action) => {
+      .addCase(updateCartItemQuantityAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(updateMyCartItemQuantityAsync.fulfilled, (state, action) => {
+      .addCase(updateCartItemQuantityAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.myItems = action.payload;
+        state.items = action.payload;
       });
   },
 });

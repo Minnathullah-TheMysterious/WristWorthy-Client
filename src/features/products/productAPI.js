@@ -59,7 +59,7 @@ export const fetchAllProducts = async () => {
   }
 };
 
-export const fetchMyCategories = async () => {
+export const fetchCategories = async () => {
   try {
     const { data } = await axios.get("/api/v1/category/get-all-categories");
     console.log(data);
@@ -72,7 +72,7 @@ export const fetchMyCategories = async () => {
   }
 };
 
-export const fetchMyBrands = async () => {
+export const fetchBrands = async () => {
   try {
     const { data } = await axios.get("/api/v1/brand/get-all-brands");
     console.log(data);
@@ -85,7 +85,7 @@ export const fetchMyBrands = async () => {
   }
 };
 
-export const fetchMySelectedProduct = async (productId) => {
+export const fetchSelectedProduct = async (productId) => {
   try {
     const { data } = await axios.get(
       `/api/v1/product/get-selected-product/${productId}`

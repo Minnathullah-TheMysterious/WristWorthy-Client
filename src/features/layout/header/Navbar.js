@@ -37,7 +37,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state?.auth?.user);
-  const cart = useSelector((state) => state?.cart?.myItems);
+  const cart = useSelector((state) => state?.cart?.items);
 
   const handleLogout = () => {
     localStorage.removeItem("user");

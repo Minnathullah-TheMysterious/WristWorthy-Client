@@ -5,8 +5,8 @@ import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
   fetchAllProductsByFiltersAsync,
-  fetchMyBrandsAsync,
-  fetchMyCategoriesAsync,
+  fetchBrandsAsync,
+  fetchCategoriesAsync,
 } from "../productSlice";
 import {
   ChevronLeftIcon,
@@ -43,11 +43,11 @@ const ProductListing = () => {
   const [pageNum, setPageNum] = useState(1);
   const [sort, setSort] = useState({});
 
-  const categories = useSelector((state) => state?.product?.myCategories);
-  const brands = useSelector((state) => state?.product?.myBrands);
+  const categories = useSelector((state) => state?.product?.categories);
+  const brands = useSelector((state) => state?.product?.brands);
   const products = useSelector((state) => state?.product);
   const totalProductsCount = useSelector(
-    (state) => state?.product?.totalMyProductsCount
+    (state) => state?.product?.totalProductsCount
   );
   const dispatch = useDispatch();
 
@@ -146,8 +146,8 @@ const ProductListing = () => {
   }, [totalProductsCount, sort]);
 
   useEffect(() => {
-    dispatch(fetchMyCategoriesAsync());
-    dispatch(fetchMyBrandsAsync());
+    dispatch(fetchCategoriesAsync());
+    dispatch(fetchBrandsAsync());
   }, [dispatch]);
 
   return (
@@ -713,8 +713,8 @@ function ProductGrid({ products }) {
             {/* {!products.loading && products.error ? (
               <p>Error: {products.error}</p>
             ) : null} */}
-            {!products.loading && products.myProducts.length
-              ? products.myProducts.map((product) => (
+            {!products.loading && products.products.length
+              ? products.products.map((product) => (
                   <div key={product._id} className="relative">
                     <Link to={`/product-details/${product._id}`}>
                       <div className="group border-2 border-solid border-black p-[1px] rounded-lg">

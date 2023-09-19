@@ -4,11 +4,11 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchMySelectedProductsAsync,
+  fetchSelectedProductAsync,
 } from "../productSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { addMyItemToCartAsync } from "../../cart/cartSlice";
+import { addItemToCartAsync } from "../../cart/cartSlice";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -73,10 +73,10 @@ const ProductDetails = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const selectedProduct = useSelector(
-    (state) => state?.product?.mySelectedProduct
+    (state) => state?.product?.selectedProduct
   );
   const user = useSelector((state) => state?.auth?.user);
-  const carts = useSelector((state) => state?.cart?.myItems);
+  const carts = useSelector((state) => state?.cart?.items);
 
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
@@ -85,7 +85,7 @@ const ProductDetails = () => {
   const productId = selectedProduct?._id;
 
   useEffect(() => {
-    dispatch(fetchMySelectedProductsAsync(params.productId));
+    dispatch(fetchSelectedProductAsync(params.productId));
   }, [dispatch, params.productId, userId]);
 
   const productFound = carts?.items?.some(
@@ -96,7 +96,7 @@ const ProductDetails = () => {
     e.preventDefault();
 
     if (user && !productFound) {
-      dispatch(addMyItemToCartAsync({ userId, productId }))
+      dispatch(addItemToCartAsync({ userId, productId }))
         .then(() => {
           navigate("/dashboard/user/cart");
         })

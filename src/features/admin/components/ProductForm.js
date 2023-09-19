@@ -2,19 +2,19 @@ import React, { useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createProductAsync,
-  fetchMyBrandsAsync,
-  fetchMyCategoriesAsync,
+  fetchBrandsAsync,
+  fetchCategoriesAsync,
 } from "../../products/productSlice";
 
 const ProductForm = () => {
   const dispatchAsync = useDispatch();
 
-  const myBrands = useSelector((state) => state?.product?.myBrands);
-  const myCategories = useSelector((state) => state?.product?.myCategories);
+  const brands = useSelector((state) => state?.product?.brands);
+  const categories = useSelector((state) => state?.product?.categories);
 
   useEffect(() => {
-    dispatchAsync(fetchMyBrandsAsync());
-    dispatchAsync(fetchMyCategoriesAsync());
+    dispatchAsync(fetchBrandsAsync());
+    dispatchAsync(fetchCategoriesAsync());
   }, [dispatchAsync]);
 
   const initialState = {
@@ -104,7 +104,7 @@ const ProductForm = () => {
                     value={productData.brand}
                   >
                     <option className="text-center">--Select Brand--</option>
-                    {myBrands?.map((myBrand) => (
+                    {brands?.map((myBrand) => (
                       <option key={myBrand._id} value={myBrand._id}>
                         {myBrand.brand_name}
                       </option>
@@ -132,7 +132,7 @@ const ProductForm = () => {
                     value={productData.category}
                   >
                     <option className="text-center">--Select Category--</option>
-                    {myCategories?.map((myCategory) => (
+                    {categories?.map((myCategory) => (
                       <option key={myCategory._id} value={myCategory._id}>
                         {myCategory.category_name}
                       </option>
