@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedUserAddress } from "../../user/userSlice";
+import { mySetSelectedUserAddress, setSelectedUserAddress } from "../../user/userSlice";
 
 const UserAddresses = () => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const UserAddresses = () => {
     try {
       const selectedAddressIndex = e?.target?.value;
       dispatch(
-        setSelectedUserAddress(
+        mySetSelectedUserAddress(
           userAddresses && userAddresses[selectedAddressIndex]
         )
       );

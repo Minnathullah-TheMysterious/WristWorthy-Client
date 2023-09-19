@@ -2005,5 +2005,6 @@ const carts = [
 // findObject = {brand:'Apple'}
 // console.log(findObject)
 
-
-
+/////////////////////
+const array = [{a:1, b:2}, {a:3, b:4}]
+console.log(array.map(item=>item.a))

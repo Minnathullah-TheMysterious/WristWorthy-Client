@@ -73,10 +73,10 @@ export const fetchUserCartItems = async (userId) => {
     const { data } = await axios.get(`/api/v1/cart/get-cart-items/${userId}`);
     const { success, message } = data;
     if (success) {
-      toast.success(message);
+      // toast.success(message);
       return data;
     } else {
-      toast.error(message);
+      // toast.error(message);
       return { success, message };
     }
   } catch (error) {
@@ -86,8 +86,11 @@ export const fetchUserCartItems = async (userId) => {
       });
     } else {
       toast.error(error?.response?.data?.message);
+      console.error(
+        "Something Went Wrong While fetching user cart items - Client",
+        error
+      );
     }
-    console.error("Something Went Wrong While Registering - Client", error);
   }
 };
 
@@ -108,14 +111,16 @@ export const deleteUserCartItem = async (cartId) => {
 //backend
 export const deleteMyUserCartItem = async (userId, productId) => {
   try {
-    const {data} = await axios.delete(`/api/v1/cart/delete-cart-item/${userId}/${productId}`)
-    const {success, message}= data
-    if(success){
-      toast.success(message)
-      return data
-    }else{
-      toast.error(message)
-      return {success, message}
+    const { data } = await axios.delete(
+      `/api/v1/cart/delete-cart-item/${userId}/${productId}`
+    );
+    const { success, message } = data;
+    if (success) {
+      toast.success(message);
+      return data;
+    } else {
+      toast.error(message);
+      return { success, message };
     }
   } catch (error) {
     if (error.response && error.response.status === 400) {
@@ -126,7 +131,10 @@ export const deleteMyUserCartItem = async (userId, productId) => {
       toast.error(error?.response?.data?.message);
     } else {
       toast.error(error?.response?.data?.message);
-      console.error("Something Went Wrong While deleting the cart Item - Client", error);
+      console.error(
+        "Something Went Wrong While deleting the cart Item - Client",
+        error
+      );
     }
   }
 };
@@ -142,6 +150,34 @@ export const resetCart = async (uId) => {
   } catch (error) {
     toast.error("Something Went Wrong In Deleting The Cart");
     console.error("Something Went Wrong In Deleting The Cart", error);
+  }
+};
+
+//backend
+export const resetMyCart = async (userId) => {
+  try {
+    const { data } = await axios.delete(`/api/v1/cart/delete-cart/${userId}`);
+    const { success, message } = data;
+    if (success) {
+      toast.success(message);
+      return success;
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 400) {
+      toast(error?.response?.data?.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
+    }else if(error.response && error.response.status === 404){
+      toast(error?.response?.data?.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
+    } else {
+      toast.error(error?.response?.data?.message);
+      console.error(
+        "Something Went Wrong While deleting the user cart - Client",
+        error
+      );
+    }
   }
 };
 
@@ -191,7 +227,10 @@ export const updateMyCartItemQuantity = async (userId, productId, quantity) => {
       toast.error(error?.response?.data?.message);
     } else {
       toast.error(error?.response?.data?.message);
-      console.error("Something Went Wrong While updating the quantity - Client", error);
+      console.error(
+        "Something Went Wrong While updating the quantity - Client",
+        error
+      );
     }
   }
 };

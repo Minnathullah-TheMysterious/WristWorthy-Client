@@ -696,10 +696,6 @@ function ProductGrid({ products }) {
   const navigate = useNavigate();
   const userId = useSelector((state) => state?.auth?.user?._id);
 
-  useEffect(() => {
-    userId && dispatch(fetchWishlistAsync(userId));
-  }, [dispatch, userId]);
-
   const handleAddToWishlistClick = (productId) => {
     if (userId) {
       dispatch(addToWishlistAsync({ userId, productId }));

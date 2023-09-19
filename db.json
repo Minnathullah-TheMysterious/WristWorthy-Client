@@ -2581,102 +2581,7 @@
       "checked": false
     }
   ],
-  "carts": [
-    {
-      "title": "Key Holder",
-      "description": "Attractive DesignMetallic materialFour key hooksReliable & DurablePremium Quality",
-      "price": 30,
-      "discountPercentage": 2.92,
-      "rating": 4.92,
-      "stock": 54,
-      "brand": "Golden",
-      "category": "home-decoration",
-      "thumbnail": "https://i.dummyjson.com/data/products/30/thumbnail.jpg",
-      "images": [
-        "https://i.dummyjson.com/data/products/30/1.jpg",
-        "https://i.dummyjson.com/data/products/30/2.jpg",
-        "https://i.dummyjson.com/data/products/30/3.jpg",
-        "https://i.dummyjson.com/data/products/30/thumbnail.jpg"
-      ],
-      "quantity": 1,
-      "user_id": "64d9cca1fd210ef389e268a0",
-      "product_id": 30,
-      "id": 1
-    },
-    {
-      "thumbnail": {
-        "location": "public\\product\\images\\thumbnail-1694915224807-750002355-Tree Oil 30ml_thumbnail.jpg",
-        "contentType": "image/jpeg",
-        "originalname": "Tree Oil 30ml_thumbnail.jpg",
-        "size": 23819
-      },
-      "_id": "65065a9993e70066374ebc99",
-      "product_name": "Tree Oil 50ml",
-      "slug": "tree-oil-50ml",
-      "brand": "65065987bcfb06a078524156",
-      "category": "6505d5dba306b1351d0fbe93",
-      "description": "Tea tree oil contains a number of compounds, including terpinen-4-ol, that have been shown to kill certain bacteria,",
-      "stock": 52,
-      "price": 12,
-      "discountPercentage": 4.09,
-      "images": [
-        {
-          "location": "public\\product\\images\\image_1-1694915224808-681098119-Tree Oil 30ml_image1.jpg",
-          "contentType": "image/jpeg",
-          "originalname": "Tree Oil 30ml_image1.jpg",
-          "size": 10218,
-          "_id": "65065a9993e70066374ebc9a"
-        },
-        {
-          "location": "public\\product\\images\\image_2-1694915224808-487940320-Tree Oil 30ml_image2.jpg",
-          "contentType": "image/jpeg",
-          "originalname": "Tree Oil 30ml_image2.jpg",
-          "size": 15592,
-          "_id": "65065a9993e70066374ebc9b"
-        },
-        {
-          "location": "public\\product\\images\\image_3-1694915224813-324509085-Tree Oil 30ml_image3.jpg",
-          "contentType": "image/jpeg",
-          "originalname": "Tree Oil 30ml_image3.jpg",
-          "size": 15853,
-          "_id": "65065a9993e70066374ebc9c"
-        },
-        {
-          "location": "public\\product\\images\\image_4-1694915224814-680451692-Tree Oil 30ml_thumbnail.jpg",
-          "contentType": "image/jpeg",
-          "originalname": "Tree Oil 30ml_thumbnail.jpg",
-          "size": 23819,
-          "_id": "65065a9993e70066374ebc9d"
-        }
-      ],
-      "createdAt": "2023-09-17T01:47:05.194Z",
-      "updatedAt": "2023-09-17T01:47:05.194Z",
-      "__v": 0,
-      "quantity": 1,
-      "user_id": "64d9cca1fd210ef389e268a0",
-      "id": 2
-    },
-    {
-      "userId": "64d9cca1fd210ef389e268a0",
-      "productId": "65065a9993e70066374ebc99",
-      "id": 3
-    },
-    {
-      "userId": "64d9cca1fd210ef389e268a0",
-      "productId": "65013f3a4f41af7936475ac8",
-      "id": 4
-    },
-    {
-      "userId": "64d9cca1fd210ef389e268a0",
-      "productId": "65013f3a4f41af7936475ac8",
-      "id": 5
-    },
-    {
-      "userId": "64d9cca1fd210ef389e268a0",
-      "productId": "65013f3a4f41af7936475ac8",
-      "id": 6
-    }
-  ],
+  "carts": [],
   "orders": [
     {
       "user_id": "64d9cca1fd210ef389e268a0",
@@ -3568,6 +3473,158 @@
         "status": "Pending"
       },
       "id": 12
+    },
+    {
+      "user_id": "64d9cca1fd210ef389e268a0",
+      "order": {
+        "items": [
+          {
+            "title": "Key Holder",
+            "description": "Attractive DesignMetallic materialFour key hooksReliable & DurablePremium Quality",
+            "price": 30,
+            "discountPercentage": 2.92,
+            "rating": 4.92,
+            "stock": 54,
+            "brand": "Golden",
+            "category": "home-decoration",
+            "thumbnail": "https://i.dummyjson.com/data/products/30/thumbnail.jpg",
+            "images": [
+              "https://i.dummyjson.com/data/products/30/1.jpg",
+              "https://i.dummyjson.com/data/products/30/2.jpg",
+              "https://i.dummyjson.com/data/products/30/3.jpg",
+              "https://i.dummyjson.com/data/products/30/thumbnail.jpg"
+            ],
+            "quantity": 1,
+            "user_id": "64d9cca1fd210ef389e268a0",
+            "product_id": 30,
+            "id": 1
+          },
+          {
+            "thumbnail": {
+              "location": "public\\product\\images\\thumbnail-1694915224807-750002355-Tree Oil 30ml_thumbnail.jpg",
+              "contentType": "image/jpeg",
+              "originalname": "Tree Oil 30ml_thumbnail.jpg",
+              "size": 23819
+            },
+            "_id": "65065a9993e70066374ebc99",
+            "product_name": "Tree Oil 50ml",
+            "slug": "tree-oil-50ml",
+            "brand": "65065987bcfb06a078524156",
+            "category": "6505d5dba306b1351d0fbe93",
+            "description": "Tea tree oil contains a number of compounds, including terpinen-4-ol, that have been shown to kill certain bacteria,",
+            "stock": 52,
+            "price": 12,
+            "discountPercentage": 4.09,
+            "images": [
+              {
+                "location": "public\\product\\images\\image_1-1694915224808-681098119-Tree Oil 30ml_image1.jpg",
+                "contentType": "image/jpeg",
+                "originalname": "Tree Oil 30ml_image1.jpg",
+                "size": 10218,
+                "_id": "65065a9993e70066374ebc9a"
+              },
+              {
+                "location": "public\\product\\images\\image_2-1694915224808-487940320-Tree Oil 30ml_image2.jpg",
+                "contentType": "image/jpeg",
+                "originalname": "Tree Oil 30ml_image2.jpg",
+                "size": 15592,
+                "_id": "65065a9993e70066374ebc9b"
+              },
+              {
+                "location": "public\\product\\images\\image_3-1694915224813-324509085-Tree Oil 30ml_image3.jpg",
+                "contentType": "image/jpeg",
+                "originalname": "Tree Oil 30ml_image3.jpg",
+                "size": 15853,
+                "_id": "65065a9993e70066374ebc9c"
+              },
+              {
+                "location": "public\\product\\images\\image_4-1694915224814-680451692-Tree Oil 30ml_thumbnail.jpg",
+                "contentType": "image/jpeg",
+                "originalname": "Tree Oil 30ml_thumbnail.jpg",
+                "size": 23819,
+                "_id": "65065a9993e70066374ebc9d"
+              }
+            ],
+            "createdAt": "2023-09-17T01:47:05.194Z",
+            "updatedAt": "2023-09-17T01:47:05.194Z",
+            "__v": 0,
+            "quantity": 1,
+            "user_id": "64d9cca1fd210ef389e268a0",
+            "id": 2
+          }
+        ],
+        "user": {
+          "_id": "64d9cca1fd210ef389e268a0",
+          "user_name": "Minnathullah Rahmani",
+          "email": "minnathullahmohammed7337@gmail.com",
+          "password": "$2b$12$.S/lKFIz5blsTWI5VF05tuS0DsOiH4vkf107nc6HJiCBbPTz17j9K",
+          "phone": "+919652336445",
+          "createdAt": "2023-08-14T06:41:37.807Z",
+          "updatedAt": "2023-09-06T13:39:02.844Z",
+          "otpSecret": "$2b$12$FhKvcOo5UpCHrg.XK68EOe4L0n7FJe8WtD88ANzndACkSLNGI0wtq",
+          "__v": 21,
+          "addresses": [
+            {
+              "firstName": "Mohammed",
+              "lastName": "Rehan",
+              "emailAddress": "rehan@rehan.com",
+              "mobileNumber": "+917337234824",
+              "altMobileNumber": "+919652336445",
+              "country": "india",
+              "street": "Tappa Khana Chaurasta",
+              "city": "Hyderabad",
+              "state": "Telangana",
+              "pinCode": 506367,
+              "dist": "Siddipet",
+              "mandal": "Maddur",
+              "village": "Maddur",
+              "_id": "64f1579c2239b552d711a8b4"
+            },
+            {
+              "firstName": "Arbaz",
+              "lastName": "Ali",
+              "emailAddress": "arbaz@ali.com",
+              "mobileNumber": "+916281089096",
+              "altMobileNumber": "",
+              "country": "india",
+              "street": "5-16, Near Royal Function Hall",
+              "city": "Hyderabad",
+              "state": "Telangana",
+              "pinCode": 506367,
+              "dist": "Siddipet",
+              "mandal": "Maddur",
+              "village": "Maddur",
+              "_id": "64f6d267623ed710b3005a10"
+            }
+          ],
+          "role": "user"
+        },
+        "totalItems": 2,
+        "totalAmount": 42,
+        "selectedUserAddress": {
+          "firstName": "Mohammed",
+          "lastName": "Rehan",
+          "emailAddress": "rehan@rehan.com",
+          "mobileNumber": "+917337234824",
+          "altMobileNumber": "+919652336445",
+          "country": "india",
+          "street": "Tappa Khana Chaurasta",
+          "city": "Hyderabad",
+          "state": "Telangana",
+          "pinCode": 506367,
+          "dist": "Siddipet",
+          "mandal": "Maddur",
+          "village": "Maddur",
+          "_id": "64f1579c2239b552d711a8b4"
+        },
+        "selectedPaymentMethod": "cash",
+        "status": "Pending"
+      },
+      "id": 13
+    },
+    {
+      "user_id": "64d9cca1fd210ef389e268a0",
+      "id": 14
     }
   ],
   "wishLists": [

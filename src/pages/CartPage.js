@@ -6,12 +6,12 @@ import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
 const CartPage = () => {
-  const cartItems = useSelector((state) => state?.cart?.items);
+  const cartItems = useSelector((state) => state?.cart?.myItems);
   const navigate = useNavigate();
   
   const handleCheckoutClick = (e) => {
     e.preventDefault();
-    if (!cartItems.length) {
+    if (!cartItems?.items?.length) {
       return toast("Your Cart Is Empty, Please Add Item To Checkout", {
         className: "font-serif bg-blue-900 text-white",
       });

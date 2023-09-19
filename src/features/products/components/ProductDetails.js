@@ -87,7 +87,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     dispatch(fetchMySelectedProductsAsync(params.productId));
-    dispatch(fetchUserCartItemsAsync(userId))
+    // dispatch(fetchUserCartItemsAsync(userId))
   }, [dispatch, params.productId, userId]);
 
   const productFound = carts?.items?.some(
@@ -100,7 +100,6 @@ const ProductDetails = () => {
     if (user && !productFound) {
       dispatch(addMyItemToCartAsync({ userId, productId }))
         .then(() => {
-          toast.success("Item Added To Cart");
           navigate("/dashboard/user/cart");
         })
         .catch((error) => {

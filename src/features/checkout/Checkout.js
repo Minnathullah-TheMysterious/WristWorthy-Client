@@ -3,22 +3,28 @@ import UserAddresses from "../user/components/UserAddresses";
 import Cart from "../cart/Cart";
 import { useDispatch, useSelector } from "react-redux";
 
-import { placeOrderAsync, setSelectedUserAddress } from "../user/userSlice";
+import {
+  myPlaceOrderAsync,
+  mySetSelectedUserAddress,
+  placeOrderAsync,
+  setSelectedUserAddress,
+} from "../user/userSlice";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import AddAddressForm from "../user/components/AddAddressForm";
+import { resetMyCartAsync } from "../cart/cartSlice";
 
 const Checkout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user?.userInfo);
-  const cartItems = useSelector((state) => state?.cart?.items);
+  const cartItems = useSelector((state) => state?.cart?.myItems);
   const selectedUserAddress = useSelector(
-    (state) => state?.user?.selectedUserAddress
+    (state) => state?.user?.mySelectedUserAddress
   );
 
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("cash");
-  const [, setIsAddAddressEnabled] = useState("cash");
+  const [, setIsAddAddressEnabled] = useState();
 
   const userId = user?._id;
 
@@ -27,25 +33,22 @@ const Checkout = () => {
     setSelectedPaymentMethod(e.target.value);
   };
 
-  const totalAmount = cartItems?.reduce(
-    (total, items) => total + items?.price * items?.quantity,
+  const totalAmount = cartItems?.items?.reduce(
+    (total, items) => total + items?.product?.price * items?.quantity,
     0
   );
 
-  const totalItems = cartItems?.reduce(
+  const totalItems = cartItems?.items?.reduce(
     (total, items) => total + items?.quantity,
     0
   );
 
-  const order = {
-    items: cartItems,
-    user,
-    totalItems,
-    totalAmount,
-    selectedUserAddress,
-    selectedPaymentMethod,
-    status: "Pending", //other status can be delivered, shipped, received. will be managed by the seller
-  };
+  const products = cartItems?.items?.map((item) => ({
+    product_id: item?.product?._id,
+    quantity: item?.quantity,
+  }));
+  //an array of products with product _id and its quantity
+  console.log(products)
 
   const handlePlaceOrderClick = (e) => {
     e.preventDefault();
@@ -54,14 +57,24 @@ const Checkout = () => {
         return toast("Please Choose An Address For Shipping", {
           className: "font-serif bg-blue-900 text-white",
         });
-      } else if (!cartItems.length) {
+      } else if (!cartItems?.items?.length) {
         return toast("Your Cart Is Empty, Please Add Items To Place Order", {
           className: "font-serif bg-blue-900 text-white",
         });
       } else {
-        dispatch(placeOrderAsync({ userId, order }))
+        dispatch(
+          myPlaceOrderAsync({
+            userId,
+            products,
+            totalItems,
+            totalAmount,
+            selectedUserAddress,
+            selectedPaymentMethod,
+          })
+        )
           .then(() => {
-            dispatch(setSelectedUserAddress(null));
+            dispatch(mySetSelectedUserAddress(null));
+            dispatch(resetMyCartAsync(userId));
             navigate("/dashboard/user/order-success");
             //server: change in stock items
           })

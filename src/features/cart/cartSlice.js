@@ -7,6 +7,7 @@ import {
   fetchUserCart,
   fetchUserCartItems,
   resetCart,
+  resetMyCart,
   updateCartItemQuantity,
   updateMyCartItemQuantity,
 } from "./cartAPI";
@@ -113,8 +114,8 @@ export const deleteUserCartItemAsync = createAsyncThunk(
 //backend
 export const deleteMyUserCartItemAsync = createAsyncThunk(
   "cart/deleteMyUserCartItem",
-  async ({userId, productId}) => {
-    console.log(userId, productId)
+  async ({ userId, productId }) => {
+    console.log(userId, productId);
     try {
       const response = await deleteMyUserCartItem(userId, productId);
       return response?.cart;
@@ -130,6 +131,21 @@ export const resetCartAsync = createAsyncThunk(
     try {
       const response = await resetCart(uId);
       return response;
+    } catch (error) {
+      console.error("Something Went Wrong in fetch-Cart thunk", error);
+    }
+  }
+);
+
+//backend
+export const resetMyCartAsync = createAsyncThunk(
+  "cart/resetMyCart",
+  async (userId) => {
+    try {
+      const response = await resetMyCart(userId);
+      if (response) {
+        return [];
+      }
     } catch (error) {
       console.error("Something Went Wrong in fetch-Cart thunk", error);
     }
@@ -215,6 +231,18 @@ const cartSlice = createSlice({
         state.items = state?.items?.filter(
           (item) => item?.id !== action.payload
         );
+      })
+
+      .addCase(resetMyCartAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(resetMyCartAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(resetMyCartAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.myItems = action.payload;
       })
 
       .addCase(resetCartAsync.pending, (state) => {

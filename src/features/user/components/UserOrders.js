@@ -1,40 +1,41 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllOrdersAsync } from "../userSlice";
+import { fetchAllOrdersAsync, fetchAllUserOrdersAsync } from "../userSlice";
 
 const UserOrders = () => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state?.auth?.user?._id);
-  const orders = useSelector((state) => state?.user?.orders);
+  console.log(userId);
+  const orders = useSelector((state) => state?.user?.myOrders?.orders);
   console.log(orders);
 
   useEffect(() => {
-    dispatch(fetchAllOrdersAsync(userId));
+    dispatch(fetchAllUserOrdersAsync(userId));
   }, [dispatch, userId]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10 bg-white py-4 space-y-12">
-      {orders?.map((item) => (
-        <div key={item?.id}>
+      {orders?.map((order) => (
+        <div key={order?._id}>
           <h1 className="text-2xl font-bold font-serif text-gray-900 shadow-cyan-800 shadow  inline border-none py-1 px-4">
-            Order Id: {item?.id}
+            Order Id: {order?._id}
           </h1>
           <p className="text-lg font-medium font-serif text-gray-900">
             Order Status:{" "}
-            <span className="text-green-700">{item?.order?.status}</span>
+            <span className="text-green-700">{order?.status}</span>
           </p>
 
           <div className="bg-gray-200 border-t border-gray-200 px-4 py-6 sm:px-6">
             <div className="flow-root">
               <ul className="-my-6 divide-y divide-gray-200">
-                {item?.order?.items?.map((order) => (
-                  <li key={order?.id} className="flex py-6">
-                    <Link to={`/product-details/${order?.product_id}`}>
+                {order?.products?.map((product) => (
+                  <li key={product?._id} className="flex py-6">
+                    <Link to={`/product-details/${product?.product_id?._id}`}>
                       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 hover:opacity-80 active:opacity-100">
                         <img
-                          src={order?.thumbnail}
-                          alt={order?.title}
+                          src={`${process.env.REACT_APP_API}/${product?.product_id?.thumbnail?.location}`}
+                          alt={product?.product_id?.product_name}
                           className="h-full w-full object-cover object-center"
                         />
                       </div>
@@ -43,19 +44,21 @@ const UserOrders = () => {
                     <div className="ml-4 flex flex-1 flex-col">
                       <div>
                         <div className="flex justify-between text-base font-medium text-gray-900">
-                          <Link to={`/product-details/${order?.product_id}`}>
+                          <Link
+                            to={`/product-details/${product?.product_id?._id}`}
+                          >
                             <h3 className="text-md text-blue-700 shadow-md px-4 py-1 hover:shadow active:shadow-md">
-                              {order?.title}
+                              {product?.product_id?.product_name}
                             </h3>
                           </Link>
-                          <p className="ml-4">${order?.price}</p>
+                          <p className="ml-4">${product?.product_id?.price}</p>
                         </div>
                         <p className="mt-1 text-sm text-gray-500">
-                          {order?.color || "Magenta"}
+                          {product?.product_id?.color || "Magenta"}
                         </p>
                         <p className="mt-1 text-sm text-gray-500">
                           Quantity:{" "}
-                          <span className="font-bold">{order?.quantity}</span>
+                          <span className="font-bold">{product?.quantity}</span>
                         </p>
                       </div>
                     </div>
@@ -69,15 +72,15 @@ const UserOrders = () => {
           <div className="bg-gray-50 border-t border-gray-200 px-4 py-6 sm:px-6">
             <div className="flex justify-between text-base font-medium text-gray-900">
               <p>Subtotal</p>
-              <p>${item?.order?.totalAmount}</p>
+              <p>${order?.totalAmount}</p>
             </div>
             <div className="flex justify-between text-base font-medium text-gray-900">
               <p>Total Items</p>
-              <p>{item?.order?.totalItems}</p>
+              <p>{order?.totalItems}</p>
             </div>
             <div className="flex justify-between text-base font-medium text-gray-900">
               <p>Payment Method</p>
-              <p>{item?.order?.selectedPaymentMethod}</p>
+              <p>{order?.paymentMethod}</p>
             </div>
           </div>
 
@@ -89,27 +92,27 @@ const UserOrders = () => {
                 <label className="flex justify-between gap-x-6 py-3">
                   <div className="min-w-0 flex-auto">
                     <p className="text-sm font-semibold leading-6 text-gray-900">
-                      {`${item?.order?.selectedUserAddress?.firstName} ${item?.order?.selectedUserAddress?.lastName}`}
+                      {`${order?.shippingAddress?.firstName} ${order?.shippingAddress?.lastName}`}
                     </p>
                     <p className="text-sm font-semibold leading-6 text-gray-900">
-                      {item?.order?.selectedUserAddress?.city}
+                      {order?.shippingAddress?.city}
                     </p>
                     <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                      {item?.order?.selectedUserAddress?.mobileNumber}
+                      {order?.shippingAddress?.mobileNumber}
                     </p>
                   </div>
                   <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
                     <p className="text-sm leading-6 text-gray-900">
-                      {item?.order?.selectedUserAddress?.village}
+                      {order?.shippingAddress?.village}
                     </p>
                     <p className="text-sm leading-6 text-gray-900">
-                      {item?.order?.selectedUserAddress?.dist}
+                      {order?.shippingAddress?.dist}
                     </p>
                     <p className="text-sm leading-6 text-gray-900">
-                      {item?.order?.selectedUserAddress?.state}
+                      {order?.shippingAddress?.state}
                     </p>
                     <p className="text-sm leading-6 text-gray-900">
-                      {item?.order?.selectedUserAddress?.pinCode}
+                      {order?.shippingAddress?.pinCode}
                     </p>
                   </div>
                 </label>

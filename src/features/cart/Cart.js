@@ -44,7 +44,7 @@ const Cart = ({ btnText, destination }) => {
     );
     deleteItem
       .then(() => {
-        if (userCart.length <= 1) {
+        if (userCart.items.length <= 1) {
           navigate("/");
         }
       })

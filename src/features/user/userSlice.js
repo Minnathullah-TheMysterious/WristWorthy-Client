@@ -6,14 +6,19 @@ import {
   placeOrder,
   addUserAddress,
   updateUserAddress,
+  myPlaceOrder,
+  fetchAllUserOrders,
 } from "./userAPI";
 
 const initialState = {
   loading: false,
   userInfo: null,
   selectedUserAddress: null,
+  mySelectedUserAddress: null,
   orders: [],
+  myOrders: [],
   currentOrder: null,
+  myCurrentOrder: null,
   error: null,
 };
 //we may need more info of current order
@@ -89,6 +94,26 @@ export const fetchAllOrdersAsync = createAsyncThunk(
   }
 );
 
+//backend
+export const fetchAllUserOrdersAsync = createAsyncThunk(
+  "order/fetchAllUserOrders",
+  async (userId) => {
+    try {
+      const response = await fetchAllUserOrders(userId);
+      if (response.success) {
+        console.log(response.orders)
+        return response.orders;
+      }
+      else{
+        throw new Error(response.message)
+      }
+    } catch (error) {
+      console.error("Something Went Wrong in place-order-thunk", error);
+      throw new Error(error.message)
+    }
+  }
+);
+
 export const placeOrderAsync = createAsyncThunk(
   "order/placeOrder",
   async ({ userId, order }) => {
@@ -102,12 +127,42 @@ export const placeOrderAsync = createAsyncThunk(
   }
 );
 
+//backend
+export const myPlaceOrderAsync = createAsyncThunk(
+  "order/myPlaceOrder",
+  async ({
+    userId,
+    products,
+    totalItems,
+    totalAmount,
+    selectedUserAddress,
+    selectedPaymentMethod,
+  }) => {
+    try {
+      const response = await myPlaceOrder(
+        userId,
+        products,
+        totalItems,
+        totalAmount,
+        selectedUserAddress,
+        selectedPaymentMethod
+      );
+      return response.orders;
+    } catch (error) {
+      console.error("Something Went Wrong in place-order-thunk", error);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
     setSelectedUserAddress: (state, action) => {
       state.selectedUserAddress = action.payload;
+    },
+    mySetSelectedUserAddress: (state, action) => {
+      state.mySelectedUserAddress = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -162,6 +217,20 @@ const userSlice = createSlice({
         state.userInfo = action.payload;
       })
 
+      .addCase(myPlaceOrderAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(myPlaceOrderAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(myPlaceOrderAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.myOrders = action.payload;
+        state.myCurrentOrder =
+          action?.payload?.orders[action.payload.orders.length - 1];
+      })
+
       .addCase(placeOrderAsync.pending, (state) => {
         state.loading = true;
       })
@@ -173,6 +242,18 @@ const userSlice = createSlice({
         state.loading = false;
         state?.orders?.push(action.payload);
         state.currentOrder = action.payload;
+      })
+
+      .addCase(fetchAllUserOrdersAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAllUserOrdersAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'error';
+      })
+      .addCase(fetchAllUserOrdersAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.myOrders = action.payload;
       })
 
       .addCase(fetchAllOrdersAsync.pending, (state) => {
@@ -189,5 +270,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { setSelectedUserAddress } = userSlice.actions;
+export const { setSelectedUserAddress, mySetSelectedUserAddress } =
+  userSlice.actions;
 export default userSlice.reducer;

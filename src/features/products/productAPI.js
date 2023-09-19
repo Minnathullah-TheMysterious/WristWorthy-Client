@@ -79,9 +79,9 @@ export const fetchAllProductsByFilters = async (filter, sort, pagination) => {
 
   try {
     const { data } = await axios.get(filteredProductsAPI);
-    const { success, message } = data;
+    const { success } = data;
     if (success) {
-      toast.success(message);
+      // toast.success(message);
       return data;
     }
   } catch (error) {
@@ -111,27 +111,7 @@ export const fetchCategories = async () => {
   return response.data;
 };
 
-export const fetchBrands = async () => {
-  const URL = "http://localhost:5000/brands";
-  const response = await axios.get(URL);
-  return response.data;
-};
-
-//Brands are coming from my backend.
-export const fetchMyBrands = async () => {
-  try {
-    const { data } = await axios.get("/api/v1/brand/get-all-brands");
-    console.log(data);
-    return data;
-  } catch (error) {
-    console.error(
-      "Something Went Wrong in fetching the brands - client",
-      error
-    );
-  }
-};
-
-//Categories are coming from my backend.
+//backend.
 export const fetchMyCategories = async () => {
   try {
     const { data } = await axios.get("/api/v1/category/get-all-categories");
@@ -140,6 +120,26 @@ export const fetchMyCategories = async () => {
   } catch (error) {
     console.error(
       "Something Went Wrong in fetching the categories - client",
+      error
+    );
+  }
+};
+
+export const fetchBrands = async () => {
+  const URL = "http://localhost:5000/brands";
+  const response = await axios.get(URL);
+  return response.data;
+};
+
+//backend.
+export const fetchMyBrands = async () => {
+  try {
+    const { data } = await axios.get("/api/v1/brand/get-all-brands");
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error(
+      "Something Went Wrong in fetching the brands - client",
       error
     );
   }
@@ -166,16 +166,15 @@ export const fetchMySelectedProduct = async (productId) => {
     );
     const { success, message, selectedProduct } = data;
     if (success) {
-      toast.success(message);
+      // toast.success(message);
       return selectedProduct;
     } else {
-      return toast.error(message);
+      toast.error(message);
+      return data
     }
   } catch (error) {
     if (error.response && error.response.status === 404) {
-      toast(error?.response?.data?.message, {
-        className: "font-serif bg-blue-900 text-white",
-      });
+      toast.error(error?.response?.data?.message);
       return { success: false, message: error?.response?.data?.message };
     } else {
       console.error(
@@ -188,27 +187,3 @@ export const fetchMySelectedProduct = async (productId) => {
   }
 };
 
-//*******sample data ************** */
-
-// const products = [
-//     {
-//       id: 1,
-//       title: "iPhone 9",
-//       description: "An apple mobile which is nothing like apple",
-//       price: 549,
-//       discountPercentage: 12.96,
-//       rating: 4.69,
-//       stock: 94,
-//       brand: "Apple",
-//       category: "smartphones",
-//       thumbnail: "https://i.dummyjson.com/data/products/1/thumbnail.jpg",
-//       images: [
-//         "https://i.dummyjson.com/data/products/1/1.jpg",
-//         "https://i.dummyjson.com/data/products/1/2.jpg",
-//         "https://i.dummyjson.com/data/products/1/3.jpg",
-//         "https://i.dummyjson.com/data/products/1/4.jpg",
-//         "https://i.dummyjson.com/data/products/1/thumbnail.jpg",
-//       ],
-//     },
-//     // More products...
-//   ];

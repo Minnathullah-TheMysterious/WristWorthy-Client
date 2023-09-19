@@ -139,6 +139,52 @@ export const placeOrder = async (userId, order) => {
   }
 };
 
+//backend
+export const myPlaceOrder = async (
+  userId,
+  products,
+  totalItems,
+  totalAmount,
+  selectedUserAddress,
+  selectedPaymentMethod
+) => {
+  try {
+    const { data } = await axios.post(`/api/v1/order/place-order/${userId}`, {
+      products,
+      totalAmount,
+      totalItems,
+      shippingAddress: selectedUserAddress,
+      paymentMethod: selectedPaymentMethod,
+    });
+
+    const { success, message } = data;
+
+    if (success) {
+      toast.success(message);
+      return data;
+    } else {
+      toast.error(message);
+      return { success, message };
+    }
+  } catch (error) {
+    if (error?.response?.status === 400) {
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      toast.error(error?.response?.data?.message);
+      console.error(
+        "Something Went Wrong while deleting the address - Client",
+        error
+      );
+      return {
+        success: false,
+        message: "Something Went Wrong While Deleting The Address",
+        error: error?.response?.data?.message,
+      };
+    }
+  }
+};
+
 export const fetchAllOrders = async (userId) => {
   try {
     const response = await fetch(
@@ -156,5 +202,37 @@ export const fetchAllOrders = async (userId) => {
     }
   } catch (error) {
     console.error("Something Went Wrong While fetching orders", error);
+  }
+};
+
+//backend
+export const fetchAllUserOrders = async (userId) => {
+  try {
+    console.log(userId)
+    const {data} = await axios.get(`/api/v1/order/get-user-orders/${userId}`)
+    console.log(data)
+    const {success, message} = data
+    if(success){
+      // toast.success(message)
+      return data
+    }else{
+      toast.error(message)
+      return {success, message}
+    }
+  } catch (error) {
+    if (error?.response?.status === 404) {
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      toast.error(error?.response?.data?.message);
+      console.error(
+        "Something Went Wrong while fetching all the user orders - Client",
+        error
+      );
+      return {
+        success: false,
+        message: error?.response?.data?.message,
+      };
+    }
   }
 };
