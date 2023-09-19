@@ -4,13 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteMyUserCartItemAsync,
-  deleteUserCartItemAsync,
-  fetchUserCartAsync,
   fetchUserCartItemsAsync,
-  updateCartItemQuantityAsync,
   updateMyCartItemQuantityAsync,
 } from "./cartSlice";
-import toast from "react-hot-toast";
 
 const Cart = ({ btnText, destination }) => {
   const navigate = useNavigate();

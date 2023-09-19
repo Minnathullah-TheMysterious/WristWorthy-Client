@@ -5,11 +5,10 @@ import { RadioGroup } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchMySelectedProductsAsync,
-  fetchSelectedProductsAsync,
 } from "../productSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { addItemToCartAsync, addMyItemToCartAsync, fetchUserCartItemsAsync } from "../../cart/cartSlice";
+import { addMyItemToCartAsync } from "../../cart/cartSlice";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -87,7 +86,6 @@ const ProductDetails = () => {
 
   useEffect(() => {
     dispatch(fetchMySelectedProductsAsync(params.productId));
-    // dispatch(fetchUserCartItemsAsync(userId))
   }, [dispatch, params.productId, userId]);
 
   const productFound = carts?.items?.some(

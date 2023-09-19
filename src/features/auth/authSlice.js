@@ -51,6 +51,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
       })
+      
       .addCase(getAuthDataAsync.pending, (state) => {
         state.loading = true;
       })

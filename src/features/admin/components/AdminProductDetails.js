@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSelectedProductsAsync } from "../../products/productSlice";
+import { fetchMySelectedProductsAsync } from "../../products/productSlice";
 import { useParams } from "react-router-dom";
 
 const product = {
@@ -65,16 +65,15 @@ function classNames(...classes) {
 
 const AdminProductDetails = () => {
   const params = useParams();
-  console.log(params.idp)
   const dispatch = useDispatch();
-  const selectedProduct = useSelector((state) => state.product.selectedProduct);
+  const selectedProduct = useSelector((state) => state.product.mySelectedProduct);
 
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
 
   useEffect(() => {
-    dispatch(fetchSelectedProductsAsync(params.id));
-  }, [dispatch, params.id]);
+    dispatch(fetchMySelectedProductsAsync(params.productId));
+  }, [dispatch, params.productId]);
 
   return (
     <div className="bg-white">
@@ -119,41 +118,47 @@ const AdminProductDetails = () => {
         <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
           <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
             <img
-              src={selectedProduct?.images[0]}
-              alt={selectedProduct?.title}
+              src={`${process.env.REACT_APP_API}/${selectedProduct?.images[0]?.location}`}
+              alt={selectedProduct?.product_name}
               className="h-full w-full object-cover object-center"
             />
           </div>
           <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-            <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+            {selectedProduct?.images[1] && (
+              <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+                <img
+                  src={`${process.env.REACT_APP_API}/${selectedProduct?.images[1]?.location}`}
+                  alt={selectedProduct?.product_name}
+                  className="h-full w-full object-cover object-center"
+                />
+              </div>
+            )}
+            {selectedProduct?.images[2] && (
+              <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+                <img
+                  src={`${process.env.REACT_APP_API}/${selectedProduct?.images[2]?.location}`}
+                  alt={selectedProduct?.product_name}
+                  className="h-full w-full object-cover object-center"
+                />
+              </div>
+            )}
+          </div>
+          {selectedProduct?.images[3] && (
+            <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
               <img
-                src={selectedProduct?.images[1]}
-                alt={selectedProduct?.title}
+                src={`${process.env.REACT_APP_API}/${selectedProduct?.images[3]?.location}`}
+                alt={selectedProduct?.product_name}
                 className="h-full w-full object-cover object-center"
               />
             </div>
-            <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-              <img
-                src={selectedProduct?.images[2]}
-                alt={selectedProduct?.title}
-                className="h-full w-full object-cover object-center"
-              />
-            </div>
-          </div>
-          <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-            <img
-              src={selectedProduct?.images[3]}
-              alt={selectedProduct?.title}
-              className="h-full w-full object-cover object-center"
-            />
-          </div>
+          )}
         </div>
 
         {/* Product info */}
         <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-              {selectedProduct?.title}
+            {selectedProduct?.product_name}
             </h1>
           </div>
 
@@ -183,7 +188,7 @@ const AdminProductDetails = () => {
                   ))}
                 </div>
                 <p className="sr-only">
-                  {selectedProduct?.rating} out of 5 stars
+                  {selectedProduct?.rating || 4} out of 5 stars
                 </p>
                 <a
                   href={reviews.href}

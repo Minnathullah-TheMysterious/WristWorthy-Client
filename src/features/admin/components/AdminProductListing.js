@@ -16,13 +16,13 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import {
-  fetchBrandsAsync,
-  fetchCategoriesAsync,
-  fetchFilteredProductsAsync,
-  fetchPricesAsync,
+  fetchAllProductsByFiltersAsync,
+  fetchMyBrandsAsync,
+  fetchMyCategoriesAsync,
 } from "../../products/productSlice";
 import { PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN } from "../../../app/constants";
 import Loader from "../../../loaders/Loader";
+import { Prices } from "../../../app/pricing";
 
 const sortOptions = [
   { name: "Best Rating", sort: "rating", order: "desc", current: false },
@@ -40,11 +40,12 @@ const AdminProductListing = () => {
   const [pageNum, setPageNum] = useState(1);
   const [sort, setSort] = useState({});
 
-  const categories = useSelector((state) => state.product.categories);
-  const brands = useSelector((state) => state.product.brands);
-  const prices = useSelector((state) => state.product.prices);
+  const categories = useSelector((state) => state.product.myCategories);
+  const brands = useSelector((state) => state.product.myBrands);
   const products = useSelector((state) => state.product);
-  const totalProductsCount = products.totalProductsCount;
+  const totalProductsCount = useSelector(
+    (state) => state?.product?.totalMyProductsCount
+  );
   const dispatch = useDispatch();
 
   const filters = [
@@ -58,29 +59,37 @@ const AdminProductListing = () => {
       name: "Brand",
       options: brands,
     },
+  ];
+
+  const priceFilter = [
     {
       id: "price",
       name: "Price",
-      options: prices,
+      options: Prices,
     },
   ];
 
+
   const handleFilterChange = (e, section, option) => {
+    console.log(e, section, option);
     const isChecked = e.target.checked;
     const newFilter = { ...filter };
+    console.log(newFilter);
 
     if (isChecked) {
       // Add the selected value to the filter section's array
       if (!newFilter[section.id]) {
-        newFilter[section.id] = [option.value];
+        newFilter[section.id] = [option._id];
+        console.log(newFilter);
       } else {
-        newFilter[section.id].push(option.value);
+        newFilter[section.id].push(option._id);
+        console.log(newFilter);
       }
     } else {
       // Remove the unchecked value from the filter section's array
       if (newFilter[section.id]) {
         const updatedValues = newFilter[section.id].filter(
-          (value) => value !== option.value
+          (value) => value !== option._id
         );
         console.log("Updated values after removing filter:", updatedValues);
 
@@ -93,13 +102,27 @@ const AdminProductListing = () => {
         }
       }
     }
-    // console.log('newFilter: ',newFilter);
+    console.log("newFilter: ", newFilter);
+    setFilter(newFilter);
+  };
+
+  const handlePriceFilterChange = (value) => {
+    console.log(`value=${value}`);
+    const priceArray = value.split(",");
+    console.log(priceArray);
+    const newFilter = {
+      ...filter,
+      lowerPriceLimit: [+priceArray[0]],
+      higherPriceLimit: [+priceArray[1]],
+    };
+    console.log("newFilter: ", newFilter);
     setFilter(newFilter);
   };
 
   const handleSorting = (e, option) => {
     const sort = { _sort: option.sort, _order: option.order };
     setSort(sort);
+    console.log(sort);
   };
 
   const handlePagination = (e, pageNum) => {
@@ -113,7 +136,7 @@ const AdminProductListing = () => {
       _page: pageNum,
       _limit: PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN,
     };
-    dispatch(fetchFilteredProductsAsync({ filter, sort, pagination }));
+    dispatch(fetchAllProductsByFiltersAsync({ filter, sort, pagination }));
   }, [filter, sort, dispatch, pageNum]);
 
   useEffect(() => {
@@ -121,9 +144,8 @@ const AdminProductListing = () => {
   }, [totalProductsCount, sort]);
 
   useEffect(() => {
-    dispatch(fetchCategoriesAsync());
-    dispatch(fetchBrandsAsync());
-    dispatch(fetchPricesAsync());
+    dispatch(fetchMyCategoriesAsync());
+    dispatch(fetchMyBrandsAsync());
   }, [dispatch]);
 
   return (
@@ -135,6 +157,8 @@ const AdminProductListing = () => {
           setFiltersOpen={setMobileFiltersOpen}
           handleFilterChange={handleFilterChange}
           filters={filters}
+          priceFilter={priceFilter}
+          handlePriceFilterChange={handlePriceFilterChange}
         />
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Sorting */}
@@ -158,6 +182,8 @@ const AdminProductListing = () => {
               <DesktopFilter
                 handleFilterChange={handleFilterChange}
                 filters={filters}
+                priceFilter={priceFilter}
+                handlePriceFilterChange={handlePriceFilterChange}
               />
 
               {/* Product grid */}
@@ -186,6 +212,8 @@ function MobileFilterDialog({
   setFiltersOpen,
   handleFilterChange,
   filters,
+  priceFilter,
+  handlePriceFilterChange,
 }) {
   return (
     <Transition.Root show={filtersOpen} as={Fragment}>
@@ -261,25 +289,84 @@ function MobileFilterDialog({
                         </h3>
                         <Disclosure.Panel className="pt-6">
                           <div className="space-y-6">
-                            {section.options.map((option, optionIdx) => (
+                          {section.options.map((option) => (
                               <div
-                                key={option.value}
+                                key={option._id}
                                 className="flex items-center"
                               >
                                 <input
-                                  id={`filter-mobile-${section.id}-${optionIdx}`}
-                                  name={`${section.id}[]`}
-                                  defaultValue={option.value}
+                                  id={`filter-mobile-${section.id}-${option.slug}`}
+                                  name={section.id}
+                                  defaultValue={option.slug}
                                   type="checkbox"
-                                  defaultChecked={option.checked}
                                   onChange={(e) =>
                                     handleFilterChange(e, section, option)
                                   }
                                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                 />
                                 <label
-                                  htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
+                                  htmlFor={`filter-mobile-${section.id}-${option.slug}`}
                                   className="ml-3 min-w-0 flex-1 text-gray-500"
+                                >
+                                  {option.brand_name || option.category_name}
+                                </label>
+                              </div>
+                            ))}
+                          </div>
+                        </Disclosure.Panel>
+                      </>
+                    )}
+                  </Disclosure>
+                ))}
+              </form>
+              <form className="mt-4 border-t border-gray-200 px-4">
+                {priceFilter.map((section) => (
+                  <Disclosure
+                    as="div"
+                    key={section.id}
+                    className="border-b border-gray-200 py-6"
+                  >
+                    {({ open }) => (
+                      <>
+                        <h3 className="-my-3 flow-root">
+                          <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+                            <span className="font-medium text-gray-900">
+                              {section.name}
+                            </span>
+                            <span className="ml-6 flex items-center">
+                              {open ? (
+                                <MinusIcon
+                                  className="h-5 w-5"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <PlusIcon
+                                  className="h-5 w-5"
+                                  aria-hidden="true"
+                                />
+                              )}
+                            </span>
+                          </Disclosure.Button>
+                        </h3>
+                        <Disclosure.Panel className="pt-6">
+                          <div className="space-y-4">
+                            {section.options.map((option, optionIdx) => (
+                              <div
+                                key={option.value}
+                                className="flex items-center"
+                              >
+                                <input
+                                  id={`filter-${section.id}-${optionIdx}`}
+                                  name={`${section.id}[]`}
+                                  type="radio"
+                                  value={option.value}
+                                  onChange={(e) =>
+                                    handlePriceFilterChange(e.target.value)
+                                  }
+                                />
+                                <label
+                                  htmlFor={`filter-${section.id}-${optionIdx}`}
+                                  className="ml-3 text-sm text-gray-600"
                                 >
                                   {option.label}
                                 </label>
@@ -303,7 +390,7 @@ function MobileFilterDialog({
 function Sorting({ setFiltersOpen, handleSorting }) {
   return (
     <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-14">
-      <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+      <h1 className="text-3xl font-bold tracking-tight text-gray-900 font-serif">
         Products
       </h1>
 
@@ -374,10 +461,63 @@ function Sorting({ setFiltersOpen, handleSorting }) {
   );
 }
 
-function DesktopFilter({ handleFilterChange, filters }) {
+function DesktopFilter({
+  handleFilterChange,
+  filters,
+  priceFilter,
+  handlePriceFilterChange,
+}) {
   return (
     <form className="hidden lg:block">
       {filters.map((section) => (
+        <Disclosure
+          as="div"
+          key={section.id}
+          className="border-b border-gray-200 py-6"
+        >
+          {({ open }) => (
+            <>
+              <h3 className="-my-3 flow-root">
+                <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+                  <span className="font-medium text-gray-900">
+                    {section.name}
+                  </span>
+                  <span className="ml-6 flex items-center">
+                    {open ? (
+                      <MinusIcon className="h-5 w-5" aria-hidden="true" />
+                    ) : (
+                      <PlusIcon className="h-5 w-5" aria-hidden="true" />
+                    )}
+                  </span>
+                </Disclosure.Button>
+              </h3>
+              <Disclosure.Panel className="pt-6">
+                <div className="space-y-4">
+                  {section.options?.map((option) => (
+                    <div key={option._id} className="flex items-center">
+                      <input
+                        id={`filter-${section.id}-${option._id}`}
+                        name={`${section.value}`}
+                        defaultValue={option.slug}
+                        type="checkbox"
+                        onChange={(e) => handleFilterChange(e, section, option)}
+                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                      />
+                      <label
+                        htmlFor={`filter-${section.id}-${option._id}`}
+                        className="ml-3 text-sm text-gray-600"
+                      >
+                        {option?.category_name || option?.brand_name}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+      ))}
+      {priceFilter.map((section) => (
         <Disclosure
           as="div"
           key={section.id}
@@ -406,11 +546,11 @@ function DesktopFilter({ handleFilterChange, filters }) {
                       <input
                         id={`filter-${section.id}-${optionIdx}`}
                         name={`${section.id}[]`}
-                        defaultValue={option.value}
-                        type="checkbox"
-                        defaultChecked={option.checked}
-                        onChange={(e) => handleFilterChange(e, section, option)}
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                        type="radio"
+                        value={option.value}
+                        onChange={(e) =>
+                          handlePriceFilterChange(e.target.value)
+                        }
                       />
                       <label
                         htmlFor={`filter-${section.id}-${optionIdx}`}
@@ -577,15 +717,15 @@ function ProductGrid({ products }) {
             {/* {!products.loading && products.error ? (
               <p>Error: {products.error}</p>
             ) : null} */}
-            {!products.loading && products.products.length
-              ? products.products.map((product) => (
-                  <div key={product.id} className="group relative ">
-                    <Link to={`/dashboard/admin/product-details/${product.id}`}>
+            {!products.loading && products.myProducts.length
+              ? products.myProducts.map((product) => (
+                  <div key={product._id} className="group relative ">
+                    <Link to={`/dashboard/admin/product-details/${product._id}`}>
                       <div className="border border-solid border-black p-1 rounded-lg">
                         <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-80 lg:h-60">
                           <img
-                            src={product.thumbnail}
-                            alt={product.title}
+                            src={product.thumbnail.location}
+                            alt={product.product_name}
                             className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                           />
                         </div>
@@ -604,11 +744,11 @@ function ProductGrid({ products }) {
                           </div>
                           <div>
                             <p className="text-sm font-bold font-serif text-purple-900">
-                              {product.title}
+                              {product.product_name}
                             </p>
                             <p className=" text-sm font-medium text-gray-900">
                               <StarIcon className="w-5 inline mb-1" />
-                              {product.rating}
+                              {product.rating || 4}
                             </p>
                           </div>
                         </div>
@@ -619,7 +759,7 @@ function ProductGrid({ products }) {
                         Edit
                       </div>
                       <div
-                        onClick={() => showDeleteConfirm(product.title)}
+                        onClick={() => showDeleteConfirm(product.product_name)}
                         className="mt-1 py-2 text-center w-[50%] rounded-lg bg-red-800 text-white hover:cursor-pointer hover:bg-red-900 active:bg-red-800"
                       >
                         Delete

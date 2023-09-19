@@ -1,27 +1,10 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { resetCartAsync } from "../features/cart/cartSlice";
-import { fetchAllOrdersAsync } from "./../features/user/userSlice";
 
 const OrderSuccessPage = () => {
-  const dispatch = useDispatch();
   const orderId = useSelector((state) => state?.user?.myCurrentOrder?._id);
-  const userId = useSelector((state) => state?.auth?.user?._id);
 
-  // useEffect(() => {
-  //   const actionResult = dispatch(resetCartAsync(userId));
-  //   actionResult
-  //     .then(() => {
-  //       console.log("Cart has been Reset");
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error resetting cart:", error);
-  //     });
-  // }, [dispatch, userId]);
-
-  // //Need to move this into Orders Page
-  // dispatch(fetchAllOrdersAsync(userId));
   return (
     <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
       <div className="text-center">

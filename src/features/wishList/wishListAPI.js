@@ -28,9 +28,9 @@ export const addToWishlist = async (userId, productId) => {
 export const fetchWishlist = async (userId) => {
   try {
     const { data } = await axios.get(`/api/v1/wishlist/get-wishlist/${userId}`);
-    const { success, message, wishlist } = data;
+    const { success, wishlist } = data;
     if (success) {
-      toast.success(message);
+      // toast.success(message);
       return wishlist;
     }
   } catch (error) {

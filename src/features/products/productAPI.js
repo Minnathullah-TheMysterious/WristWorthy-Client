@@ -1,51 +1,6 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export const fetchProductsByFilters = async (filter, sort, pagination) => {
-  //filter = {category:['smartphones', 'laptops'], brand:['apple', 'samsung']}
-  //sort = {_sort: 'price', _order: 'desc'}
-  //pagination = {_page: 1, _limit: 10}
-
-  console.log(filter, sort, pagination);
-
-  const filterQueryParams = Object.entries(filter)
-    .map(([key, values]) => values.map((value) => `${key}=${value}`))
-    .flat()
-    .join("&");
-
-  console.log("Filter Query Params: ", filterQueryParams);
-
-  let sortingQueryParams = "";
-  for (const key in sort) {
-    const sortingValue = sort[key];
-    sortingQueryParams = sortingQueryParams + `${key}=${sortingValue}&`;
-  }
-  console.log("Sorting Query Params: ", sortingQueryParams);
-
-  let paginationQueryParams = "";
-  for (const key in pagination) {
-    const paginationValue = pagination[key];
-    paginationQueryParams =
-      paginationQueryParams + `${key}=${paginationValue}&`;
-  }
-  console.log("Pagination Query Params: ", paginationQueryParams);
-
-  const filteredProductsAPI = `http://localhost:5000/products?${paginationQueryParams}&${filterQueryParams}&${sortingQueryParams}`;
-
-  try {
-    const response = await fetch(filteredProductsAPI);
-    const data = await response.json();
-    const totalProductsCount = response.headers.get("X-Total-Count");
-    return {
-      data: { products: data, totalProductsCount: +totalProductsCount },
-    };
-  } catch (error) {
-    console.error("Error fetching filtered products:", error);
-    throw error;
-  }
-};
-
-////products are coming from backend
 export const fetchAllProductsByFilters = async (filter, sort, pagination) => {
   //filter = {category:['smartphones', 'laptops'], brand:['apple', 'samsung'], lowerPriceLimit: [number], higherPriceLimit: [number]}
   //sort = {_sort: 'price', _order: 'desc'}
@@ -91,7 +46,6 @@ export const fetchAllProductsByFilters = async (filter, sort, pagination) => {
   }
 };
 
-//products are coming from backend
 export const fetchAllProducts = async () => {
   try {
     const { data } = await axios.get("/api/v1/product/get-all-products");
@@ -105,13 +59,6 @@ export const fetchAllProducts = async () => {
   }
 };
 
-export const fetchCategories = async () => {
-  const URL = "http://localhost:5000/categories";
-  const response = await axios.get(URL);
-  return response.data;
-};
-
-//backend.
 export const fetchMyCategories = async () => {
   try {
     const { data } = await axios.get("/api/v1/category/get-all-categories");
@@ -125,13 +72,6 @@ export const fetchMyCategories = async () => {
   }
 };
 
-export const fetchBrands = async () => {
-  const URL = "http://localhost:5000/brands";
-  const response = await axios.get(URL);
-  return response.data;
-};
-
-//backend.
 export const fetchMyBrands = async () => {
   try {
     const { data } = await axios.get("/api/v1/brand/get-all-brands");
@@ -145,20 +85,6 @@ export const fetchMyBrands = async () => {
   }
 };
 
-export const fetchPrices = async () => {
-  const URL = "http://localhost:5000/prices";
-  const response = await axios.get(URL);
-  return response.data;
-};
-
-export const fetchSelectedProduct = async (id) => {
-  const URL = `http://localhost:5000/products/${id}`;
-  const response = await axios.get(URL);
-  const product = response.data;
-  return product;
-};
-
-//Backend
 export const fetchMySelectedProduct = async (productId) => {
   try {
     const { data } = await axios.get(
@@ -170,7 +96,7 @@ export const fetchMySelectedProduct = async (productId) => {
       return selectedProduct;
     } else {
       toast.error(message);
-      return data
+      return data;
     }
   } catch (error) {
     if (error.response && error.response.status === 404) {
@@ -186,4 +112,3 @@ export const fetchMySelectedProduct = async (productId) => {
     }
   }
 };
-

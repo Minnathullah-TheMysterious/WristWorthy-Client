@@ -2,16 +2,15 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   fetchAllProducts,
   fetchAllProductsByFilters,
-  fetchBrands,
-  fetchCategories,
   fetchMyBrands,
   fetchMyCategories,
   fetchMySelectedProduct,
-  fetchPrices,
-  fetchProductsByFilters,
-  fetchSelectedProduct,
 } from "./productAPI";
-import { createBrand, createCategory, createProduct } from "./../admin/adminAPI";
+import {
+  createBrand,
+  createCategory,
+  createProduct,
+} from "./../admin/adminAPI";
 
 const initialState = {
   loading: false,
@@ -29,16 +28,6 @@ const initialState = {
   error: null,
 };
 
-export const fetchFilteredProductsAsync = createAsyncThunk(
-  "products/fetchFilteredProducts",
-  async ({ filter, sort, pagination }) => {
-    const data = await fetchProductsByFilters(filter, sort, pagination);
-    console.log("Products In The Page:", data);
-    return data;
-  }
-);
-
-//Backend
 export const fetchAllProductsByFiltersAsync = createAsyncThunk(
   "products/fetchAllProductsByFilters",
   async ({ filter, sort, pagination }) => {
@@ -48,49 +37,15 @@ export const fetchAllProductsByFiltersAsync = createAsyncThunk(
   }
 );
 
-//Backend
 export const fetchAllProductsAsync = createAsyncThunk(
   "products/fetchAllProducts",
   async () => {
     const response = await fetchAllProducts();
-    console.log(response)
+    console.log(response);
     return response;
   }
 );
 
-export const fetchCategoriesAsync = createAsyncThunk(
-  "products/fetchCategories",
-  async () => {
-    const data = await fetchCategories();
-    return data;
-  }
-);
-
-export const fetchBrandsAsync = createAsyncThunk(
-  "products/fetchBrands",
-  async () => {
-    const data = await fetchBrands();
-    return data;
-  }
-);
-
-export const fetchPricesAsync = createAsyncThunk(
-  "products/fetchPrices",
-  async () => {
-    const data = await fetchPrices();
-    return data;
-  }
-);
-
-export const fetchSelectedProductsAsync = createAsyncThunk(
-  "products/fetchSelectedProduct",
-  async (id) => {
-    const product = await fetchSelectedProduct(id);
-    return product;
-  }
-);
-
-//backend
 export const fetchMySelectedProductsAsync = createAsyncThunk(
   "products/fetchMySelectedProduct",
   async (productId) => {
@@ -99,7 +54,6 @@ export const fetchMySelectedProductsAsync = createAsyncThunk(
   }
 );
 
-//backend
 export const fetchMyBrandsAsync = createAsyncThunk(
   "products/fetchMyBrands",
   async () => {
@@ -109,7 +63,6 @@ export const fetchMyBrandsAsync = createAsyncThunk(
   }
 );
 
-//backend
 export const fetchMyCategoriesAsync = createAsyncThunk(
   "products/fetchMyCategories",
   async () => {
@@ -172,18 +125,6 @@ const productSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchFilteredProductsAsync.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchFilteredProductsAsync.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
-      .addCase(fetchFilteredProductsAsync.fulfilled, (state, action) => {
-        state.loading = false;
-        state.products = action.payload.data.products;
-        state.totalProductsCount = action.payload.data.totalProductsCount;
-      })
 
       .addCase(fetchAllProductsByFiltersAsync.pending, (state) => {
         state.loading = true;
@@ -211,18 +152,6 @@ const productSlice = createSlice({
         state.totalMyProductsCount = action.payload?.totalCount;
       })
 
-      .addCase(fetchCategoriesAsync.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchCategoriesAsync.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
-      .addCase(fetchCategoriesAsync.fulfilled, (state, action) => {
-        state.loading = false;
-        state.categories = action.payload;
-      })
-
       .addCase(fetchMyCategoriesAsync.pending, (state) => {
         state.loading = true;
       })
@@ -235,18 +164,6 @@ const productSlice = createSlice({
         state.myCategories = action.payload;
       })
 
-      .addCase(fetchBrandsAsync.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchBrandsAsync.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
-      .addCase(fetchBrandsAsync.fulfilled, (state, action) => {
-        state.loading = false;
-        state.brands = action.payload;
-      })
-
       .addCase(fetchMyBrandsAsync.pending, (state) => {
         state.loading = true;
       })
@@ -257,30 +174,6 @@ const productSlice = createSlice({
       .addCase(fetchMyBrandsAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.myBrands = action.payload;
-      })
-
-      .addCase(fetchPricesAsync.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchPricesAsync.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
-      .addCase(fetchPricesAsync.fulfilled, (state, action) => {
-        state.loading = false;
-        state.prices = action.payload;
-      })
-
-      .addCase(fetchSelectedProductsAsync.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchSelectedProductsAsync.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
-      .addCase(fetchSelectedProductsAsync.fulfilled, (state, action) => {
-        state.loading = false;
-        state.selectedProduct = action.payload;
       })
 
       .addCase(fetchMySelectedProductsAsync.pending, (state) => {

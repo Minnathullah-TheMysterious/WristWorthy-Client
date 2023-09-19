@@ -1,9 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   deleteUserAddress,
-  fetchAllOrders,
   getUser,
-  placeOrder,
   addUserAddress,
   updateUserAddress,
   myPlaceOrder,
@@ -82,52 +80,24 @@ export const updateUserAddressAsync = createAsyncThunk(
   }
 );
 
-export const fetchAllOrdersAsync = createAsyncThunk(
-  "order/fetchAllOrders",
-  async (userId) => {
-    try {
-      const response = await fetchAllOrders(userId);
-      return response;
-    } catch (error) {
-      console.error("Something Went Wrong in place-order-thunk", error);
-    }
-  }
-);
-
-//backend
 export const fetchAllUserOrdersAsync = createAsyncThunk(
   "order/fetchAllUserOrders",
   async (userId) => {
     try {
       const response = await fetchAllUserOrders(userId);
       if (response.success) {
-        console.log(response.orders)
+        console.log(response.orders);
         return response.orders;
-      }
-      else{
-        throw new Error(response.message)
+      } else {
+        throw new Error(response.message);
       }
     } catch (error) {
       console.error("Something Went Wrong in place-order-thunk", error);
-      throw new Error(error.message)
+      throw new Error(error.message);
     }
   }
 );
 
-export const placeOrderAsync = createAsyncThunk(
-  "order/placeOrder",
-  async ({ userId, order }) => {
-    try {
-      const response = await placeOrder(userId, order);
-      console.log(response);
-      return response;
-    } catch (error) {
-      console.error("Something Went Wrong in place-order-thunk", error);
-    }
-  }
-);
-
-//backend
 export const myPlaceOrderAsync = createAsyncThunk(
   "order/myPlaceOrder",
   async ({
@@ -231,41 +201,16 @@ const userSlice = createSlice({
           action?.payload?.orders[action.payload.orders.length - 1];
       })
 
-      .addCase(placeOrderAsync.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(placeOrderAsync.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
-      .addCase(placeOrderAsync.fulfilled, (state, action) => {
-        state.loading = false;
-        state?.orders?.push(action.payload);
-        state.currentOrder = action.payload;
-      })
-
       .addCase(fetchAllUserOrdersAsync.pending, (state) => {
         state.loading = true;
       })
       .addCase(fetchAllUserOrdersAsync.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'error';
+        state.error = action.error.message || "error";
       })
       .addCase(fetchAllUserOrdersAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.myOrders = action.payload;
-      })
-
-      .addCase(fetchAllOrdersAsync.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchAllOrdersAsync.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
-      .addCase(fetchAllOrdersAsync.fulfilled, (state, action) => {
-        state.loading = false;
-        state.orders = action.payload;
       });
   },
 });

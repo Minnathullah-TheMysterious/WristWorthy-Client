@@ -6,8 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   myPlaceOrderAsync,
   mySetSelectedUserAddress,
-  placeOrderAsync,
-  setSelectedUserAddress,
 } from "../user/userSlice";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -48,7 +46,6 @@ const Checkout = () => {
     quantity: item?.quantity,
   }));
   //an array of products with product _id and its quantity
-  console.log(products)
 
   const handlePlaceOrderClick = (e) => {
     e.preventDefault();

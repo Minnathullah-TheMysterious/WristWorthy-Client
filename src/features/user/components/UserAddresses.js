@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { mySetSelectedUserAddress, setSelectedUserAddress } from "../../user/userSlice";
+import { mySetSelectedUserAddress } from "../../user/userSlice";
 
 const UserAddresses = () => {
   const dispatch = useDispatch();

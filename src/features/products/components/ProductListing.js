@@ -4,14 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
-  fetchAllProductsAsync,
   fetchAllProductsByFiltersAsync,
-  fetchBrandsAsync,
-  fetchCategoriesAsync,
-  fetchFilteredProductsAsync,
   fetchMyBrandsAsync,
   fetchMyCategoriesAsync,
-  fetchPricesAsync,
 } from "../productSlice";
 import {
   ChevronLeftIcon,
@@ -27,7 +22,6 @@ import { PRODUCT_LIMIT_PER_PAGE_FOR_USER } from "../../../app/constants";
 import { TbJewishStar } from "react-icons/tb";
 import {
   addToWishlistAsync,
-  fetchWishlistAsync,
 } from "../../wishlist/wishlistSlice";
 import toast from "react-hot-toast";
 import Loader from "../../../loaders/Loader";
@@ -51,7 +45,6 @@ const ProductListing = () => {
 
   const categories = useSelector((state) => state?.product?.myCategories);
   const brands = useSelector((state) => state?.product?.myBrands);
-  const prices = useSelector((state) => state.product.prices);
   const products = useSelector((state) => state?.product);
   const totalProductsCount = useSelector(
     (state) => state?.product?.totalMyProductsCount
@@ -721,7 +714,7 @@ function ProductGrid({ products }) {
               <p>Error: {products.error}</p>
             ) : null} */}
             {!products.loading && products.myProducts.length
-              ? products.myProducts.map((product, index) => (
+              ? products.myProducts.map((product) => (
                   <div key={product._id} className="relative">
                     <Link to={`/product-details/${product._id}`}>
                       <div className="group border-2 border-solid border-black p-[1px] rounded-lg">

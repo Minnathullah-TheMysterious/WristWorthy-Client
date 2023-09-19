@@ -5,7 +5,7 @@ import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import { useDispatch } from "react-redux";
 import { loginAsync } from "../authSlice";
-import { fetchUserCartAsync } from "../../cart/cartSlice";
+import { fetchUserCartItemsAsync } from "../../cart/cartSlice";
 import { getUserAsync } from "../../user/userSlice";
 
 const Login = () => {
@@ -46,7 +46,7 @@ const Login = () => {
       if (loginAsync.fulfilled.match(actionResult)) {
         const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
         const userId = userFromLocalStorage?._id;
-        dispatch(fetchUserCartAsync(userId));
+        dispatch(fetchUserCartItemsAsync(userId));
         dispatch(getUserAsync(userId));
         localStorage.removeItem("user_id");
         navigate(location.state || "/");
