@@ -48,6 +48,7 @@ const Navbar = () => {
 
   return (
     <>
+    <div className="sticky top-0 z-50 shadow-gray-400 shadow-lg">
       <div className="min-h-full font-serif">
         <Disclosure as="nav" className="bg-gray-800">
           {({ open }) => (
@@ -426,7 +427,7 @@ const Navbar = () => {
             </>
           )}
         </Disclosure>
-      </div>
+      </div></div>
     </>
   );
 };

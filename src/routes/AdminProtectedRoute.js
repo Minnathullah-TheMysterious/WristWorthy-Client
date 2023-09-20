@@ -25,6 +25,8 @@ const AdminProtectedRoute = () => {
         }
       } catch (error) {
         toast.error("Token expired, Please Login Again");
+        localStorage.removeItem("user");
+        window.location.reload();
       }
     };
     user && user.token && adminCheck();

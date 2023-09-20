@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "../features/layout/Layout";
-import CategoryListing from "../features/categories/CategoryListing";
+// import CategoryListing from "../features/categories/CategoryListing";
 import Promo from "../features/products/components/Promo";
 import ProductListing from "../features/products/components/ProductListing";
 import { useSelector } from "react-redux";
@@ -16,11 +16,11 @@ const Home = () => {
       {user?.role === "user" || !user ? (
         <>
           <Promo />
-          <CategoryListing />
+          {/* <CategoryListing /> */}
           <ProductListing />
         </>
       ) : (
-        <div className="space-y-10">
+        <div>
           <AdminCategoryListing
             wrapClass={
               "whitespace-nowrap overflow-x-auto my-6 lg:gap-x-6 sm:gap-x-3  gap-x-2 md:gap-x-4 flex flex-row"

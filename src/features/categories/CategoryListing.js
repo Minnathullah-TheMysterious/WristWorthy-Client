@@ -1,67 +1,8 @@
 import React from "react";
-
-const callouts = [
-  {
-    name: "Desk and Office",
-    description: "Work from home accessories",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/home-page-02-edition-01.jpg",
-    imageAlt:
-      "Desk with leather desk pad, walnut desk organizer, wireless keyboard and mouse, and porcelain mug.",
-    href: "#",
-    id:1
-  },
-  {
-    name: "Self-Improvement",
-    description: "Journals and note-taking",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/home-page-02-edition-02.jpg",
-    imageAlt:
-      "Wood table with porcelain mug, leather journal, brass pen, leather key ring, and a houseplant.",
-    href: "#",
-    id:2
-  },
-  {
-    name: "Travel",
-    description: "Daily commute essentials",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/home-page-02-edition-03.jpg",
-    imageAlt: "Collection of four insulated travel bottles on wooden shelf.",
-    href: "#",
-    id:3
-  },
-  {
-    name: "Desk and Office",
-    description: "Work from home accessories",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/home-page-02-edition-01.jpg",
-    imageAlt:
-      "Desk with leather desk pad, walnut desk organizer, wireless keyboard and mouse, and porcelain mug.",
-    href: "#",
-    id:4
-  },
-  {
-    name: "Self-Improvement",
-    description: "Journals and note-taking",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/home-page-02-edition-02.jpg",
-    imageAlt:
-      "Wood table with porcelain mug, leather journal, brass pen, leather key ring, and a houseplant.",
-    href: "#",
-    id:5
-  },
-  {
-    name: "Travel",
-    description: "Daily commute essentials",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/home-page-02-edition-03.jpg",
-    imageAlt: "Collection of four insulated travel bottles on wooden shelf.",
-    href: "#",
-    id:6
-  },
-];
+import { useSelector } from "react-redux";
 
 const CategoryListing = () => {
+  const categories = useSelector((state) => state?.product?.categories);
   return (
     <div className="bg-gray-100">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -71,24 +12,18 @@ const CategoryListing = () => {
           </h2>
 
           <div className="mt-6 space-y-2 lg:grid lg:grid-cols-6 lg:gap-x-6 sm:grid sm:grid-cols-3 sm:gap-x-3 grid grid-cols-2 gap-x-2  md:grid md:grid-cols-4 md:gap-x-4">
-            {callouts.map((callout) => (
-              <div key={callout.id} className="group relative">
+            {categories.map((category) => (
+              <div key={category._id} className="group relative">
                 <div className="relative h-80 w-full overflow-hidden rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64">
                   <img
-                    src={callout.imageSrc}
-                    alt={callout.imageAlt}
+                    src={`${process.env.REACT_APP_API}/${category.image.location}`}
+                    alt={category.category_name}
                     className="h-full w-full object-cover object-center"
                   />
                 </div>
-                <h3 className="mt-6 text-sm text-gray-500">
-                  <a href={callout.href}>
-                    <span className="absolute inset-0" />
-                    {callout.name}
-                  </a>
+                <h3 className="mt-6 text-sm text-gray-800 font-serif font-bold">
+                  {category.category_name}
                 </h3>
-                <p className="text-base font-semibold text-gray-900">
-                  {callout.description}
-                </p>
               </div>
             ))}
           </div>

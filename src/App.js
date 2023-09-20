@@ -58,7 +58,7 @@ function App() {
         </Route>
         {/* Admin Routes */}
         <Route path="/dashboard/admin" element={<AdminProtectedRoute />}>
-          <Route path="product-details/:_id" element={<AdminProductDetailsPage />}/>
+          <Route path="product-details/:productId" element={<AdminProductDetailsPage />}/>
           <Route path="create-product" element={<CreateProductPage />} />
           <Route path="products" element={<AdminProductsPage />} />
           <Route path="categories" element={<AdminCategoriesPage />} />

@@ -24,6 +24,8 @@ const UserProtectedRoute = () => {
         }
       } catch (error) {
         toast.error("Token expired, Please Login Again");
+        localStorage.removeItem("user");
+        window.location.reload();
       }
     };
 
