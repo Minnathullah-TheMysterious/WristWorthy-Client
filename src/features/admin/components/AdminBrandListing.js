@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { Button, Modal } from "antd";
+import { Button, Modal, Badge, Space } from "antd";
 import { FiAlertTriangle } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { createBrandAsync } from "../../products/productSlice";
+import {
+  createBrandAsync,
+  deleteBrandAsync,
+  restoreBrandAsync,
+} from "../../products/productSlice";
 
 const { confirm } = Modal;
 
@@ -14,17 +18,34 @@ const AdminBrandListing = ({ wrapClass }) => {
   const [brand_image, setBrand_image] = useState(null);
   const [brand_name, setBrand_name] = useState("");
 
-  const showDeleteConfirm = (brandName) => {
+  const showDeleteConfirm = (brandName, brandId) => {
     confirm({
-      title: `Are you sure to delete '${brandName}' brand?`,
+      title: `Are you sure to delete the '${brandName}' brand?`,
       icon: <FiAlertTriangle className="font-bold text-red-700 text-2xl" />,
       content:
-        "Be Careful! All The Filters and all the related products etc,. may not work expectedly",
+        "Be Careful! All The Filters and all the related products etc., may not work expectedly. You can restore it anytime",
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
       onOk() {
-        console.log("OK");
+        dispatch(deleteBrandAsync(brandId));
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  const showRestoreConfirm = (brandName, brandId) => {
+    confirm({
+      title: `Are you sure to Restore  the'${brandName}' brand?`,
+      icon: <FiAlertTriangle className="font-bold text-red-700 text-2xl" />,
+      content: "You can delete the brand anytime you wanted.",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        dispatch(restoreBrandAsync(brandId));
       },
       onCancel() {
         console.log("Cancel");
@@ -54,7 +75,7 @@ const AdminBrandListing = ({ wrapClass }) => {
           <h2 className="text-2xl font-bold text-gray-900 font-serif">
             Brands
           </h2>
-          {/* Create Category Modal */}
+          {/* Create Brand Modal */}
           <section>
             <Button
               className="bg-sky-800 text-white min-w-full font-bold font-serif tracking-widest"
@@ -130,32 +151,58 @@ const AdminBrandListing = ({ wrapClass }) => {
           </section>
 
           <div className={wrapClass}>
-            {brands.map((brand) => (
-              <div key={brand._id}>
-                <div className="group">
-                  <div className="relative overflow-hidden group-hover:opacity-75">
-                    <img
-                      src={`${process.env.REACT_APP_API}/${brand.image.location}`}
-                      alt={brand.brand_name}
-                      className="sm:h-40 sm:min-w-[160px] sm:max-w-[160px] h-28 min-w-[7rem] max-w-[7rem] object-fill object-center rounded-full border-2 border-gray-700"
-                    />
+            {brands?.map((brand) => (
+              <Space
+                key={brand._id}
+                direction="vertical"
+                size="middle"
+                style={{
+                  width: "100%",
+                }}
+              >
+                <Badge.Ribbon
+                  text={brand.deleted ? "Deleted Brand" : "Brand"}
+                  color={brand.deleted ? "red" : "blue"}
+                >
+                  <div className="group">
+                    <div className="relative overflow-hidden group-hover:opacity-75">
+                      <img
+                        src={`${process.env.REACT_APP_API}/${brand.image.location}`}
+                        alt={brand.brand_name}
+                        className="sm:h-40 sm:min-w-[160px] sm:max-w-[160px] h-28 min-w-[7rem] max-w-[7rem] object-fill object-center rounded-full border-2 border-gray-700"
+                      />
+                    </div>
+                    <h3 className="mt-3 text-sm text-gray-500 font-serif font-bold text-center">
+                      {brand.brand_name}
+                    </h3>
                   </div>
-                  <h3 className="mt-3 text-sm text-gray-500 font-serif font-bold text-center">
-                    {brand.brand_name}
-                  </h3>
-                </div>
-                <div className="flex justify-between space-x-1 mb-6 text-xs sm:text-base">
-                  <div className="w-[50%] text-center mt-1 py-2  rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800">
-                    Edit
-                  </div>
-                  <div
-                    onClick={() => showDeleteConfirm(brand.brand_name)}
-                    className="mt-1 w-[50%] text-center py-2 rounded-lg bg-red-800 text-white hover:cursor-pointer hover:bg-red-900 active:bg-red-800"
-                  >
-                    Delete
-                  </div>
-                </div>
-              </div>
+                  {!brand.deleted && (
+                    <div className="flex justify-between space-x-1 mb-6 text-xs sm:text-base">
+                      <div className="w-[50%] text-center mt-1 py-2  rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800">
+                        Edit
+                      </div>
+                      <div
+                        onClick={() =>
+                          showDeleteConfirm(brand.brand_name, brand._id)
+                        }
+                        className="mt-1 w-[50%] text-center py-2 rounded-lg bg-red-800 text-white hover:cursor-pointer hover:bg-red-900 active:bg-red-800"
+                      >
+                        Delete
+                      </div>
+                    </div>
+                  )}
+                  {brand.deleted && (
+                    <div
+                      onClick={() =>
+                        showRestoreConfirm(brand.brand_name, brand._id)
+                      }
+                      className="mt-1 py-2 text-center w-[100%] rounded-lg bg-green-800 text-white hover:cursor-pointer hover:bg-green-900 active:bg-green-800"
+                    >
+                      Restore
+                    </div>
+                  )}
+                </Badge.Ribbon>
+              </Space>
             ))}
           </div>
         </div>

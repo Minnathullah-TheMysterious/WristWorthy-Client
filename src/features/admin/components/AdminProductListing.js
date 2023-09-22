@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Modal } from "antd";
+import { Modal, Badge, Card, Space } from "antd";
 import { FiAlertTriangle } from "react-icons/fi";
 import {
   ChevronLeftIcon,
@@ -16,9 +16,11 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import {
+  deleteProductAsync,
   fetchAllProductsByFiltersAsync,
   fetchBrandsAsync,
   fetchCategoriesAsync,
+  restoreProductAsync,
 } from "../../products/productSlice";
 import { PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN } from "../../../app/constants";
 import Loader from "../../../loaders/Loader";
@@ -68,7 +70,6 @@ const AdminProductListing = () => {
       options: Prices,
     },
   ];
-
 
   const handleFilterChange = (e, section, option) => {
     console.log(e, section, option);
@@ -171,7 +172,7 @@ const AdminProductListing = () => {
             <h2 id="products-heading" className="sr-only">
               Products
             </h2>
-            <Link to={'/dashboard/admin/create-product'}>
+            <Link to={"/dashboard/admin/create-product"}>
               <p className="font-bold font-serif text-center bg-sky-800 text-white py-3 rounded-lg hover:cursor-pointer tracking-widest hover:bg-blue-600 active:bg-sky-800">
                 Add New Product
               </p>
@@ -289,7 +290,7 @@ function MobileFilterDialog({
                         </h3>
                         <Disclosure.Panel className="pt-6">
                           <div className="space-y-6">
-                          {section.options.map((option) => (
+                            {section.options.map((option) => (
                               <div
                                 key={option._id}
                                 className="flex items-center"
@@ -690,82 +691,139 @@ function Pagination({
 }
 
 function ProductGrid({ products }) {
+  const dispatch = useDispatch();
   const { confirm } = Modal;
 
-  const showDeleteConfirm = (productName) => {
+  const showDeleteConfirm = (productName, productId) => {
     confirm({
-      title: `Are you sure to delete '${productName}' Product?`,
+      title: `Are you sure to delete the '${productName}' Product?`,
       icon: <FiAlertTriangle className="font-bold text-red-700 text-2xl" />,
-      content: "Be Careful! The Product Will Be Deleted permanently",
+      content: "You can restore the product any time you wanted.",
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
       onOk() {
         console.log("OK");
+        dispatch(deleteProductAsync(productId));
       },
       onCancel() {
         console.log("Cancel");
       },
     });
   };
+
+  const showRestoreConfirm = (productName, productId) => {
+    confirm({
+      title: `Are you sure to Restore the '${productName}' Product?`,
+      icon: <FiAlertTriangle className="font-bold text-red-700 text-2xl" />,
+      content: "You can delete the product any time you wanted.",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        console.log("OK");
+        dispatch(restoreProductAsync(productId));
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
   return (
     <div className="lg:col-span-3">
       <div className="bg-white">
         <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-4">
-            {products.loading && <Loader />}
+            {products?.loading && <Loader />}
             {/* {!products.loading && products.error ? (
               <p>Error: {products.error}</p>
             ) : null} */}
-            {!products.loading && products.products.length
-              ? products.products.map((product) => (
-                  <div key={product._id} className="group relative ">
-                    <Link to={`/dashboard/admin/product-details/${product._id}`}>
-                      <div className="border border-solid border-black p-1 rounded-lg">
-                        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-80 lg:h-60">
-                          <img
-                            src={product.thumbnail.location}
-                            alt={product.product_name}
-                            className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                          />
-                        </div>
-                        <div className="mt-4 flex justify-between space-x-4">
-                          <div>
-                            <p className="mt-1 text-sm text-gray-500 font-bold font-mono line-through">
-                              ${product.price}
-                            </p>
-                            <p className="mt-1 text-sm text-black font-bold font-mono">
-                              $
-                              {Math.round(
-                                product.price *
-                                  (1 - product.discountPercentage / 100)
-                              )}
-                            </p>
+            {!products?.loading && products?.products?.length
+              ? products?.products?.map((product) => (
+                  <Space
+                    key={product._id}
+                    direction="vertical"
+                    size="middle"
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <Badge.Ribbon
+                      text={product.deleted ? "Deleted Product" : "product"}
+                      color={product.deleted ? "red" : "blue"}
+                    >
+                      <div className="group relative ">
+                        <Link
+                          to={`/dashboard/admin/product-details/${product._id}`}
+                        >
+                          <div className="border border-solid border-black p-1 rounded-lg">
+                            <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-80 lg:h-60">
+                              <img
+                                src={product.thumbnail.location}
+                                alt={product.product_name}
+                                className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                              />
+                            </div>
+                            <div className="mt-4 flex justify-between space-x-4">
+                              <div>
+                                <p className="mt-1 text-sm text-gray-500 font-bold font-mono line-through">
+                                  ${product.price}
+                                </p>
+                                <p className="mt-1 text-sm text-black font-bold font-mono">
+                                  $
+                                  {Math.round(
+                                    product.price *
+                                      (1 - product.discountPercentage / 100)
+                                  )}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-sm font-bold font-serif text-purple-900">
+                                  {product.product_name}
+                                </p>
+                                <p className=" text-sm font-medium text-gray-900">
+                                  <StarIcon className="w-5 inline mb-1" />
+                                  {product.rating || 4}
+                                </p>
+                              </div>
+                            </div>
                           </div>
-                          <div>
-                            <p className="text-sm font-bold font-serif text-purple-900">
-                              {product.product_name}
-                            </p>
-                            <p className=" text-sm font-medium text-gray-900">
-                              <StarIcon className="w-5 inline mb-1" />
-                              {product.rating || 4}
-                            </p>
+                        </Link>
+                        {!product.deleted && (
+                          <div className="flex justify-between space-x-1">
+                            <Link to={`/dashboard/admin/update-product/${product._id}`} className="mt-1 py-2 text-center w-[50%] rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800">
+                              Edit
+                            </Link>
+                            <div
+                              onClick={() =>
+                                showDeleteConfirm(
+                                  product.product_name,
+                                  product._id
+                                )
+                              }
+                              className="mt-1 py-2 text-center w-[50%] rounded-lg bg-red-800 text-white hover:cursor-pointer hover:bg-red-900 active:bg-red-800"
+                            >
+                              Delete
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    </Link>
-                    <div className="flex justify-between space-x-1">
-                      <div className="mt-1 py-2 text-center w-[50%] rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800">
-                        Edit
-                      </div>
-                      <div
-                        onClick={() => showDeleteConfirm(product.product_name)}
-                        className="mt-1 py-2 text-center w-[50%] rounded-lg bg-red-800 text-white hover:cursor-pointer hover:bg-red-900 active:bg-red-800"
-                      >
-                        Delete
-                      </div>
-                    </div>
-                  </div>
+                        )}
+                        {product.deleted && (
+                          <div
+                            onClick={() =>
+                              showRestoreConfirm(
+                                product.product_name,
+                                product._id
+                              )
+                            }
+                            className="mt-1 py-2 text-center w-[100%] rounded-lg bg-green-800 text-white hover:cursor-pointer hover:bg-green-900 active:bg-green-800"
+                          >
+                            Restore
+                          </div>
+                        )}
+                      </div>{" "}
+                    </Badge.Ribbon>
+                  </Space>
                 ))
               : null}
           </div>

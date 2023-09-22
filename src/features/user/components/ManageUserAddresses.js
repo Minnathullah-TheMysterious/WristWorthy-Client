@@ -2,13 +2,10 @@ import React, { useReducer, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
-import {
-  deleteUserAddressAsync,
-  updateUserAddressAsync,
-} from "../userSlice";
+import { deleteUserAddressAsync, updateUserAddressAsync } from "../userSlice";
 import AddAddressForm from "./AddAddressForm";
 import { Modal } from "antd";
-import {FiAlertTriangle} from 'react-icons/fi'
+import { FiAlertTriangle } from "react-icons/fi";
 
 const ManageUserAddresses = () => {
   const dispatchAsync = useDispatch();
@@ -16,6 +13,7 @@ const ManageUserAddresses = () => {
   const userAddresses = useSelector(
     (state) => state?.user?.userInfo?.addresses
   );
+  const { confirm } = Modal;
 
   const [editingAddressIndex, setEditingAddressIndex] = useState(-1);
   const [isAddAddressEnabled, setIsAddAddressEnabled] = useState(false);
@@ -59,12 +57,10 @@ const ManageUserAddresses = () => {
 
   const addressData = { ...userAddressData, mobileNumber, altMobileNumber };
 
-  const { confirm } = Modal;
-
   const handleDeleteAddress = (addressId) => {
     confirm({
       title: `Are you sure to delete this Address?`,
-      icon: <FiAlertTriangle className="font-bold text-red-700 text-2xl"/>,
+      icon: <FiAlertTriangle className="font-bold text-red-700 text-2xl" />,
       content: "Be Careful! The Address will be deleted permanently",
       okText: "Yes",
       okType: "danger",
@@ -187,7 +183,9 @@ const ManageUserAddresses = () => {
           <form>
             {isAddAddressEnabled ? (
               <>
-                <AddAddressForm setIsAddAddressEnabled={setIsAddAddressEnabled} />
+                <AddAddressForm
+                  setIsAddAddressEnabled={setIsAddAddressEnabled}
+                />
                 <div
                   className="bg-sky-800 text-white py-2 px-4 rounded-lg hover:text-gray-300 font-serif text-center hover:cursor-pointer active:bg-sky-900 active:text-white"
                   onClick={handleCloseAddAddressFormClick}

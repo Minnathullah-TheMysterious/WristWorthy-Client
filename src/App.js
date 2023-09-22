@@ -26,6 +26,7 @@ import CreateProductPage from "./pages/adminPages/CreateProductPage";
 import AdminProductsPage from "./pages/adminPages/AdminProductsPage";
 import AdminCategoriesPage from "./pages/adminPages/AdminCategoriesPage";
 import AdminBrandsPage from "./pages/adminPages/AdminBrandsPage";
+import UpdateProductPage from "./pages/adminPages/UpdateProductPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -60,6 +61,7 @@ function App() {
         <Route path="/dashboard/admin" element={<AdminProtectedRoute />}>
           <Route path="product-details/:productId" element={<AdminProductDetailsPage />}/>
           <Route path="create-product" element={<CreateProductPage />} />
+          <Route path="update-product/:productId" element={<UpdateProductPage />} />
           <Route path="products" element={<AdminProductsPage />} />
           <Route path="categories" element={<AdminCategoriesPage />} />
           <Route path="brands" element={<AdminBrandsPage />} />

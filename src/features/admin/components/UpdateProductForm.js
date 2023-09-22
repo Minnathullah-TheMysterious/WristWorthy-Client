@@ -1,35 +1,39 @@
 import React, { useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  createProductAsync,
   fetchBrandsAsync,
   fetchCategoriesAsync,
+  updateProductDataAsync,
 } from "../../products/productSlice";
+import { useNavigate, useParams } from "react-router-dom";
 
-const ProductForm = () => {
+const UpdateProductForm = () => {
   const dispatchAsync = useDispatch();
+  const params = useParams();
+  const navigate = useNavigate();
 
   const brands = useSelector((state) => state?.product?.brands);
   const categories = useSelector((state) => state?.product?.categories);
+  const products = useSelector((state) => state?.product?.products);
+  const productId = params.productId;
 
   useEffect(() => {
     dispatchAsync(fetchBrandsAsync());
     dispatchAsync(fetchCategoriesAsync());
   }, [dispatchAsync]);
 
+  const result = products.filter((product) => product._id === productId);
+  const productToBeUpdated = result[0];
+  console.log(productToBeUpdated);
+
   const initialState = {
-    thumbnail: null,
-    image_1: null,
-    image_2: null,
-    image_3: null,
-    image_4: null,
-    brand: "",
-    category: "",
-    product_name: "",
-    description: "",
-    price: 0,
-    discountPercentage: 0,
-    stock: 1,
+    brand: productToBeUpdated?.brand?._id,
+    category: productToBeUpdated?.category?._id,
+    product_name: productToBeUpdated?.product_name,
+    description: productToBeUpdated?.description,
+    price: productToBeUpdated?.price,
+    discountPercentage: productToBeUpdated?.discountPercentage,
+    stock: productToBeUpdated?.stock,
   };
 
   const createProductReducer = (state, action) => {
@@ -53,27 +57,21 @@ const ProductForm = () => {
     dispatch({ type: "ADD_PRODUCT", key, value });
   };
 
-  const handleResetForm = () => {
-    dispatch({ type: "RESET_FORM" });
+  const updatedProduct = {
+    brand: productData.brand,
+    category: productData.category,
+    product_name: productData.product_name,
+    description: productData.description,
+    price: productData.price,
+    discountPercentage: productData.discountPercentage,
+    stock: productData.stock,
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("thumbnail", productData.thumbnail);
-    formData.append("image_1", productData.image_1);
-    formData.append("image_2", productData.image_2);
-    formData.append("image_3", productData.image_3);
-    formData.append("image_4", productData.image_4);
-    formData.append("brand", productData.brand);
-    formData.append("category", productData.category);
-    formData.append("product_name", productData.product_name);
-    formData.append("description", productData.description);
-    formData.append("price", productData.price);
-    formData.append("discountPercentage", productData.discountPercentage);
-    formData.append("stock", productData.stock);
-    dispatchAsync(createProductAsync(formData))
-      .then(() => handleResetForm())
+
+    dispatchAsync(updateProductDataAsync({ productId, updatedProduct }))
+      .then(() => navigate("/"))
       .catch((err) => console.error(err));
   };
 
@@ -83,7 +81,7 @@ const ProductForm = () => {
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
             <h2 className="rounded-sm shadow-gray-400 shadow-lg text-center text-white text-xl font-serif font-bold py-2 tracking-widest leading-7  bg-gray-700">
-              Create Product
+              Update Product
             </h2>
 
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -139,156 +137,6 @@ const ProductForm = () => {
                     ))}
                   </select>
                 </div>
-              </div>
-
-              <div className="sm:col-span-6 space-y-1">
-                <div className="flex justify-center">
-                  {productData.thumbnail && (
-                    <img
-                      className="h-52 w-52"
-                      src={URL.createObjectURL(productData.thumbnail)}
-                      alt="product"
-                    />
-                  )}
-                </div>
-                <label
-                  htmlFor="productThumbnail"
-                  className="hover:cursor-pointer rounded-lg hover:bg-blue-900 active:bg-blue-800 bg-blue-800 block py-2 text-center text-white "
-                >
-                  {productData.thumbnail
-                    ? productData.thumbnail.name
-                    : "Upload Image For Product Thumbnail"}
-                  <input
-                    id="productThumbnail"
-                    name="productThumbnail"
-                    type="file"
-                    accept="image/*"
-                    hidden
-                    onChange={(e) =>
-                      handleFieldChange("thumbnail", e.target.files[0])
-                    }
-                  />
-                </label>
-              </div>
-
-              <div className="sm:col-span-3 space-y-1">
-                <div className="flex justify-center">
-                  {productData.image_1 && (
-                    <img
-                      className="h-52 w-52"
-                      src={URL.createObjectURL(productData.image_1)}
-                      alt="product"
-                    />
-                  )}
-                </div>
-                <label
-                  htmlFor="productImg1"
-                  className="hover:cursor-pointer rounded-lg hover:bg-blue-900 active:bg-blue-800 bg-blue-800 block py-2 text-center text-white "
-                >
-                  {productData.image_1
-                    ? productData.image_1.name
-                    : "Upload Image-1 For Product showcase"}
-                  <input
-                    id="productImg1"
-                    name="productImg1"
-                    type="file"
-                    accept="image/*"
-                    hidden
-                    onChange={(e) =>
-                      handleFieldChange("image_1", e.target.files[0])
-                    }
-                  />
-                </label>
-              </div>
-
-              <div className="sm:col-span-3 space-y-1">
-                <div className="flex justify-center">
-                  {productData.image_2 && (
-                    <img
-                      className="h-52 w-52"
-                      src={URL.createObjectURL(productData.image_2)}
-                      alt="product"
-                    />
-                  )}
-                </div>
-                <label
-                  htmlFor="productImg2"
-                  className="hover:cursor-pointer rounded-lg hover:bg-blue-900 active:bg-blue-800 bg-blue-800 block py-2 text-center text-white "
-                >
-                  {productData.image_2
-                    ? productData.image_2.name
-                    : "Upload Image-2 For Product showcase"}
-                  <input
-                    id="productImg2"
-                    name="productImg2"
-                    type="file"
-                    accept="image/*"
-                    hidden
-                    onChange={(e) =>
-                      handleFieldChange("image_2", e.target.files[0])
-                    }
-                  />
-                </label>
-              </div>
-
-              <div className="sm:col-span-3 space-y-1">
-                <div className="flex justify-center">
-                  {productData.image_3 && (
-                    <img
-                      className="h-52 w-52"
-                      src={URL.createObjectURL(productData.image_3)}
-                      alt="product"
-                    />
-                  )}
-                </div>
-                <label
-                  htmlFor="productImg3"
-                  className="hover:cursor-pointer rounded-lg hover:bg-blue-900 active:bg-blue-800 bg-blue-800 block py-2 text-center text-white "
-                >
-                  {productData.image_3
-                    ? productData.image_3.name
-                    : "Upload Image-3 For Product showcase"}
-                  <input
-                    id="productImg3"
-                    name="productImg3"
-                    type="file"
-                    accept="image/*"
-                    hidden
-                    onChange={(e) =>
-                      handleFieldChange("image_3", e.target.files[0])
-                    }
-                  />
-                </label>
-              </div>
-
-              <div className="sm:col-span-3 space-y-1">
-                <div className="flex justify-center">
-                  {productData.image_4 && (
-                    <img
-                      className="h-52 w-52"
-                      src={URL.createObjectURL(productData.image_4)}
-                      alt="product"
-                    />
-                  )}
-                </div>
-                <label
-                  htmlFor="productImg4"
-                  className="hover:cursor-pointer rounded-lg hover:bg-blue-900 active:bg-blue-800 bg-blue-800 block py-2 text-center text-white "
-                >
-                  {productData.image_4
-                    ? productData.image_4.name
-                    : "Upload Image-4 For Product showcase"}
-                  <input
-                    id="productImg4"
-                    name="productImg4"
-                    type="file"
-                    accept="image/*"
-                    hidden
-                    onChange={(e) =>
-                      handleFieldChange("image_4", e.target.files[0])
-                    }
-                  />
-                </label>
               </div>
 
               <div className="col-span-full">
@@ -562,4 +410,4 @@ const ProductForm = () => {
   );
 };
 
-export default ProductForm;
+export default UpdateProductForm;

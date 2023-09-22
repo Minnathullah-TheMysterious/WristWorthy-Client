@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { Button, Modal } from "antd";
+import { Button, Modal, Badge, Space } from "antd";
 import { FiAlertTriangle } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { createCategoryAsync } from "../../products/productSlice";
+import {
+  createCategoryAsync,
+  deleteCategoryAsync,
+  restoreCategoryAsync,
+} from "../../products/productSlice";
 
 const { confirm } = Modal;
 
@@ -14,17 +18,34 @@ const AdminCategoryListing = ({ wrapClass }) => {
   const [category_image, setCategory_image] = useState(null);
   const [category_name, setCategory_name] = useState("");
 
-  const showDeleteConfirm = (categoryName) => {
+  const showDeleteConfirm = (categoryName, categoryId) => {
     confirm({
-      title: `Are you sure to delete '${categoryName}' category?`,
+      title: `Are you sure to delete the '${categoryName}' category?`,
       icon: <FiAlertTriangle className="font-bold text-red-700 text-2xl" />,
       content:
-        "Be Careful! All The Filters and all the related products etc,. may not work expectedly",
+        "Be Careful! All The Filters and all the related products etc., may not work expectedly. You can restore it anytime",
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
       onOk() {
-        console.log("OK");
+        dispatch(deleteCategoryAsync(categoryId));
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  const showRestoreConfirm = (categoryName, categoryId) => {
+    confirm({
+      title: `Are you sure to Restore the '${categoryName}' category?`,
+      icon: <FiAlertTriangle className="font-bold text-red-700 text-2xl" />,
+      content: "You can delete it anytime you wanted.",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        dispatch(restoreCategoryAsync(categoryId));
       },
       onCancel() {
         console.log("Cancel");
@@ -130,8 +151,19 @@ const AdminCategoryListing = ({ wrapClass }) => {
           </section>
 
           <div className={wrapClass}>
-              {categories.map((category) => (
-                <div key={category._id}>
+            {categories?.map((category) => (
+              <Space
+                key={category._id}
+                direction="vertical"
+                size="middle"
+                style={{
+                  width: "100%",
+                }}
+              >
+                <Badge.Ribbon
+                  text={category.deleted ? "Deleted Category" : "Category"}
+                  color={category.deleted ? "red" : "blue"}
+                >
                   <div className="group">
                     <div className="relative overflow-hidden group-hover:opacity-75">
                       <img
@@ -144,19 +176,34 @@ const AdminCategoryListing = ({ wrapClass }) => {
                       {category.category_name}
                     </h3>
                   </div>
-                  <div className="flex justify-between space-x-1 mb-6 text-xs sm:text-base">
-                    <div className="w-[50%] text-center mt-1 py-2  rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800">
-                      Edit
+                  {!category.deleted && (
+                    <div className="flex justify-between space-x-1 mb-6 text-xs sm:text-base">
+                      <div className="w-[50%] text-center mt-1 py-2  rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800">
+                        Edit
+                      </div>
+                      <div
+                        onClick={() =>
+                          showDeleteConfirm(category.category_name, category._id)
+                        }
+                        className="mt-1 w-[50%] text-center py-2 rounded-lg bg-red-800 text-white hover:cursor-pointer hover:bg-red-900 active:bg-red-800"
+                      >
+                        Delete
+                      </div>
                     </div>
+                  )}
+                  {category.deleted && (
                     <div
-                      onClick={() => showDeleteConfirm(category.category_name)}
-                      className="mt-1 w-[50%] text-center py-2 rounded-lg bg-red-800 text-white hover:cursor-pointer hover:bg-red-900 active:bg-red-800"
+                      onClick={() =>
+                        showRestoreConfirm(category.category_name, category._id)
+                      }
+                      className="mt-1 py-2 text-center w-[100%] rounded-lg bg-green-800 text-white hover:cursor-pointer hover:bg-green-900 active:bg-green-800"
                     >
-                      Delete
+                      Restore
                     </div>
-                  </div>
-                </div>
-              ))}
+                  )}
+                </Badge.Ribbon>
+              </Space>
+            ))}
           </div>
         </div>
       </div>
