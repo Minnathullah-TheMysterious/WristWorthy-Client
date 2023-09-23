@@ -124,7 +124,7 @@ export const updateProductData = async (productId, productData) => {
       return data;
     }
   } catch (error) {
-    if (error.response && error.response.status ===400 ) {
+    if (error.response && error.response.status === 400) {
       toast(error?.response?.data?.message, {
         className: "font-serif bg-blue-900 text-white",
       });
@@ -147,7 +147,7 @@ export const updateProductData = async (productId, productData) => {
 
 //Change/update Product thumbnail
 export const updateProductThumbnail = async (productId, thumbnail) => {
-  console.log(productId, thumbnail)
+  console.log(productId, thumbnail);
   try {
     const { data } = await axios.put(
       `/api/v1/product/update-product-thumbnail/${productId}`,
@@ -162,16 +162,19 @@ export const updateProductThumbnail = async (productId, thumbnail) => {
       return data;
     }
   } catch (error) {
-    if (error.response && error.response.status ===400 ) {
+    if (error.response && error.response.status === 400) {
       toast(error?.response?.data?.message, {
         className: "font-serif bg-blue-900 text-white",
       });
       return { success: false, message: error?.response?.data?.message };
-    }else if(error.response && error.response.status ===404){
+    } else if (error.response && error.response.status === 404) {
       toast.error(error?.response?.data?.message);
       return { success: false, message: error?.response?.data?.message };
     } else {
-      console.error("something went wrong while updating the product thumbnail", error);
+      console.error(
+        "something went wrong while updating the product thumbnail",
+        error
+      );
       toast.error(
         error?.response?.data?.message ||
           "Something Went Wrong While updating the product thumbnail"
@@ -202,16 +205,19 @@ export const updateProductImage = async (productId, image, imageIndex) => {
       return data;
     }
   } catch (error) {
-    if (error.response && error.response.status ===400 ) {
+    if (error.response && error.response.status === 400) {
       toast(error?.response?.data?.message, {
         className: "font-serif bg-blue-900 text-white",
       });
       return { success: false, message: error?.response?.data?.message };
-    }else if(error.response && error.response.status ===404){
+    } else if (error.response && error.response.status === 404) {
       toast.error(error?.response?.data?.message);
       return { success: false, message: error?.response?.data?.message };
     } else {
-      console.error("something went wrong while updating the product image", error);
+      console.error(
+        "something went wrong while updating the product image",
+        error
+      );
       toast.error(
         error?.response?.data?.message ||
           "Something Went Wrong While updating the product image"
@@ -409,6 +415,90 @@ export const restoreBrand = async (brandId) => {
         message:
           error?.response?.data?.message ||
           "Something Went Wrong While Restoring the Brand",
+      };
+    }
+  }
+};
+
+//Update Brand Name
+export const updateBrandName = async (brandId, brand_name) => {
+  try {
+    const { data } = await axios.put(`/api/v1/brand/update-brand/${brandId}`, {
+      brand_name,
+    });
+    const { success, message } = data;
+    if (success) {
+      toast.success(message);
+      return data;
+    } else {
+      toast.error(message);
+      return { success, message };
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else if (error.response && error.response.status === 400) {
+      toast(error?.response?.data?.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      console.error(
+        "something went wrong while updating the Brand name",
+        error
+      );
+      toast.error(
+        error?.response?.data?.message ||
+          "Something Went Wrong While updating the Brand name"
+      );
+      return {
+        success: false,
+        message:
+          error?.response?.data?.message ||
+          "Something Went Wrong While updating the Brand name",
+      };
+    }
+  }
+};
+
+//Update Brand Image
+export const updateBrandImage = async (brandId, image) => {
+  try {
+    const { data } = await axios.put(
+      `/api/v1/brand/update-brand-image/${brandId}`, image
+    );
+    const { success, message } = data;
+    if (success) {
+      toast.success(message);
+      return data;
+    } else {
+      toast.error(message);
+      return { success, message };
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else if (error.response && error.response.status === 400) {
+      toast(error?.response?.data?.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      console.error(
+        "something went wrong while updating the Brand image",
+        error
+      );
+      toast.error(
+        error?.response?.data?.message ||
+          "Something Went Wrong While updating the Brand image"
+      );
+      return {
+        success: false,
+        message:
+          error?.response?.data?.message ||
+          "Something Went Wrong While updating the Brand image",
       };
     }
   }

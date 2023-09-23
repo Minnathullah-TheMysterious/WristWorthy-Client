@@ -16,6 +16,8 @@ import {
   restoreBrand,
   restoreCategory,
   restoreProduct,
+  updateBrandImage,
+  updateBrandName,
   updateProductData,
   updateProductImage,
   updateProductThumbnail,
@@ -107,11 +109,11 @@ export const restoreProductAsync = createAsyncThunk(
 
 export const updateProductDataAsync = createAsyncThunk(
   "products/updateProductData",
-  async ({productId, updatedProduct}) => {
+  async ({ productId, updatedProduct }) => {
     try {
       const response = await updateProductData(productId, updatedProduct);
       if (response.success) {
-        return {product: response.product, productId};
+        return { product: response.product, productId };
       } else {
         throw new Error(response.message);
       }
@@ -123,11 +125,11 @@ export const updateProductDataAsync = createAsyncThunk(
 
 export const updateProductThumbnailAsync = createAsyncThunk(
   "products/updateProductThumbnail",
-  async ({productId, formData}) => {
+  async ({ productId, formData }) => {
     try {
       const response = await updateProductThumbnail(productId, formData);
       if (response.success) {
-        return {product: response.product, productId};
+        return { product: response.product, productId };
       } else {
         throw new Error(response.message);
       }
@@ -139,11 +141,15 @@ export const updateProductThumbnailAsync = createAsyncThunk(
 
 export const updateProductImageAsync = createAsyncThunk(
   "products/updateProductImage",
-  async ({productId, formData, imageIndex}) => {
+  async ({ productId, formData, imageIndex }) => {
     try {
-      const response = await updateProductImage(productId, formData, imageIndex);
+      const response = await updateProductImage(
+        productId,
+        formData,
+        imageIndex
+      );
       if (response.success) {
-        return {product: response.product, productId};
+        return { product: response.product, productId };
       } else {
         throw new Error(response.message);
       }
@@ -159,30 +165,6 @@ export const fetchBrandsAsync = createAsyncThunk(
     const response = await fetchBrands();
     console.log(response?.brands);
     return response?.brands;
-  }
-);
-
-export const fetchCategoriesAsync = createAsyncThunk(
-  "products/fetchCategories",
-  async () => {
-    const response = await fetchCategories();
-    return response?.categories;
-  }
-);
-
-export const createCategoryAsync = createAsyncThunk(
-  "products/createCategory",
-  async (category) => {
-    try {
-      const response = await createCategory(category);
-      if (response.success) {
-        return response?.category;
-      } else {
-        throw new Error(response.message);
-      }
-    } catch (error) {
-      throw new Error(error?.message);
-    }
   }
 );
 
@@ -225,6 +207,62 @@ export const restoreBrandAsync = createAsyncThunk(
       const response = await restoreBrand(brandId);
       if (response) {
         return brandId;
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      throw new Error(error?.message);
+    }
+  }
+);
+
+export const updateBrandNameAsync = createAsyncThunk(
+  "products/updateBrandName",
+  async ({brandId, brand_name}) => {
+    try {
+      const response = await updateBrandName(brandId, brand_name);
+      if (response) {
+        return {brand: response.brand, brandId};
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      throw new Error(error?.message);
+    }
+  }
+);
+
+export const updateBrandImageAsync = createAsyncThunk(
+  "products/updateBrandImage",
+  async ({brandId, formData}) => {
+    try {
+      const response = await updateBrandImage(brandId, formData);
+      if (response) {
+        return {brand: response.brand, brandId};
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      throw new Error(error?.message);
+    }
+  }
+);
+
+export const fetchCategoriesAsync = createAsyncThunk(
+  "products/fetchCategories",
+  async () => {
+    const response = await fetchCategories();
+    return response?.categories;
+  }
+);
+
+export const createCategoryAsync = createAsyncThunk(
+  "products/createCategory",
+  async (category) => {
+    try {
+      const response = await createCategory(category);
+      if (response.success) {
+        return response?.category;
       } else {
         throw new Error(response.message);
       }
@@ -380,7 +418,7 @@ const productSlice = createSlice({
           (product) => product._id === action.payload.productId
         );
         if (productIndex !== -1) {
-          state.products.splice(productIndex, 1, action.payload.product)
+          state.products.splice(productIndex, 1, action.payload.product);
         }
       })
 
@@ -399,7 +437,7 @@ const productSlice = createSlice({
           (product) => product._id === action.payload.productId
         );
         if (productIndex !== -1) {
-          state.products.splice(productIndex, 1, action.payload.product)
+          state.products.splice(productIndex, 1, action.payload.product);
         }
       })
 
@@ -418,7 +456,7 @@ const productSlice = createSlice({
           (product) => product._id === action.payload.productId
         );
         if (productIndex !== -1) {
-          state.products.splice(productIndex, 1, action.payload.product)
+          state.products.splice(productIndex, 1, action.payload.product);
         }
       })
 
@@ -554,7 +592,43 @@ const productSlice = createSlice({
         }
       })
 
-      
+      .addCase(updateBrandNameAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateBrandNameAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error
+          ? action.error.message
+          : "Encountered an error";
+      })
+      .addCase(updateBrandNameAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        const brandIndex = state?.brands?.findIndex(
+          (brand) => brand._id === action.payload.brandId
+        );
+        if (brandIndex !== -1) {
+          state?.brands?.splice(brandIndex, 1, action.payload.brand)
+        }
+      })
+
+      .addCase(updateBrandImageAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateBrandImageAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error
+          ? action.error.message
+          : "Encountered an error";
+      })
+      .addCase(updateBrandImageAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        const brandIndex = state?.brands?.findIndex(
+          (brand) => brand._id === action.payload.brandId
+        );
+        if (brandIndex !== -1) {
+          state?.brands?.splice(brandIndex, 1, action.payload.brand)
+        }
+      })
   },
 });
 
