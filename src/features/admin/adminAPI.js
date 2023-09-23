@@ -298,7 +298,7 @@ export const deleteCategory = async (categoryId) => {
   }
 };
 
-//Delete Category
+//Restore Category
 export const restoreCategory = async (categoryId) => {
   try {
     const { data } = await axios.put(
@@ -324,6 +324,90 @@ export const restoreCategory = async (categoryId) => {
         message:
           error?.response?.data?.message ||
           "Something Went Wrong While Restoring the Category",
+      };
+    }
+  }
+};
+
+//Update Category Name
+export const updateCategoryName = async (categoryId, category_name) => {
+  try {
+    const { data } = await axios.put(`/api/v1/category/update-category/${categoryId}`, {
+      category_name,
+    });
+    const { success, message } = data;
+    if (success) {
+      toast.success(message);
+      return data;
+    } else {
+      toast.error(message);
+      return { success, message };
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else if (error.response && error.response.status === 400) {
+      toast(error?.response?.data?.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      console.error(
+        "something went wrong while updating the Category name",
+        error
+      );
+      toast.error(
+        error?.response?.data?.message ||
+          "Something Went Wrong While updating the Category name"
+      );
+      return {
+        success: false,
+        message:
+          error?.response?.data?.message ||
+          "Something Went Wrong While updating the Category name",
+      };
+    }
+  }
+};
+
+//Update Category Image
+export const updateCategoryImage = async (categoryId, image) => {
+  try {
+    const { data } = await axios.put(
+      `/api/v1/category/update-category-image/${categoryId}`, image
+    );
+    const { success, message } = data;
+    if (success) {
+      toast.success(message);
+      return data;
+    } else {
+      toast.error(message);
+      return { success, message };
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else if (error.response && error.response.status === 400) {
+      toast(error?.response?.data?.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      console.error(
+        "something went wrong while updating the Category image",
+        error
+      );
+      toast.error(
+        error?.response?.data?.message ||
+          "Something Went Wrong While updating the Category image"
+      );
+      return {
+        success: false,
+        message:
+          error?.response?.data?.message ||
+          "Something Went Wrong While updating the Category image",
       };
     }
   }

@@ -68,7 +68,7 @@ const AdminBrandListing = ({ wrapClass }) => {
   const showUpdateBrandNameModal = () => {
     setIsUpdateBrandNameModalOpen(true);
   };
-  const showUpdateImageNameModal = () => {
+  const showUpdateBrandImageModal = () => {
     setIsUpdateBrandImageModalOpen(true);
   };
   const handleOk = () => {
@@ -120,7 +120,6 @@ const AdminBrandListing = ({ wrapClass }) => {
               Add New Brand
             </Button>
             <Modal
-              // title="Create A New Category"
               open={isCreateBrandModalOpen}
               onOk={handleOk}
               onCancel={handleCancel}
@@ -204,7 +203,7 @@ const AdminBrandListing = ({ wrapClass }) => {
                       onClick={() => {
                         setCreateBrand(false);
                         setUpdateBrandName(false);
-                        showUpdateImageNameModal();
+                        showUpdateBrandImageModal();
                         setBrandImagePreview(brand.image);
                         setBrandId(brand._id);
                       }}

@@ -6,6 +6,8 @@ import {
   createCategoryAsync,
   deleteCategoryAsync,
   restoreCategoryAsync,
+  updateCategoryImageAsync,
+  updateCategoryNameAsync,
 } from "../../products/productSlice";
 
 const { confirm } = Modal;
@@ -14,9 +16,16 @@ const AdminCategoryListing = ({ wrapClass }) => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state?.product?.categories);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateCategoryModalOpen, setIsCreateCategoryModalOpen] = useState(false);
+  const [isUpdateCategoryNameModalOpen, setIsUpdateCategoryNameModalOpen] = useState(false);
+  const [isUpdateCategoryImageModalOpen, setIsUpdateCategoryImageModalOpen] = useState(false);
+  const [categoryImagePreview, setBrandImagePreview] = useState(null);
+  const [incomingImage, setIncomingImage] = useState(null);
   const [category_image, setCategory_image] = useState(null);
   const [category_name, setCategory_name] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [createCategory, setCreateCategory] = useState(false);
+  const [updateCategoryName, setUpdateCategoryName] = useState(false);
 
   const showDeleteConfirm = (categoryName, categoryId) => {
     confirm({
@@ -53,19 +62,45 @@ const AdminCategoryListing = ({ wrapClass }) => {
     });
   };
 
-  const showModal = () => {
-    setIsModalOpen(true);
+  const showCreateCategoryModal = () => {
+    setIsCreateCategoryModalOpen(true);
   };
+
+  const showUpdateCategoryNameModal = () => {
+    setIsUpdateCategoryNameModalOpen(true);
+  };
+
+  const showUpdateCategoryImageModal = () => {
+    setIsUpdateCategoryImageModalOpen(true);
+  };
+
   const handleOk = () => {
-    setIsModalOpen(false);
-    console.log(category_name, category_image);
-    const formData = new FormData();
-    formData.append("category_name", category_name);
-    formData.append("image", category_image);
-    dispatch(createCategoryAsync(formData));
+    if (createCategory && !updateCategoryName) {
+      setIsCreateCategoryModalOpen(false);
+      console.log(category_name, category_image);
+      const formData = new FormData();
+      formData.append("category_name", category_name);
+      formData.append("image", category_image);
+      dispatch(createCategoryAsync(formData));
+    } else if (!createCategory && updateCategoryName) {
+      setIsUpdateCategoryNameModalOpen(false);
+      dispatch(updateCategoryNameAsync({ categoryId, category_name }));
+    } else if (!createCategory && !updateCategoryName) {
+      setIsUpdateCategoryImageModalOpen(false);
+      const formData = new FormData();
+      formData.append("image", incomingImage);
+      dispatch(updateCategoryImageAsync({ categoryId, formData }));
+    }
   };
+
   const handleCancel = () => {
-    setIsModalOpen(false);
+    if (createCategory && !updateCategoryName) {
+      setIsCreateCategoryModalOpen(false);
+    } else if (!createCategory && updateCategoryName) {
+      setIsUpdateCategoryNameModalOpen(false);
+    } else if (!createCategory && !updateCategoryName) {
+      setIsUpdateCategoryImageModalOpen(false);
+    }
   };
 
   return (
@@ -80,13 +115,15 @@ const AdminCategoryListing = ({ wrapClass }) => {
             <Button
               className="bg-sky-800 text-white min-w-full font-bold font-serif tracking-widest"
               type="primary"
-              onClick={showModal}
+              onClick={()=> {setCreateCategory(true)
+                setUpdateCategoryName(false)
+                showCreateCategoryModal()}}
             >
               Add New Category
             </Button>
             <Modal
               // title="Create A New Category"
-              open={isModalOpen}
+              open={isCreateCategoryModalOpen}
               onOk={handleOk}
               onCancel={handleCancel}
               okText={"Create Category"}
@@ -165,22 +202,134 @@ const AdminCategoryListing = ({ wrapClass }) => {
                   color={category.deleted ? "red" : "blue"}
                 >
                   <div className="group">
-                    <div className="relative overflow-hidden group-hover:opacity-75">
+                    <div onClick={() => {
+                        setCreateCategory(false);
+                        setUpdateCategoryName(false);
+                        showUpdateCategoryImageModal();
+                        setBrandImagePreview(category.image);
+                        setCategoryId(category._id);
+                      }} className="relative overflow-hidden group-hover:opacity-75 hover:cursor-pointer">
                       <img
                         src={`${process.env.REACT_APP_API}/${category.image.location}`}
                         alt={category.category_name}
                         className="sm:h-40 sm:min-w-[160px] sm:max-w-[160px] h-28 min-w-[7rem] max-w-[7rem] object-fill object-center rounded-full border-2 border-gray-700"
                       />
                     </div>
+                    {/* Update Category image Modal */}
+                    <Modal
+                      open={isUpdateCategoryImageModalOpen}
+                      onOk={handleOk}
+                      onCancel={handleCancel}
+                      okText={"Update Image"}
+                      okButtonProps={{
+                        style: {
+                          color: "black",
+                          fontFamily: "sans-serif",
+                          fontWeight: "bold",
+                        },
+                      }}
+                      cancelButtonProps={{
+                        style: {
+                          fontFamily: "sans-serif",
+                          fontWeight: "bold",
+                        },
+                      }}
+                    >
+                      <form className="space-y-5" onSubmit={handleOk}>
+                        <h1 className="text-center font-serif font-bold text-xl">
+                          Change Category Image
+                        </h1>
+                        <div className="space-y-2">
+                          {!incomingImage && (
+                            <div className="flex justify-center">
+                              <img
+                                src={`${process.env.REACT_APP_API}/${categoryImagePreview?.location}`}
+                                alt={category.category_name}
+                                className="h-52 w-52 "
+                              />
+                            </div>
+                          )}
+                          {incomingImage && (
+                            <div className="flex justify-center">
+                              <img
+                                src={URL.createObjectURL(incomingImage)}
+                                alt={incomingImage?.name}
+                                className="h-52 w-52 "
+                              />
+                            </div>
+                          )}
+                          <label
+                            htmlFor="product_image1"
+                            className="bg-blue-800 block text-white py-1 text-center rounded-lg hover:cursor-pointer hover:bg-blue-700 active:bg-blue-800"
+                          >
+                            {!incomingImage
+                              ? categoryImagePreview?.originalname
+                              : incomingImage?.name}
+                            <input
+                              type="file"
+                              id="product_image1"
+                              name="product_image1"
+                              accept="image/*"
+                              hidden
+                              onChange={(e) => {
+                                setIncomingImage(e.target.files[0]);
+                              }}
+                            />
+                          </label>
+                        </div>
+                      </form>
+                    </Modal>
                     <h3 className="mt-3 text-sm text-gray-500 font-serif font-bold text-center">
                       {category.category_name}
                     </h3>
                   </div>
                   {!category.deleted && (
                     <div className="flex justify-between space-x-1 mb-6 text-xs sm:text-base">
-                      <div className="w-[50%] text-center mt-1 py-2  rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800">
+                      <div onClick={()=>{
+                        showUpdateCategoryNameModal();
+                          setCategory_name(category.category_name);
+                          setCategoryId(category._id);
+                          setCreateCategory(false);
+                          setUpdateCategoryName(true);
+                      }} className="w-[50%] text-center mt-1 py-2  rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800">
                         Edit
                       </div>
+                      {/* Update Category Name Modal */}
+                      <Modal
+                        open={isUpdateCategoryNameModalOpen}
+                        onOk={handleOk}
+                        onCancel={handleCancel}
+                        okText={"Update Category"}
+                        okButtonProps={{
+                          style: {
+                            color: "black",
+                            fontFamily: "sans-serif",
+                            fontWeight: "bold",
+                          },
+                        }}
+                        cancelButtonProps={{
+                          style: {
+                            fontFamily: "sans-serif",
+                            fontWeight: "bold",
+                          },
+                        }}
+                      >
+                        <form onSubmit={handleOk}>
+                          <h2 className="text-center font-serif font-bold mb-8">
+                            Update Category Name
+                          </h2>
+                          <label htmlFor="brandName">
+                            <input
+                              className="w-full rounded-lg"
+                              id="brandName"
+                              name="brand_name"
+                              type="text"
+                              value={category_name}
+                              onChange={(e) => setCategory_name(e.target.value)}
+                            />
+                          </label>
+                        </form>
+                      </Modal>
                       <div
                         onClick={() =>
                           showDeleteConfirm(category.category_name, category._id)

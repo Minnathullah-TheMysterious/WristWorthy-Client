@@ -18,6 +18,8 @@ import {
   restoreProduct,
   updateBrandImage,
   updateBrandName,
+  updateCategoryImage,
+  updateCategoryName,
   updateProductData,
   updateProductImage,
   updateProductThumbnail,
@@ -304,6 +306,38 @@ export const restoreCategoryAsync = createAsyncThunk(
   }
 );
 
+export const updateCategoryNameAsync = createAsyncThunk(
+  "products/updateCategoryName",
+  async ({categoryId, category_name}) => {
+    try {
+      const response = await updateCategoryName(categoryId, category_name);
+      if (response) {
+        return {category: response.category, categoryId};
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      throw new Error(error?.message);
+    }
+  }
+);
+
+export const updateCategoryImageAsync = createAsyncThunk(
+  "products/updateCategoryImage",
+  async ({categoryId, formData}) => {
+    try {
+      const response = await updateCategoryImage(categoryId, formData);
+      if (response) {
+        return {category: response.category, categoryId};
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      throw new Error(error?.message);
+    }
+  }
+);
+
 const productSlice = createSlice({
   name: "products",
   initialState,
@@ -523,6 +557,44 @@ const productSlice = createSlice({
         if (categoryIndex !== -1) {
           const category = state.categories[categoryIndex];
           category.deleted = false;
+        }
+      })
+
+      .addCase(updateCategoryNameAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateCategoryNameAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error
+          ? action.error.message
+          : "Encountered an error";
+      })
+      .addCase(updateCategoryNameAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        const categoryIndex = state?.categories?.findIndex(
+          (category) => category._id === action.payload.categoryId
+        );
+        if (categoryIndex !== -1) {
+          state?.categories?.splice(categoryIndex, 1, action.payload.category)
+        }
+      })
+
+      .addCase(updateCategoryImageAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateCategoryImageAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error
+          ? action.error.message
+          : "Encountered an error";
+      })
+      .addCase(updateCategoryImageAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        const categoryIndex = state?.categories?.findIndex(
+          (category) => category._id === action.payload.categoryId
+        );
+        if (categoryIndex !== -1) {
+          state?.categories?.splice(categoryIndex, 1, action.payload.category)
         }
       })
 
