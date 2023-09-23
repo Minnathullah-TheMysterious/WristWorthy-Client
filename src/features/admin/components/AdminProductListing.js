@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Modal, Badge, Card, Space } from "antd";
+import { Modal, Badge, Space, Button } from "antd";
 import { FiAlertTriangle } from "react-icons/fi";
 import {
   ChevronLeftIcon,
@@ -21,6 +21,7 @@ import {
   fetchBrandsAsync,
   fetchCategoriesAsync,
   restoreProductAsync,
+  updateProductThumbnailAsync,
 } from "../../products/productSlice";
 import { PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN } from "../../../app/constants";
 import Loader from "../../../loaders/Loader";
@@ -208,6 +209,7 @@ const AdminProductListing = () => {
   );
 };
 
+/******************Mobile Filter***************** */
 function MobileFilterDialog({
   filtersOpen,
   setFiltersOpen,
@@ -388,6 +390,7 @@ function MobileFilterDialog({
   );
 }
 
+/******************Sorting***************** */
 function Sorting({ setFiltersOpen, handleSorting }) {
   return (
     <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-14">
@@ -462,6 +465,7 @@ function Sorting({ setFiltersOpen, handleSorting }) {
   );
 }
 
+/******************Desktop Filter***************** */
 function DesktopFilter({
   handleFilterChange,
   filters,
@@ -571,6 +575,7 @@ function DesktopFilter({
   );
 }
 
+/******************Pagination***************** */
 function Pagination({
   handlePagination,
   PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN,
@@ -690,9 +695,16 @@ function Pagination({
   );
 }
 
+/******************Product Grid***************** */
 function ProductGrid({ products }) {
   const dispatch = useDispatch();
   const { confirm } = Modal;
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [productThumbnailPath, setProductThumbnailPath] = useState(null);
+  const [productThumbnailOriginalname, setProductThumbnailOriginalname] = useState('');
+  const [changeProductThumbnail, setChangeProductThumbnail] = useState(null);
+  const [productId, setProductId] = useState("");
 
   const showDeleteConfirm = (productName, productId) => {
     confirm({
@@ -728,6 +740,22 @@ function ProductGrid({ products }) {
         console.log("Cancel");
       },
     });
+  };
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+    const formData = new FormData();
+    formData.append("thumbnail", changeProductThumbnail);
+    dispatch(updateProductThumbnailAsync({ productId, formData }));
+    console.log(changeProductThumbnail);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -790,9 +818,103 @@ function ProductGrid({ products }) {
                             </div>
                           </div>
                         </Link>
+                        {/* Update Product Thumbnail Modal */}
+                        <section>
+                          <Button
+                            className="bg-sky-800 text-white min-w-full"
+                            type="primary"
+                            onClick={() => {
+                              showModal();
+                              setProductThumbnailPath(product.thumbnail.location);
+                              setChangeProductThumbnail(null);
+                              setProductId(product._id)
+                              setProductThumbnailOriginalname(product.thumbnail.originalname)
+                            }}
+                          >
+                            Change Thumbnail
+                          </Button>
+                          <Modal
+                            open={isModalOpen}
+                            onOk={handleOk}
+                            onCancel={handleCancel}
+                            okText={"Update Thumbnail"}
+                            okButtonProps={{
+                              style: {
+                                color: "black",
+                                fontFamily: "sans-serif",
+                                fontWeight: "bold",
+                              },
+                            }}
+                            cancelButtonProps={{
+                              style: {
+                                fontFamily: "sans-serif",
+                                fontWeight: "bold",
+                              },
+                            }}
+                          >
+                            <form
+                              className="space-y-5"
+                              onSubmit={handleOk}
+                            >
+                              <h1 className="text-center font-serif font-bold text-xl">
+                                Change Product Thumbnail
+                              </h1>
+                              <div className="space-y-2">
+                                {productThumbnailPath &&
+                                  !changeProductThumbnail && (
+                                    <div className="flex justify-center">
+                                      <img
+                                        src={`${process.env.REACT_APP_API}/${productThumbnailPath}`}
+                                        alt={product.product_name}
+                                        className="h-52 w-52 "
+                                      />
+                                    </div>
+                                  )}
+                                {!productThumbnailPath &&
+                                  changeProductThumbnail && (
+                                    <div className="flex justify-center">
+                                      <img
+                                        src={URL.createObjectURL(
+                                          changeProductThumbnail
+                                        )}
+                                        alt={product.product_name}
+                                        className="h-52 w-52 "
+                                      />
+                                    </div>
+                                  )}
+                                <label
+                                  htmlFor="product_thumbnail"
+                                  className="bg-blue-800 block text-white py-1 text-center rounded-lg hover:cursor-pointer hover:bg-blue-700 active:bg-blue-800"
+                                >
+                                  {productThumbnailPath
+                                    ? productThumbnailOriginalname
+                                    : changeProductThumbnail
+                                    ? changeProductThumbnail.name
+                                    : 'Upload image for product thumbnail'}
+                                  <input
+                                    type="file"
+                                    id="product_thumbnail"
+                                    name="product_thumbnail"
+                                    accept="image/*"
+                                    hidden
+                                    onChange={(e) => {
+                                      setChangeProductThumbnail(
+                                        e.target.files[0]
+                                      );
+                                      setProductThumbnailPath(null);
+                                    }}
+                                  />
+                                </label>
+                              </div>
+                            </form>
+                          </Modal>
+                        </section>
                         {!product.deleted && (
                           <div className="flex justify-between space-x-1">
-                            <Link to={`/dashboard/admin/update-product/${product._id}`} className="mt-1 py-2 text-center w-[50%] rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800">
+                            <Link
+                              to={`/dashboard/admin/update-product/${product._id}`}
+                              className="mt-1 py-2 text-center w-[50%] rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800"
+                            >
                               Edit
                             </Link>
                             <div

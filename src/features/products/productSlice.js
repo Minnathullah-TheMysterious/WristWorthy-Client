@@ -17,6 +17,8 @@ import {
   restoreCategory,
   restoreProduct,
   updateProductData,
+  updateProductImage,
+  updateProductThumbnail,
 } from "./../admin/adminAPI";
 
 const initialState = {
@@ -108,6 +110,38 @@ export const updateProductDataAsync = createAsyncThunk(
   async ({productId, updatedProduct}) => {
     try {
       const response = await updateProductData(productId, updatedProduct);
+      if (response.success) {
+        return {product: response.product, productId};
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      throw new Error(error?.message);
+    }
+  }
+);
+
+export const updateProductThumbnailAsync = createAsyncThunk(
+  "products/updateProductThumbnail",
+  async ({productId, formData}) => {
+    try {
+      const response = await updateProductThumbnail(productId, formData);
+      if (response.success) {
+        return {product: response.product, productId};
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      throw new Error(error?.message);
+    }
+  }
+);
+
+export const updateProductImageAsync = createAsyncThunk(
+  "products/updateProductImage",
+  async ({productId, formData, imageIndex}) => {
+    try {
+      const response = await updateProductImage(productId, formData, imageIndex);
       if (response.success) {
         return {product: response.product, productId};
       } else {
@@ -341,6 +375,44 @@ const productSlice = createSlice({
           : "Encountered an error";
       })
       .addCase(updateProductDataAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        const productIndex = state?.products?.findIndex(
+          (product) => product._id === action.payload.productId
+        );
+        if (productIndex !== -1) {
+          state.products.splice(productIndex, 1, action.payload.product)
+        }
+      })
+
+      .addCase(updateProductThumbnailAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateProductThumbnailAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error
+          ? action.error.message
+          : "Encountered an error";
+      })
+      .addCase(updateProductThumbnailAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        const productIndex = state?.products?.findIndex(
+          (product) => product._id === action.payload.productId
+        );
+        if (productIndex !== -1) {
+          state.products.splice(productIndex, 1, action.payload.product)
+        }
+      })
+
+      .addCase(updateProductImageAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateProductImageAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error
+          ? action.error.message
+          : "Encountered an error";
+      })
+      .addCase(updateProductImageAsync.fulfilled, (state, action) => {
         state.loading = false;
         const productIndex = state?.products?.findIndex(
           (product) => product._id === action.payload.productId

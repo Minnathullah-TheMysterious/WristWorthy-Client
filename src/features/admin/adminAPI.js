@@ -145,6 +145,87 @@ export const updateProductData = async (productId, productData) => {
   }
 };
 
+//Change/update Product thumbnail
+export const updateProductThumbnail = async (productId, thumbnail) => {
+  console.log(productId, thumbnail)
+  try {
+    const { data } = await axios.put(
+      `/api/v1/product/update-product-thumbnail/${productId}`,
+      thumbnail
+    );
+    const { success, message } = data;
+    if (success) {
+      toast.success(message);
+      return data;
+    } else {
+      toast.error(message);
+      return data;
+    }
+  } catch (error) {
+    if (error.response && error.response.status ===400 ) {
+      toast(error?.response?.data?.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
+      return { success: false, message: error?.response?.data?.message };
+    }else if(error.response && error.response.status ===404){
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      console.error("something went wrong while updating the product thumbnail", error);
+      toast.error(
+        error?.response?.data?.message ||
+          "Something Went Wrong While updating the product thumbnail"
+      );
+      return {
+        success: false,
+        message:
+          error?.response?.data?.message ||
+          "Something Went Wrong While updating the product thumbnail",
+      };
+    }
+  }
+};
+
+//Change/update Product image
+export const updateProductImage = async (productId, image, imageIndex) => {
+  try {
+    const { data } = await axios.put(
+      `/api/v1/product/update-product-image/${productId}/${imageIndex}`,
+      image
+    );
+    const { success, message } = data;
+    if (success) {
+      toast.success(message);
+      return data;
+    } else {
+      toast.error(message);
+      return data;
+    }
+  } catch (error) {
+    if (error.response && error.response.status ===400 ) {
+      toast(error?.response?.data?.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
+      return { success: false, message: error?.response?.data?.message };
+    }else if(error.response && error.response.status ===404){
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      console.error("something went wrong while updating the product image", error);
+      toast.error(
+        error?.response?.data?.message ||
+          "Something Went Wrong While updating the product image"
+      );
+      return {
+        success: false,
+        message:
+          error?.response?.data?.message ||
+          "Something Went Wrong While updating the product image",
+      };
+    }
+  }
+};
+
 //Create Category
 export const createCategory = async (newCategory) => {
   try {
