@@ -7,6 +7,7 @@ import {
   placeOrder,
   fetchUserOrders,
 } from "./userAPI";
+import { updateOrderStatus } from "../admin/adminAPI";
 
 const initialState = {
   loading: false,
@@ -121,6 +122,23 @@ export const placeOrderAsync = createAsyncThunk(
   }
 );
 
+export const updateOrderStatusAsync = createAsyncThunk(
+  "order/updateOrderStatus",
+  async ({userId, orderId, orderStatus}) => {
+    try {
+      const response = await updateOrderStatus(userId, orderId, orderStatus);
+      if (response.success) {
+        return response.orders;
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      console.error("Something Went Wrong in update-order-thunk", error);
+      throw new Error(error.message);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "order",
   initialState,
@@ -206,6 +224,18 @@ const userSlice = createSlice({
         state.error = action.error.message || "error";
       })
       .addCase(fetchUserOrdersAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.orders = action.payload;
+      })
+
+      .addCase(updateOrderStatusAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateOrderStatusAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "error";
+      })
+      .addCase(updateOrderStatusAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.orders = action.payload;
       });

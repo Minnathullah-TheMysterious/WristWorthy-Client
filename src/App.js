@@ -27,6 +27,7 @@ import AdminProductsPage from "./pages/adminPages/AdminProductsPage";
 import AdminCategoriesPage from "./pages/adminPages/AdminCategoriesPage";
 import AdminBrandsPage from "./pages/adminPages/AdminBrandsPage";
 import UpdateProductPage from "./pages/adminPages/UpdateProductPage";
+import AdminOrdersPage from "./pages/adminPages/AdminOrdersPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -65,6 +66,7 @@ function App() {
           <Route path="products" element={<AdminProductsPage />} />
           <Route path="categories" element={<AdminCategoriesPage />} />
           <Route path="brands" element={<AdminBrandsPage />} />
+          <Route path="orders" element={<AdminOrdersPage />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
