@@ -40,10 +40,10 @@ const AdminOrders = () => {
   const [queryOrderStatus, setQueryOrderStatus] = useState("");
   const [orderIdInput, setOrderIdInput] = useState("");
   const [input, setInput] = useState("");
-  const [editMode, setEditMode] = useState(false);
+  const [editableOrder, setEditableOrder] = useState("");
   const [open, setOpen] = useState(false);
 
-  console.log(editMode);
+  console.log(editableOrder);
 
   let ordersQueryString = "";
   if (queryOrderStatus === "" && orderIdInput === "") {
@@ -72,7 +72,7 @@ const AdminOrders = () => {
     console.log(orderId);
     dispatch(updateOrderStatusAsync({ userId, orderId, orderStatus })).then(
       () => {
-        setEditMode(false);
+        setEditableOrder("");
         dispatch(getAllFilteredOrdersAsync(ordersQueryString));
       }
     );
@@ -81,6 +81,23 @@ const AdminOrders = () => {
   const handleOrderDetails = (orderId) => {
     setOpen(true);
     dispatch(getOrderDetailsAsync(orderId));
+  };
+
+  const chooseStatusColor = (status) => {
+    switch (status) {
+      case "pending":
+        return "bg-purple-800";
+      case "shipped":
+        return "bg-sky-800";
+      case "cancelled":
+        return "bg-red-600";
+      case "delivered":
+        return "bg-green-800";
+      case "delayed":
+        return "bg-yellow-500";
+      default:
+        return "bg-gray-800";
+    }
   };
 
   return (
@@ -193,7 +210,10 @@ const AdminOrders = () => {
                         </td>
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm font-semibold">
                           {order?.products?.map((product) => (
-                            <div key={product?.product_id} className="flex justify-start">
+                            <div
+                              key={product?.product_id}
+                              className="flex justify-start"
+                            >
                               <div className="">
                                 <img
                                   src={`${process.env.REACT_APP_API}/${product?.thumbnail?.location}`}
@@ -232,22 +252,17 @@ const AdminOrders = () => {
                             {order?.shippingAddress?.pinCode}
                           </div>
                         </td>
-                        {!editMode && (
+                        {order?._id !== editableOrder ? (
                           <td className="px-5 py-5 border-b border-gray-200 bg-white">
                             <p
-                              className={`text-gray-900 font-bold ${
-                                order?.status === "pending"
-                                  ? "text-red-700"
-                                  : order?.status === "delivered"
-                                  ? "text-green-700"
-                                  : "text-gray-700"
-                              }`}
+                              className={`text-white px-2 py-1 rounded-lg font-semibold ${chooseStatusColor(
+                                order?.status
+                              )}`}
                             >
                               {order?.status}
                             </p>
                           </td>
-                        )}
-                        {editMode && (
+                        ) : (
                           <td className="px-5 py-5 border-b border-gray-200 bg-white">
                             <Select
                               className="w-32"
@@ -273,19 +288,18 @@ const AdminOrders = () => {
                         )}
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                           <div className="flex justify-around">
-                            {!editMode && (
+                            {order?._id !== editableOrder ? (
                               <BsPencilSquare
-                                onClick={() => setEditMode(true)}
+                                onClick={() => setEditableOrder(order?._id)}
+                                className="h-6 w-6 hover:cursor-pointer text-green-600 hover:text-blue-600 active:text-blue-900"
+                              />
+                            ) : (
+                              <AiFillEyeInvisible
+                                onClick={() => setEditableOrder("")}
                                 className="h-6 w-6 hover:cursor-pointer text-green-600 hover:text-blue-600 active:text-blue-900"
                               />
                             )}
-                            {editMode && (
-                              <BsFillFileEarmarkLockFill
-                                onClick={() => setEditMode(false)}
-                                className="h-6 w-6 hover:cursor-pointer text-green-600 hover:text-blue-600 active:text-blue-900"
-                              />
-                            )}
-                            <AiFillEyeInvisible
+                            <BsFillFileEarmarkLockFill
                               onClick={() => handleOrderDetails(order?._id)}
                               className="h-6 w-6 hover:cursor-pointer text-gray-600 hover:text-blue-600 active:text-blue-900"
                             />
