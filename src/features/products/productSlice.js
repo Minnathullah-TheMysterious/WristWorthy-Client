@@ -5,6 +5,7 @@ import {
   fetchBrands,
   fetchCategories,
   fetchSelectedProduct,
+  updateProductStock,
 } from "./productAPI";
 import {
   createBrand,
@@ -152,6 +153,22 @@ export const updateProductImageAsync = createAsyncThunk(
         formData,
         imageIndex
       );
+      if (response.success) {
+        return { product: response.product, productId };
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      throw new Error(error?.message);
+    }
+  }
+);
+
+export const updateProductStockSlice = createAsyncThunk(
+  "products/updateProductStock",
+  async ({ productId, productQuantity }) => {
+    try {
+      const response = await updateProductStock(productId, productQuantity);
       if (response.success) {
         return { product: response.product, productId };
       } else {
@@ -490,6 +507,25 @@ const productSlice = createSlice({
           : "Encountered an error";
       })
       .addCase(updateProductImageAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        const productIndex = state?.products?.findIndex(
+          (product) => product._id === action.payload.productId
+        );
+        if (productIndex !== -1) {
+          state.products.splice(productIndex, 1, action.payload.product);
+        }
+      })
+
+      .addCase(updateProductStockSlice.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateProductStockSlice.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error
+          ? action.error.message
+          : "Encountered an error";
+      })
+      .addCase(updateProductStockSlice.fulfilled, (state, action) => {
         state.loading = false;
         const productIndex = state?.products?.findIndex(
           (product) => product._id === action.payload.productId

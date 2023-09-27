@@ -477,13 +477,22 @@ const AdminProductDetails = () => {
               <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
                 {selectedProduct?.product_name}
               </h1>
+              <p
+                className={`text-lg font-semibold ${
+                  selectedProduct?.stock >= 1 ? "text-blue-600" : "text-red-600"
+                }`}
+              >
+                Available Stock: {selectedProduct?.stock}
+              </p>
             </div>
 
             {/* Options */}
             <div className="mt-4 lg:row-span-3 lg:mt-0">
               <h2 className="sr-only">Product information</h2>
               <p className="text-3xl tracking-tight">
-                <span className="line-through text-gray-400">${selectedProduct?.price}</span>{" "}
+                <span className="line-through text-gray-400">
+                  ${selectedProduct?.price}
+                </span>{" "}
                 |{" "}
                 <span className="text-green-600 font-bold">
                   ${DISCOUNTED_PRICE(selectedProduct)}

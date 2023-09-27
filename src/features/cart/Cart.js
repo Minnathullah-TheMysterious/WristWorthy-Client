@@ -7,7 +7,7 @@ import {
   fetchUserCartItemsAsync,
   updateCartItemQuantityAsync,
 } from "./cartSlice";
-import { DISCOUNTED_PRICE } from './../../app/constants';
+import { DISCOUNTED_PRICE } from "./../../app/constants";
 
 const Cart = ({ btnText, destination }) => {
   const navigate = useNavigate();
@@ -36,9 +36,7 @@ const Cart = ({ btnText, destination }) => {
   const handleRemoveClick = async (e, productId) => {
     e.preventDefault();
     console.log(userId, productId);
-    const deleteItem = dispatch(
-      deleteUserCartItemAsync({ userId, productId })
-    );
+    const deleteItem = dispatch(deleteUserCartItemAsync({ userId, productId }));
     deleteItem
       .then(() => {
         if (userCart.items.length <= 1) {
@@ -89,10 +87,15 @@ const Cart = ({ btnText, destination }) => {
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         <Link to={`/product-details/${item?.product?._id}`}>
                           <h3 className="hover:text-gray-600 active:text-gray-900">
-                            {item?.product?.product_name}
+                            {item?.product?.product_name}{" "}
+                            {item?.product?.stock < 1 && (
+                              <span className=" text-red-600 text-sm font-serif">Out Of Stock</span>
+                            )}
                           </h3>
                         </Link>
-                        <p className="ml-4">${DISCOUNTED_PRICE(item?.product)}</p>
+                        <p className="ml-4">
+                          ${DISCOUNTED_PRICE(item?.product)}
+                        </p>
                       </div>
                       <p className="mt-1 text-sm text-gray-500">
                         {item?.product?.color || "Color UnSpecified"}

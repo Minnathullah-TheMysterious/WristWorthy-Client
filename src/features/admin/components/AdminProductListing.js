@@ -782,8 +782,8 @@ function ProductGrid({ products }) {
                     }}
                   >
                     <Badge.Ribbon
-                      text={product.deleted ? "Deleted Product" : "product"}
-                      color={product.deleted ? "red" : "blue"}
+                      text={product.deleted ? "Deleted Product" : product.stock < 1? "Out Of Stock" : `Stock - ${product.stock}`}
+                      color={product.deleted ? "red" : product.stock < 1? "purple" : "green"}
                     >
                       <div className="group relative ">
                         <Link

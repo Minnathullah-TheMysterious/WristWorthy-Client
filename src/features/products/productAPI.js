@@ -112,3 +112,31 @@ export const fetchSelectedProduct = async (productId) => {
     }
   }
 };
+
+export const updateProductStock = async (productId, productQuantity) => {
+  try {
+    const { data } = await axios.put(
+      `/api/v1/product/update-product-stock/${productId}/${productQuantity}`
+    );
+    const { success, message } = data;
+    if (success) {
+      toast.success(message);
+      return data;
+    } else {
+      toast.error(message);
+      return data;
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      console.error(
+        "Something Went Wrong while updating product stock",
+        error
+      );
+      toast.error("Something Went Wrong while updating product stock");
+      return { success: false, message: error?.response?.data?.message };
+    }
+  }
+};

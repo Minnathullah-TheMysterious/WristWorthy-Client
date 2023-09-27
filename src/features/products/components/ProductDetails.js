@@ -3,12 +3,10 @@ import { useState } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchSelectedProductAsync,
-} from "../productSlice";
+import { fetchSelectedProductAsync } from "../productSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { addItemToCartAsync } from "../../cart/cartSlice";
+import { addItemToCartAsync, deleteUserCartItemAsync } from "../../cart/cartSlice";
 import { DISCOUNTED_PRICE } from "../../../app/constants";
 
 const product = {
@@ -96,7 +94,7 @@ const ProductDetails = () => {
   const handleAddToCartClick = async (e) => {
     e.preventDefault();
 
-    if (user && !productFound) {
+    if (user && !productFound && selectedProduct.stock >= 1) {
       dispatch(addItemToCartAsync({ userId, productId }))
         .then(() => {
           navigate("/dashboard/user/cart");
@@ -108,9 +106,14 @@ const ProductDetails = () => {
             error
           );
         });
-    } else if (user && productFound) {
+    } else if (user && productFound && selectedProduct.stock >= 1) {
       navigate("/dashboard/user/cart");
-    } else {
+    } else if (user && productFound && selectedProduct.stock < 1) {
+      //remove product from cart if the item is out of stock since it has gone out of stock after adding to cart
+      dispatch(deleteUserCartItemAsync({ userId, productId }))
+    } else if (user && !productFound && selectedProduct.stock < 1) {
+      toast.error("Out Of Stock");
+    } else if (!user) {
       toast("Login To Add To Cart", {
         className: "font-serif bg-blue-900 text-white",
       });
@@ -205,18 +208,23 @@ const ProductDetails = () => {
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
               {selectedProduct?.product_name}
             </h1>
+            {selectedProduct?.stock <1 ? (
+              <p className="text-lg font-semibold text-red-600">Out Of Stock</p>
+            ):(null)}
           </div>
 
           {/* Options */}
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
             <p className="text-3xl tracking-tight">
-                <span className="line-through text-gray-400">${selectedProduct?.price}</span>{" "}
-                |{" "}
-                <span className="text-green-600 font-bold">
-                  ${DISCOUNTED_PRICE(selectedProduct)}
-                </span>
-              </p>
+              <span className="line-through text-gray-400">
+                ${selectedProduct?.price}
+              </span>{" "}
+              |{" "}
+              <span className="text-green-600 font-bold">
+                ${DISCOUNTED_PRICE(selectedProduct)}
+              </span>
+            </p>
 
             {/* Reviews */}
             <div className="mt-6">

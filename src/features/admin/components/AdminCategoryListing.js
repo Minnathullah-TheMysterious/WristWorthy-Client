@@ -198,7 +198,7 @@ const AdminCategoryListing = ({ wrapClass }) => {
                 }}
               >
                 <Badge.Ribbon
-                  text={category.deleted ? "Deleted Category" : "Category"}
+                  text={category.deleted ? "Deleted Category" : null}
                   color={category.deleted ? "red" : "blue"}
                 >
                   <div className="group">

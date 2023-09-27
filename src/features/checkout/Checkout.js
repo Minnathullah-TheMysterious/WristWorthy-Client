@@ -3,15 +3,13 @@ import UserAddresses from "../user/components/UserAddresses";
 import Cart from "../cart/Cart";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  placeOrderAsync,
-  mySetSelectedUserAddress,
-} from "../user/userSlice";
+import { placeOrderAsync, mySetSelectedUserAddress } from "../user/userSlice";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import AddAddressForm from "../user/components/AddAddressForm";
 import { resetCartAsync } from "../cart/cartSlice";
-import { DISCOUNTED_PRICE } from './../../app/constants';
+import { DISCOUNTED_PRICE } from "./../../app/constants";
+import { updateProductStockSlice } from "../products/productSlice";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -33,7 +31,8 @@ const Checkout = () => {
   };
 
   const totalAmount = cartItems?.items?.reduce(
-    (total, items) => total + DISCOUNTED_PRICE(items?.product) * items?.quantity,
+    (total, items) =>
+      total + DISCOUNTED_PRICE(items?.product) * items?.quantity,
     0
   );
 
@@ -47,6 +46,8 @@ const Checkout = () => {
     quantity: item?.quantity,
   }));
   //an array of products with product _id and its quantity
+
+  console.log(products);
 
   const handlePlaceOrderClick = (e) => {
     e.preventDefault();
@@ -74,7 +75,14 @@ const Checkout = () => {
             dispatch(mySetSelectedUserAddress(null));
             dispatch(resetCartAsync(userId));
             navigate("/dashboard/user/order-success");
-            //server: change in stock items
+            products?.forEach((product) =>
+              dispatch(
+                updateProductStockSlice({
+                  productId: product?.product_id,
+                  productQuantity: product?.quantity,
+                })
+              )
+            );
           })
           .catch(() => {
             navigate("/dashboard/user/cart");

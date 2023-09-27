@@ -195,7 +195,7 @@ const AdminBrandListing = ({ wrapClass }) => {
                 }}
               >
                 <Badge.Ribbon
-                  text={brand.deleted ? "Deleted Brand" : "Brand"}
+                  text={brand.deleted ? "Deleted Brand" : null}
                   color={brand.deleted ? "red" : "blue"}
                 >
                   <div className="group">
