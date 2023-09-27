@@ -27,11 +27,13 @@ import {
 
 const initialState = {
   loading: false,
+  totalProductsCount: 0,
+  totalNonDeletedProductsCount: 0,
   products: [],
+  nonDeletedProducts: [],
+  selectedProduct: null,
   categories: [],
   brands: [],
-  totalProductsCount: 0,
-  selectedProduct: null,
   error: null,
 };
 
@@ -220,11 +222,11 @@ export const restoreBrandAsync = createAsyncThunk(
 
 export const updateBrandNameAsync = createAsyncThunk(
   "products/updateBrandName",
-  async ({brandId, brand_name}) => {
+  async ({ brandId, brand_name }) => {
     try {
       const response = await updateBrandName(brandId, brand_name);
       if (response) {
-        return {brand: response.brand, brandId};
+        return { brand: response.brand, brandId };
       } else {
         throw new Error(response.message);
       }
@@ -236,11 +238,11 @@ export const updateBrandNameAsync = createAsyncThunk(
 
 export const updateBrandImageAsync = createAsyncThunk(
   "products/updateBrandImage",
-  async ({brandId, formData}) => {
+  async ({ brandId, formData }) => {
     try {
       const response = await updateBrandImage(brandId, formData);
       if (response) {
-        return {brand: response.brand, brandId};
+        return { brand: response.brand, brandId };
       } else {
         throw new Error(response.message);
       }
@@ -308,11 +310,11 @@ export const restoreCategoryAsync = createAsyncThunk(
 
 export const updateCategoryNameAsync = createAsyncThunk(
   "products/updateCategoryName",
-  async ({categoryId, category_name}) => {
+  async ({ categoryId, category_name }) => {
     try {
       const response = await updateCategoryName(categoryId, category_name);
       if (response) {
-        return {category: response.category, categoryId};
+        return { category: response.category, categoryId };
       } else {
         throw new Error(response.message);
       }
@@ -324,11 +326,11 @@ export const updateCategoryNameAsync = createAsyncThunk(
 
 export const updateCategoryImageAsync = createAsyncThunk(
   "products/updateCategoryImage",
-  async ({categoryId, formData}) => {
+  async ({ categoryId, formData }) => {
     try {
       const response = await updateCategoryImage(categoryId, formData);
       if (response) {
-        return {category: response.category, categoryId};
+        return { category: response.category, categoryId };
       } else {
         throw new Error(response.message);
       }
@@ -355,7 +357,10 @@ const productSlice = createSlice({
       .addCase(fetchAllProductsByFiltersAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.products = action.payload.filteredProducts;
-        state.totalProductsCount = action.payload.totalCount;
+        state.nonDeletedProducts = action.payload.filteredNonDeletedProducts;
+        state.totalProductsCount = action.payload.totalProductsCount;
+        state.totalNonDeletedProductsCount =
+          action.payload.totalNonDeletedProductsCount;
       })
 
       .addCase(fetchAllProductsAsync.pending, (state) => {
@@ -368,7 +373,7 @@ const productSlice = createSlice({
       .addCase(fetchAllProductsAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.products = action.payload?.products;
-        state.totalProductsCount = action.payload?.totalCount;
+        state.totalProductsCount = action.payload?.totalProductsCount;
       })
 
       .addCase(fetchSelectedProductAsync.pending, (state) => {
@@ -575,7 +580,7 @@ const productSlice = createSlice({
           (category) => category._id === action.payload.categoryId
         );
         if (categoryIndex !== -1) {
-          state?.categories?.splice(categoryIndex, 1, action.payload.category)
+          state?.categories?.splice(categoryIndex, 1, action.payload.category);
         }
       })
 
@@ -594,7 +599,7 @@ const productSlice = createSlice({
           (category) => category._id === action.payload.categoryId
         );
         if (categoryIndex !== -1) {
-          state?.categories?.splice(categoryIndex, 1, action.payload.category)
+          state?.categories?.splice(categoryIndex, 1, action.payload.category);
         }
       })
 
@@ -679,7 +684,7 @@ const productSlice = createSlice({
           (brand) => brand._id === action.payload.brandId
         );
         if (brandIndex !== -1) {
-          state?.brands?.splice(brandIndex, 1, action.payload.brand)
+          state?.brands?.splice(brandIndex, 1, action.payload.brand);
         }
       })
 
@@ -698,9 +703,9 @@ const productSlice = createSlice({
           (brand) => brand._id === action.payload.brandId
         );
         if (brandIndex !== -1) {
-          state?.brands?.splice(brandIndex, 1, action.payload.brand)
+          state?.brands?.splice(brandIndex, 1, action.payload.brand);
         }
-      })
+      });
   },
 });
 

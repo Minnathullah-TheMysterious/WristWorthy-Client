@@ -45,7 +45,7 @@ const ProductListing = () => {
   const brands = useSelector((state) => state?.product?.brands);
   const products = useSelector((state) => state?.product);
   const totalProductsCount = useSelector(
-    (state) => state?.product?.totalProductsCount
+    (state) => state?.product?.totalNonDeletedProductsCount
   );
   const dispatch = useDispatch();
 
@@ -711,54 +711,51 @@ function ProductGrid({ products }) {
             {/* {!products.loading && products.error ? (
               <p>Error: {products.error}</p>
             ) : null} */}
-            {!products.loading && products?.products?.length
-              ? products?.products.map(
-                  (product) =>
-                    !product.deleted && (
-                      <div key={product._id} className="relative">
-                        <Link to={`/product-details/${product._id}`}>
-                          <div className="group border-2 border-solid border-black p-[1px] rounded-lg">
-                            <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-80 lg:h-60">
-                              <img
-                                src={product.thumbnail.location}
-                                alt={product.product_name}
-                                className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                              />
-                            </div>
-                            <div className="mt-4 flex justify-between space-x-4">
-                              <div>
-                                <p className="mt-1 text-sm text-gray-500 font-bold font-mono line-through">
-                                  ${product.price}
-                                </p>
-                                <p className="mt-1 text-sm text-black font-bold font-mono">
-                                  $
-                                  {Math.round(
-                                    product.price *
-                                      (1 - product.discountPercentage / 100)
-                                  )}
-                                </p>
-                              </div>
-                              <div>
-                                <p className="text-sm font-bold font-serif text-purple-900">
-                                  {product.product_name}
-                                </p>
-                                <p className=" text-sm font-medium text-gray-900">
-                                  <StarIcon className="w-5 inline mb-1" />
-                                  {product.rating || 4.5}
-                                </p>
-                              </div>
-                            </div>
+            {!products.loading && products?.nonDeletedProducts?.length
+              ? products?.nonDeletedProducts.map((product) => (
+                  <div key={product._id} className="relative">
+                    <Link to={`/product-details/${product._id}`}>
+                      <div className="group border-2 border-solid border-black p-[1px] rounded-lg">
+                        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-80 lg:h-60">
+                          <img
+                            src={product.thumbnail.location}
+                            alt={product.product_name}
+                            className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                          />
+                        </div>
+                        <div className="mt-4 flex justify-between space-x-4">
+                          <div>
+                            <p className="mt-1 text-sm text-gray-500 font-bold font-mono line-through">
+                              ${product.price}
+                            </p>
+                            <p className="mt-1 text-sm text-black font-bold font-mono">
+                              $
+                              {Math.round(
+                                product.price *
+                                  (1 - product.discountPercentage / 100)
+                              )}
+                            </p>
                           </div>
-                        </Link>
-                        <div
-                          onClick={() => handleAddToWishlistClick(product._id)}
-                          className="py-1 mt-1 flex justify-center items-center space-x-4 rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800"
-                        >
-                          <span>{"Add To Wishlist"}</span> <TbJewishStar />
+                          <div>
+                            <p className="text-sm font-bold font-serif text-purple-900">
+                              {product.product_name}
+                            </p>
+                            <p className=" text-sm font-medium text-gray-900">
+                              <StarIcon className="w-5 inline mb-1" />
+                              {product.rating || 4.5}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    )
-                )
+                    </Link>
+                    <div
+                      onClick={() => handleAddToWishlistClick(product._id)}
+                      className="py-1 mt-1 flex justify-center items-center space-x-4 rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800"
+                    >
+                      <span>{"Add To Wishlist"}</span> <TbJewishStar />
+                    </div>
+                  </div>
+                ))
               : null}
           </div>
         </div>

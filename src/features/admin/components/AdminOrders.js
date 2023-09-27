@@ -108,13 +108,14 @@ const AdminOrders = () => {
           <div>
             <h2 className="text-2xl font-semibold leading-tight">Orders</h2>
           </div>
+          {/* Filters & Page limit handling */}
           <div className="my-2 flex sm:flex-row flex-col">
             <div className="flex flex-row mb-1 sm:mb-0">
               <div className="relative">
                 <select
                   defaultValue={5}
                   onChange={(e) => setPageLimit(e.target.value)}
-                  className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none h-full rounded-l border block w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 >
                   {orderLimitPerPage.map((limit) => (
                     <option key={limit._id} value={limit.value}>
@@ -136,7 +137,7 @@ const AdminOrders = () => {
                 <select
                   defaultValue={""}
                   onChange={(e) => setQueryOrderStatus(e.target.value)}
-                  className="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
+                  className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
                 >
                   {orderStatusMessages.map((status) => (
                     <option key={status._id} value={status.value}>
@@ -303,6 +304,7 @@ const AdminOrders = () => {
                               onClick={() => handleOrderDetails(order?._id)}
                               className="h-6 w-6 hover:cursor-pointer text-gray-600 hover:text-blue-600 active:text-blue-900"
                             />
+                            {/* Modal for showing more order details */}
                             <Modal
                               centered
                               open={open}
@@ -461,6 +463,7 @@ const AdminOrders = () => {
                   )}
                 </tbody>
               </table>
+              {/* Pagination */}
               <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
                 <span className="text-xs xs:text-sm text-gray-900">
                   Showing {(page - 1) * pageLimit + 1} to{" "}
