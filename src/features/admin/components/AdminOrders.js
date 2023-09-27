@@ -6,6 +6,7 @@ import { AiFillEyeInvisible } from "react-icons/ai";
 import { Select, Modal } from "antd";
 import { updateOrderStatusAsync } from "../../user/userSlice";
 import { Link } from "react-router-dom";
+import { DISCOUNTED_PRICE } from "../../../app/constants";
 
 const orderLimitPerPage = [
   { _id: 1, value: 5, label: 5 },
@@ -158,7 +159,10 @@ const AdminOrders = () => {
             </div>
             <div className="block relative">
               <span
-                onClick={() => setOrderIdInput(input)}
+                onClick={() => {
+                  setOrderIdInput(input);
+                  setPage(1);
+                }}
                 className="h-full absolute inset-y-0 left-0 flex items-center pl-2 hover:cursor-pointer"
               >
                 <svg
@@ -225,7 +229,7 @@ const AdminOrders = () => {
                               <div className="flex flex-col justify-center items-center mx-2">
                                 <div className="text-blue-900">
                                   <span>#{product?.quantity} - </span>
-                                  <span>${product?.price}</span>
+                                  <span>${DISCOUNTED_PRICE(product)}</span>
                                 </div>
                                 <p className="text-blue-900">
                                   {product?.product_name}
@@ -256,7 +260,7 @@ const AdminOrders = () => {
                         {order?._id !== editableOrder ? (
                           <td className="px-5 py-5 border-b border-gray-200 bg-white">
                             <p
-                              className={`text-white px-2 py-1 rounded-lg font-semibold ${chooseStatusColor(
+                              className={` flex justify-center items-center text-white px-2 py-1 rounded-lg font-semibold ${chooseStatusColor(
                                 order?.status
                               )}`}
                             >
@@ -363,7 +367,7 @@ const AdminOrders = () => {
                                                         </h3>
                                                       </Link>
                                                       <p className="ml-4">
-                                                        ${product?.price}
+                                                        ${DISCOUNTED_PRICE(product)}
                                                       </p>
                                                     </div>
                                                     <p className="mt-1 text-sm text-gray-500">

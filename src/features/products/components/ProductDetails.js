@@ -9,6 +9,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { addItemToCartAsync } from "../../cart/cartSlice";
+import { DISCOUNTED_PRICE } from "../../../app/constants";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -209,9 +210,13 @@ const ProductDetails = () => {
           {/* Options */}
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
-            <p className="text-3xl tracking-tight text-gray-900">
-              {selectedProduct?.price}
-            </p>
+            <p className="text-3xl tracking-tight">
+                <span className="line-through text-gray-400">${selectedProduct?.price}</span>{" "}
+                |{" "}
+                <span className="text-green-600 font-bold">
+                  ${DISCOUNTED_PRICE(selectedProduct)}
+                </span>
+              </p>
 
             {/* Reviews */}
             <div className="mt-6">

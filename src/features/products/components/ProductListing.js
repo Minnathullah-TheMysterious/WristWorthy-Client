@@ -18,7 +18,7 @@ import {
   PlusIcon,
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
-import { PRODUCT_LIMIT_PER_PAGE_FOR_USER } from "../../../app/constants";
+import { DISCOUNTED_PRICE, PRODUCT_LIMIT_PER_PAGE_FOR_USER } from "../../../app/constants";
 import { TbJewishStar } from "react-icons/tb";
 import { addToWishlistAsync } from "../../wishlist/wishlistSlice";
 import toast from "react-hot-toast";
@@ -730,10 +730,7 @@ function ProductGrid({ products }) {
                             </p>
                             <p className="mt-1 text-sm text-black font-bold font-mono">
                               $
-                              {Math.round(
-                                product.price *
-                                  (1 - product.discountPercentage / 100)
-                              )}
+                              {DISCOUNTED_PRICE(product)}
                             </p>
                           </div>
                           <div>

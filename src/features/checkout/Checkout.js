@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import AddAddressForm from "../user/components/AddAddressForm";
 import { resetCartAsync } from "../cart/cartSlice";
+import { DISCOUNTED_PRICE } from './../../app/constants';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const Checkout = () => {
   };
 
   const totalAmount = cartItems?.items?.reduce(
-    (total, items) => total + items?.product?.price * items?.quantity,
+    (total, items) => total + DISCOUNTED_PRICE(items?.product) * items?.quantity,
     0
   );
 

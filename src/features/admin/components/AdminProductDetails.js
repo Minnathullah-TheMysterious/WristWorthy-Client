@@ -8,6 +8,7 @@ import {
 } from "../../products/productSlice";
 import { useParams } from "react-router-dom";
 import { Modal } from "antd";
+import { DISCOUNTED_PRICE } from "../../../app/constants";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -481,8 +482,12 @@ const AdminProductDetails = () => {
             {/* Options */}
             <div className="mt-4 lg:row-span-3 lg:mt-0">
               <h2 className="sr-only">Product information</h2>
-              <p className="text-3xl tracking-tight text-gray-900">
-                {selectedProduct?.price}
+              <p className="text-3xl tracking-tight">
+                <span className="line-through text-gray-400">${selectedProduct?.price}</span>{" "}
+                |{" "}
+                <span className="text-green-600 font-bold">
+                  ${DISCOUNTED_PRICE(selectedProduct)}
+                </span>
               </p>
 
               {/* Reviews */}

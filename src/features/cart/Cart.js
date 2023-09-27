@@ -7,6 +7,7 @@ import {
   fetchUserCartItemsAsync,
   updateCartItemQuantityAsync,
 } from "./cartSlice";
+import { DISCOUNTED_PRICE } from './../../app/constants';
 
 const Cart = ({ btnText, destination }) => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const Cart = ({ btnText, destination }) => {
 
   const calculatedSubTotal = userCart?.items?.reduce(
     (total, item) => {
-      total.totalPrice += item?.product?.price * item?.quantity;
+      total.totalPrice += DISCOUNTED_PRICE(item?.product) * item?.quantity;
       total.totalItems += item?.quantity;
       return total;
     },
@@ -86,13 +87,12 @@ const Cart = ({ btnText, destination }) => {
                   <div className="ml-4 flex flex-1 flex-col">
                     <div>
                       <div className="flex justify-between text-base font-medium text-gray-900">
-                        {/* The Link is Not getting the product Id instead it is getting the cart-item Id. On server we will consider it */}
                         <Link to={`/product-details/${item?.product?._id}`}>
                           <h3 className="hover:text-gray-600 active:text-gray-900">
                             {item?.product?.product_name}
                           </h3>
                         </Link>
-                        <p className="ml-4">${item?.product?.price}</p>
+                        <p className="ml-4">${DISCOUNTED_PRICE(item?.product)}</p>
                       </div>
                       <p className="mt-1 text-sm text-gray-500">
                         {item?.product?.color || "Color UnSpecified"}

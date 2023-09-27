@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { deleteWishlistItemAsync, fetchWishlistAsync } from "./wishlistSlice";
 import Loader from "../../loaders/Loader";
+import { DISCOUNTED_PRICE } from "../../app/constants";
 
 const Wishlist = () => {
   const navigate = useNavigate();
@@ -55,11 +56,7 @@ const Wishlist = () => {
                             ${product.price}
                           </p>
                           <p className="mt-1 text-sm text-black font-bold font-mono">
-                            $
-                            {Math.round(
-                              product.price *
-                                (1 - product.discountPercentage / 100)
-                            )}
+                            ${DISCOUNTED_PRICE(product)}
                           </p>
                         </div>
                         <div>

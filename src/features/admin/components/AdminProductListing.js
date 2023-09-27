@@ -23,7 +23,10 @@ import {
   restoreProductAsync,
   updateProductThumbnailAsync,
 } from "../../products/productSlice";
-import { PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN } from "../../../app/constants";
+import {
+  DISCOUNTED_PRICE,
+  PRODUCT_LIMIT_PER_PAGE_FOR_ADMIN,
+} from "../../../app/constants";
 import Loader from "../../../loaders/Loader";
 import { Prices } from "../../../app/pricing";
 
@@ -702,7 +705,8 @@ function ProductGrid({ products }) {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [productThumbnailPath, setProductThumbnailPath] = useState(null);
-  const [productThumbnailOriginalname, setProductThumbnailOriginalname] = useState('');
+  const [productThumbnailOriginalname, setProductThumbnailOriginalname] =
+    useState("");
   const [changeProductThumbnail, setChangeProductThumbnail] = useState(null);
   const [productId, setProductId] = useState("");
 
@@ -788,7 +792,7 @@ function ProductGrid({ products }) {
                           <div className="border border-solid border-black p-1 rounded-lg">
                             <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-80 lg:h-60">
                               <img
-                                src={product.thumbnail.location}
+                                src={`${process.env.REACT_APP_API}/${product.thumbnail.location}`}
                                 alt={product.product_name}
                                 className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                               />
@@ -799,11 +803,7 @@ function ProductGrid({ products }) {
                                   ${product.price}
                                 </p>
                                 <p className="mt-1 text-sm text-black font-bold font-mono">
-                                  $
-                                  {Math.round(
-                                    product.price *
-                                      (1 - product.discountPercentage / 100)
-                                  )}
+                                  ${DISCOUNTED_PRICE(product)}
                                 </p>
                               </div>
                               <div>
@@ -825,10 +825,14 @@ function ProductGrid({ products }) {
                             type="primary"
                             onClick={() => {
                               showModal();
-                              setProductThumbnailPath(product.thumbnail.location);
+                              setProductThumbnailPath(
+                                product.thumbnail.location
+                              );
                               setChangeProductThumbnail(null);
-                              setProductId(product._id)
-                              setProductThumbnailOriginalname(product.thumbnail.originalname)
+                              setProductId(product._id);
+                              setProductThumbnailOriginalname(
+                                product.thumbnail.originalname
+                              );
                             }}
                           >
                             Change Thumbnail
@@ -852,10 +856,7 @@ function ProductGrid({ products }) {
                               },
                             }}
                           >
-                            <form
-                              className="space-y-5"
-                              onSubmit={handleOk}
-                            >
+                            <form className="space-y-5" onSubmit={handleOk}>
                               <h1 className="text-center font-serif font-bold text-xl">
                                 Change Product Thumbnail
                               </h1>
@@ -890,7 +891,7 @@ function ProductGrid({ products }) {
                                     ? productThumbnailOriginalname
                                     : changeProductThumbnail
                                     ? changeProductThumbnail.name
-                                    : 'Upload image for product thumbnail'}
+                                    : "Upload image for product thumbnail"}
                                   <input
                                     type="file"
                                     id="product_thumbnail"
