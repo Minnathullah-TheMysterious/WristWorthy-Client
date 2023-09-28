@@ -51,7 +51,7 @@ export const login = async (loginData) => {
       delete userWithOutAddressesArray.addresses;
       localStorage.setItem(
         "user",
-        JSON.stringify({ token, _id: user?._id })
+        JSON.stringify({ token, _id: user?._id, role:user?.role })
       );
       return { success, message, userWithOutAddressesArray };
     } else {

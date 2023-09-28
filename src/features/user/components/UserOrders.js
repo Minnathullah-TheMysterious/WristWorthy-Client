@@ -1,15 +1,20 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Button, Modal, Space } from "antd";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 import { fetchUserOrdersAsync, updateOrderStatusAsync } from "../userSlice";
-import { DISCOUNTED_PRICE } from "./../../../app/constants";
 import toast from "react-hot-toast";
+import { DISCOUNTED_PRICE } from "./../../../app/constants";
 
 const UserOrders = () => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state?.auth?.user?._id);
-  console.log(userId);
   const orders = useSelector((state) => state?.user?.orders?.orders);
+
+  const { confirm } = Modal;
+
+  console.log(userId);
   console.log(orders);
 
   useEffect(() => {
@@ -21,6 +26,25 @@ const UserOrders = () => {
       updateOrderStatusAsync({ userId, orderId, orderStatus: "cancelled" })
     ).then(() => {
       toast.success("Order Cancelled Successfully");
+    });
+  };
+
+  const showCancelOrderConfirm = (orderId) => {
+    confirm({
+      title: "Are You Sure To Cancel The Order!",
+      icon: <ExclamationCircleFilled />,
+      content: "Order will be cancelled and refund will be processed withing next 48 hours if any",
+      okType: "danger",
+      onOk() {
+        dispatch(
+          updateOrderStatusAsync({ userId, orderId, orderStatus: "cancelled" })
+        ).then(() => {
+          toast.success("Order Cancelled Successfully");
+        });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
     });
   };
 
@@ -36,14 +60,16 @@ const UserOrders = () => {
               Order Status:{" "}
               <span className="text-green-700">{order?.status}</span>
             </p>
-            {order?.status !== "cancelled" ?(
-              <button
-                onClick={() => handleCancelOrder(order?._id)}
-                className="py-1 px-2 font-medium font-serif rounded-lg bg-red-700 text-white hover:bg-red-600 active:bg-red-700"
-              >
-                Cancel Order
-              </button>
-            ): null}
+            {order?.status !== "cancelled" ? (
+              <Space wrap>
+                <button
+                  onClick={() => showCancelOrderConfirm(order?._id)}
+                  className="py-1 px-2 font-medium font-serif rounded-lg bg-red-700 text-white hover:bg-red-600 active:bg-red-700"
+                >
+                  Cancel Order
+                </button>
+              </Space>
+            ) : null}
           </div>
 
           <div className="bg-gray-200 border-t border-gray-200 px-4 py-6 sm:px-6">

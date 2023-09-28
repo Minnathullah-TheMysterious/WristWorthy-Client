@@ -34,12 +34,13 @@ function App() {
 
   const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
   const userId = userFromLocalStorage?._id;
+  const role = userFromLocalStorage?.role;
 
   useEffect(() => {
-    userId && dispatch(fetchUserCartItemsAsync(userId));
+    userId && role === "user" && dispatch(fetchUserCartItemsAsync(userId));
     userId && dispatch(getUserAsync(userId));
     userId && dispatch(getAuthDataAsync(userId));
-  }, [dispatch, userId]);
+  }, [dispatch, userId, role]);
   return (
     <>
       <Routes>
