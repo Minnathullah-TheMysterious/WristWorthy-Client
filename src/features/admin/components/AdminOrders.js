@@ -21,9 +21,8 @@ const orderStatusMessages = [
   { _id: 2, value: "pending", label: "Pending" },
   { _id: 3, value: "shipped", label: "Shipped" },
   { _id: 4, value: "delayed", label: "Delayed" },
-  { _id: 5, value: "cancelled", label: "Cancelled" },
-  { _id: 6, value: "out-for -delivery", label: "Out For Delivery" },
-  { _id: 7, value: "delivered", label: "Delivered" },
+  { _id: 5, value: "out-for -delivery", label: "Out For Delivery" },
+  { _id: 6, value: "delivered", label: "Delivered" },
 ];
 
 const AdminOrders = () => {
@@ -267,7 +266,8 @@ const AdminOrders = () => {
                               {order?.status}
                             </p>
                           </td>
-                        ) : (
+                        ) : order?._id === editableOrder &&
+                          order?.status !== "cancelled" ? (
                           <td className="px-5 py-5 border-b border-gray-200 bg-white">
                             <Select
                               className="w-32"
@@ -289,6 +289,16 @@ const AdminOrders = () => {
                                 </Select.Option>
                               ))}
                             </Select>
+                          </td>
+                        ) : (
+                          <td className="px-5 py-5 border-b border-gray-200 bg-white">
+                            <p
+                              className={` flex justify-center items-center text-white px-2 py-1 rounded-lg font-semibold ${chooseStatusColor(
+                                order?.status
+                              )}`}
+                            >
+                              {order?.status}
+                            </p>
                           </td>
                         )}
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -367,7 +377,10 @@ const AdminOrders = () => {
                                                         </h3>
                                                       </Link>
                                                       <p className="ml-4">
-                                                        ${DISCOUNTED_PRICE(product)}
+                                                        $
+                                                        {DISCOUNTED_PRICE(
+                                                          product
+                                                        )}
                                                       </p>
                                                     </div>
                                                     <p className="mt-1 text-sm text-gray-500">

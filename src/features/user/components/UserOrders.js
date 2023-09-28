@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {  fetchUserOrdersAsync } from "../userSlice";
-import { DISCOUNTED_PRICE } from './../../../app/constants';
+import { fetchUserOrdersAsync, updateOrderStatusAsync } from "../userSlice";
+import { DISCOUNTED_PRICE } from "./../../../app/constants";
+import toast from "react-hot-toast";
 
 const UserOrders = () => {
   const dispatch = useDispatch();
@@ -15,17 +16,35 @@ const UserOrders = () => {
     dispatch(fetchUserOrdersAsync(userId));
   }, [dispatch, userId]);
 
+  const handleCancelOrder = async (orderId) => {
+    dispatch(
+      updateOrderStatusAsync({ userId, orderId, orderStatus: "cancelled" })
+    ).then(() => {
+      toast.success("Order Cancelled Successfully");
+    });
+  };
+
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10 bg-white py-4 space-y-12">
       {orders?.map((order) => (
         <div key={order?._id}>
-          <h1 className="text-2xl font-bold font-serif text-gray-900 shadow-cyan-800 shadow  inline border-none py-1 px-4">
+          <h1 className="sm:text-2xl text-sm font-bold font-serif text-gray-900 shadow-cyan-800 shadow  inline border-none py-1 px-4">
             Order Id: {order?._id}
           </h1>
-          <p className="text-lg font-medium font-serif text-gray-900">
-            Order Status:{" "}
-            <span className="text-green-700">{order?.status}</span>
-          </p>
+          <div className="flex justify-between my-1">
+            <p className="sm:text-lg text-base font-medium font-serif text-gray-900">
+              Order Status:{" "}
+              <span className="text-green-700">{order?.status}</span>
+            </p>
+            {order?.status !== "cancelled" ?(
+              <button
+                onClick={() => handleCancelOrder(order?._id)}
+                className="py-1 px-2 font-medium font-serif rounded-lg bg-red-700 text-white hover:bg-red-600 active:bg-red-700"
+              >
+                Cancel Order
+              </button>
+            ): null}
+          </div>
 
           <div className="bg-gray-200 border-t border-gray-200 px-4 py-6 sm:px-6">
             <div className="flow-root">
@@ -52,7 +71,9 @@ const UserOrders = () => {
                               {product?.product_id?.product_name}
                             </h3>
                           </Link>
-                          <p className="ml-4">${DISCOUNTED_PRICE(product?.product_id)}</p>
+                          <p className="ml-4">
+                            ${DISCOUNTED_PRICE(product?.product_id)}
+                          </p>
                         </div>
                         <p className="mt-1 text-sm text-gray-500">
                           {product?.product_id?.color || "Magenta"}

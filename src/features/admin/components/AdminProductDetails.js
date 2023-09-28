@@ -141,7 +141,7 @@ const AdminProductDetails = () => {
                   aria-current="page"
                   className="font-medium text-gray-500 hover:text-gray-600"
                 >
-                  {selectedProduct?.title}
+                  {selectedProduct?.product_name}
                 </a>
               </li>
             </ol>
