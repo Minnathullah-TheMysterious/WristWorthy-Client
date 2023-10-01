@@ -28,17 +28,24 @@ import AdminCategoriesPage from "./pages/adminPages/AdminCategoriesPage";
 import AdminBrandsPage from "./pages/adminPages/AdminBrandsPage";
 import UpdateProductPage from "./pages/adminPages/UpdateProductPage";
 import AdminOrdersPage from "./pages/adminPages/AdminOrdersPage";
+import StripeCheckoutPage from "./pages/StripeCheckoutPage";
 
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.auth?.user);
-  console.log(user)
+
+  console.log(user);
+  console.log(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+  console.log(process.env.REACT_APP_API);
 
   useEffect(() => {
     dispatch(getAuthDataAsync());
-    dispatch(fetchUserCartItemsAsync());
-    dispatch(getUserAsync());
   }, [dispatch]);
+
+  useEffect(() => {
+    user && user?.role === "user" && dispatch(fetchUserCartItemsAsync());
+    user && dispatch(getUserAsync());
+  }, [dispatch, user]);
   return (
     <>
       <Routes>
@@ -54,11 +61,12 @@ function App() {
         <Route path="/dashboard/user" element={<UserProtectedRoute />}>
           <Route path="cart" element={<CartPage />} />
           <Route path="checkout" element={<CheckoutPage />} />
-          <Route path="order-success" element={<OrderSuccessPage />} />
+          <Route path="order-success/:orderId" element={<OrderSuccessPage />} />
           <Route path="orders" element={<UserOrdersPage />} />
           <Route path="profile" element={<UserProfilePage />} />
           <Route path="addresses" element={<UserAddressesPage />} />
           <Route path="wishlist" element={<WishlistPage />} />
+          <Route path="stripe-checkout" element={<StripeCheckoutPage />} />
         </Route>
         {/* Admin Routes */}
         <Route path="/dashboard/admin" element={<AdminProtectedRoute />}>

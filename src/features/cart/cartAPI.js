@@ -90,20 +90,15 @@ export const deleteUserCartItem = async (productId) => {
 export const resetCart = async () => {
   try {
     const { data } = await axios.delete(`/api/v1/cart/user/delete-cart`);
-    const { success, message } = data;
+    const { success } = data;
     if (success) {
-      toast.success(message);
       return success;
     }
   } catch (error) {
     if (error.response && error.response.status === 400) {
-      toast(error?.response?.data?.message, {
-        className: "font-serif bg-blue-900 text-white",
-      });
+      console.error(error?.response?.data?.message);
     } else if (error.response && error.response.status === 404) {
-      toast(error?.response?.data?.message, {
-        className: "font-serif bg-blue-900 text-white",
-      });
+      console.error(error?.response?.data?.message);
     } else {
       toast.error(error?.response?.data?.message);
       console.error(

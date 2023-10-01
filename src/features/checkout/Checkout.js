@@ -3,11 +3,10 @@ import UserAddresses from "../user/components/UserAddresses";
 import Cart from "../cart/Cart";
 import { useDispatch, useSelector } from "react-redux";
 
-import { placeOrderAsync, mySetSelectedUserAddress } from "../user/userSlice";
+import { placeOrderAsync } from "../user/userSlice";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import AddAddressForm from "../user/components/AddAddressForm";
-import { resetCartAsync } from "../cart/cartSlice";
 import { DISCOUNTED_PRICE } from "./../../app/constants";
 import { updateProductStockSlice } from "../products/productSlice";
 
@@ -18,10 +17,10 @@ const Checkout = () => {
   const selectedUserAddress = useSelector(
     (state) => state?.user?.selectedUserAddress
   );
+  const currentOrder = useSelector((state) => state?.user?.currentOrder);
 
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("cash");
   const [, setIsAddAddressEnabled] = useState();
-
 
   const handlePaymentMethod = (e) => {
     console.log(e.target.value);
@@ -69,17 +68,27 @@ const Checkout = () => {
           })
         )
           .then(() => {
-            dispatch(mySetSelectedUserAddress(null));
-            dispatch(resetCartAsync());
-            navigate("/dashboard/user/order-success");
-            products?.forEach((product) =>
-              dispatch(
-                updateProductStockSlice({
-                  productId: product?.product_id,
-                  productQuantity: product?.quantity,
-                })
-              )
-            );
+            if (selectedPaymentMethod === "cash") {
+              products?.forEach((product) =>
+                dispatch(
+                  updateProductStockSlice({
+                    productId: product?.product_id,
+                    productQuantity: product?.quantity,
+                  })
+                )
+              );
+              navigate(`/dashboard/user/order-success/${currentOrder._id}`);
+            } else if (selectedPaymentMethod === "card") {
+              products?.forEach((product) =>
+                dispatch(
+                  updateProductStockSlice({
+                    productId: product?.product_id,
+                    productQuantity: product?.quantity,
+                  })
+                )
+              );
+              navigate("/dashboard/user/stripe-checkout");
+            }
           })
           .catch(() => {
             navigate("/dashboard/user/cart");

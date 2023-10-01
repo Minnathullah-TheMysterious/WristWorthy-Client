@@ -1,9 +1,19 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import { mySetSelectedUserAddress } from "../features/user/userSlice";
+import { resetCartAsync } from "../features/cart/cartSlice";
 
 const OrderSuccessPage = () => {
-  const orderId = useSelector((state) => state?.user?.currentOrder?._id);
+  const dispatch = useDispatch();
+  const params = useParams()
+
+  const orderId = params?.orderId
+
+  useEffect(() => {
+    dispatch(mySetSelectedUserAddress(null));
+    dispatch(resetCartAsync());
+  }, [dispatch]);
 
   return (
     <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
