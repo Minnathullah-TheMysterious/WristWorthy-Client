@@ -12,7 +12,7 @@ export const loginAsync = createAsyncThunk("auth/login", async (loginData) => {
     const response = await login(loginData);
 
     if (response?.success) {
-      return response?.userWithOutAddressesArray;
+      return response?.user;
     } else {
       throw new Error(response?.message);
     }
@@ -24,9 +24,9 @@ export const loginAsync = createAsyncThunk("auth/login", async (loginData) => {
 
 export const getAuthDataAsync = createAsyncThunk(
   "auth/getAuthData",
-  async (uId) => {
+  async () => {
     try {
-      const response = await getAuthData(uId);
+      const response = await getAuthData();
       return response;
     } catch (error) {
       console.error("Something Went Wrong in get-auth-data thunk", error);

@@ -67,7 +67,7 @@ const ManageUserAddresses = () => {
       cancelText: "No",
       onOk() {
         try {
-          dispatchAsync(deleteUserAddressAsync({ userId, addressId }));
+          dispatchAsync(deleteUserAddressAsync(addressId));
         } catch (error) {
           console.error(
             "Something Went Wrong while dispatching the delete-user-address action",
@@ -87,7 +87,6 @@ const ManageUserAddresses = () => {
     const serializedAddressData = JSON.stringify(addressData);
     dispatchAsync(
       updateUserAddressAsync({
-        userId,
         addressId,
         addressData: serializedAddressData,
       })

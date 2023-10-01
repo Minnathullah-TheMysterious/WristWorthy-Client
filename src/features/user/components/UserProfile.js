@@ -9,7 +9,6 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user?.userInfo);
-  const userId = useSelector((state) => state?.auth?.user?._id);
 
   const { confirm } = Modal;
 
@@ -24,7 +23,7 @@ const UserProfile = () => {
       cancelText: "No",
       onOk() {
         try {
-          dispatch(deleteUserAddressAsync({ userId, addressId }));
+          dispatch(deleteUserAddressAsync(addressId));
         } catch (error) {
           console.error(
             "Something Went Wrong while dispatching the delete-user-address action",

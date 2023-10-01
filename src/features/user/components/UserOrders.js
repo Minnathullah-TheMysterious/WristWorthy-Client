@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Modal, Space } from "antd";
+import { Modal, Space } from "antd";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { fetchUserOrdersAsync, updateOrderStatusAsync } from "../userSlice";
-import toast from "react-hot-toast";
+import { cancelOrderAsync, fetchUserOrdersAsync } from "../userSlice";
 import { DISCOUNTED_PRICE } from "./../../../app/constants";
 
 const UserOrders = () => {
@@ -18,29 +17,18 @@ const UserOrders = () => {
   console.log(orders);
 
   useEffect(() => {
-    dispatch(fetchUserOrdersAsync(userId));
+    dispatch(fetchUserOrdersAsync());
   }, [dispatch, userId]);
-
-  const handleCancelOrder = async (orderId) => {
-    dispatch(
-      updateOrderStatusAsync({ userId, orderId, orderStatus: "cancelled" })
-    ).then(() => {
-      toast.success("Order Cancelled Successfully");
-    });
-  };
 
   const showCancelOrderConfirm = (orderId) => {
     confirm({
       title: "Are You Sure To Cancel The Order!",
       icon: <ExclamationCircleFilled />,
-      content: "Order will be cancelled and refund will be processed withing next 48 hours if any",
+      content:
+        "Order will be cancelled and refund will be processed withing next 48 hours if any",
       okType: "danger",
       onOk() {
-        dispatch(
-          updateOrderStatusAsync({ userId, orderId, orderStatus: "cancelled" })
-        ).then(() => {
-          toast.success("Order Cancelled Successfully");
-        });
+        dispatch(cancelOrderAsync(orderId));
       },
       onCancel() {
         console.log("Cancel");

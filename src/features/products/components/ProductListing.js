@@ -693,7 +693,7 @@ function ProductGrid({ products }) {
 
   const handleAddToWishlistClick = (productId) => {
     if (userId) {
-      dispatch(addToWishlistAsync({ userId, productId }));
+      dispatch(addToWishlistAsync(productId));
     } else {
       toast("Please Login To Add To Wishlist", {
         className: "font-serif bg-blue-900 text-white",

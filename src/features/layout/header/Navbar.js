@@ -36,12 +36,13 @@ function classNames(...classes) {
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state?.auth?.user);
+  const user = useSelector((state) => state?.user?.userInfo);
+  console.log(user)
   const cart = useSelector((state) => state?.cart?.items);
+  console.log(cart)
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    dispatch(getAuthDataAsync());
+    dispatch(getAuthDataAsync()); //TODO: It will never logout. Need to reconsider it
     dispatch(getUserAsync());
     navigate("/login");
   };

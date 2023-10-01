@@ -12,14 +12,13 @@ import { DISCOUNTED_PRICE } from "./../../app/constants";
 const Cart = ({ btnText, destination }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
   const userCart = useSelector((state) => state?.cart?.items);
 
-  const userId = user?._id;
+  console.log(userCart)
 
   useEffect(() => {
-    dispatch(fetchUserCartItemsAsync(userId));
-  }, [dispatch, userId]);
+    dispatch(fetchUserCartItemsAsync());
+  }, [dispatch]);
 
   const calculatedSubTotal = userCart?.items?.reduce(
     (total, item) => {
@@ -35,8 +34,8 @@ const Cart = ({ btnText, destination }) => {
 
   const handleRemoveClick = async (e, productId) => {
     e.preventDefault();
-    console.log(userId, productId);
-    const deleteItem = dispatch(deleteUserCartItemAsync({ userId, productId }));
+    console.log(productId);
+    const deleteItem = dispatch(deleteUserCartItemAsync(productId));
     deleteItem
       .then(() => {
         if (userCart.items.length <= 1) {
@@ -53,10 +52,10 @@ const Cart = ({ btnText, destination }) => {
 
   const handleItemQuantityChange = async (quantity, productId) => {
     const actionResult = await dispatch(
-      updateCartItemQuantityAsync({ userId, productId, quantity })
+      updateCartItemQuantityAsync({ productId, quantity })
     );
     if (updateCartItemQuantityAsync.fulfilled.match(actionResult)) {
-      dispatch(fetchUserCartItemsAsync(userId));
+      dispatch(fetchUserCartItemsAsync());
     }
   };
   return (

@@ -1,20 +1,20 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export const getUser = async (userId) => {
+export const getUser = async () => {
   try {
-    const { data } = await axios.get(`/api/v1/auth/user-info/${userId}`);
+    const { data } = await axios.get(`/api/v1/user/own/info`);
     return data?.user;
   } catch (error) {
     console.error("Something Went Wrong in fetching the User - Client", error);
   }
 };
 
-export const addUserAddress = async (addressData, uId) => {
-  console.log("Address: ", addressData, "\n user id:", uId);
+export const addUserAddress = async (addressData) => {
+  console.log("Address: ", addressData);
   try {
     const { data } = await axios.post(
-      `/api/v1/auth/add-user-address/${uId}`,
+      `/api/v1/user/own/add-address`,
       addressData
     );
 
@@ -50,10 +50,10 @@ export const addUserAddress = async (addressData, uId) => {
   }
 };
 
-export const deleteUserAddress = async (userId, addressId) => {
+export const deleteUserAddress = async (addressId) => {
   try {
     const response = await axios.delete(
-      `/api/v1/auth/delete-user-address/${userId}/${addressId}`
+      `/api/v1/user/own/delete-address/${addressId}`
     );
     const { success, message, userPostDelete } = response.data;
     console.log(success, message);
@@ -78,10 +78,10 @@ export const deleteUserAddress = async (userId, addressId) => {
   }
 };
 
-export const updateUserAddress = async (userId, addressId, addressData) => {
+export const updateUserAddress = async (addressId, addressData) => {
   try {
     const { data } = await axios.put(
-      `/api/v1/auth/update-user-address/${userId}/${addressId}`,
+      `/api/v1/user/own/update-address/${addressId}`,
       JSON.parse(addressData)
     );
     const { success, message } = data;
@@ -117,7 +117,6 @@ export const updateUserAddress = async (userId, addressId, addressData) => {
 };
 
 export const placeOrder = async (
-  userId,
   products,
   totalItems,
   totalAmount,
@@ -125,7 +124,7 @@ export const placeOrder = async (
   selectedPaymentMethod
 ) => {
   try {
-    const { data } = await axios.post(`/api/v1/order/place-order/${userId}`, {
+    const { data } = await axios.post(`/api/v1/order/user/place-order`, {
       products,
       totalAmount,
       totalItems,
@@ -161,10 +160,9 @@ export const placeOrder = async (
   }
 };
 
-export const fetchUserOrders = async (userId) => {
+export const fetchUserOrders = async () => {
   try {
-    console.log(userId);
-    const { data } = await axios.get(`/api/v1/order/get-user-orders/${userId}`);
+    const { data } = await axios.get(`/api/v1/order/user/get-orders`);
     console.log(data);
     const { success, message } = data;
     if (success) {
@@ -182,6 +180,36 @@ export const fetchUserOrders = async (userId) => {
       toast.error(error?.response?.data?.message);
       console.error(
         "Something Went Wrong while fetching all the user orders - Client",
+        error
+      );
+      return {
+        success: false,
+        message: error?.response?.data?.message,
+      };
+    }
+  }
+};
+
+export const cancelOrder = async (orderId) => {
+  try {
+    const { data } = await axios.put(`/api/v1/order/user/cancel-order/${orderId}`);
+    console.log(data);
+    const { success, message } = data;
+    if (success) {
+      toast.success(message)
+      return data;
+    } else {
+      toast.error(message);
+      return { success, message };
+    }
+  } catch (error) {
+    if (error?.response?.status === 404) {
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      toast.error(error?.response?.data?.message);
+      console.error(
+        "Something Went Wrong while cancelling the order",
         error
       );
       return {

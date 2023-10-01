@@ -18,6 +18,7 @@ const PassReset = () => {
   const navigate = useNavigate();
 
   const ReqResetData = { phone, email };
+  //TODO: Still using localStorage, need to find alternate, I think it is available in passport.js
   const userId = localStorage.getItem("user_id");
   const passwords = { newPassword, confirmNewPassword };
 

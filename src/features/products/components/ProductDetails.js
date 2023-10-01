@@ -95,7 +95,7 @@ const ProductDetails = () => {
     e.preventDefault();
 
     if (user && !productFound && selectedProduct.stock >= 1) {
-      dispatch(addItemToCartAsync({ userId, productId }))
+      dispatch(addItemToCartAsync(productId))
         .then(() => {
           navigate("/dashboard/user/cart");
         })
@@ -110,7 +110,7 @@ const ProductDetails = () => {
       navigate("/dashboard/user/cart");
     } else if (user && productFound && selectedProduct.stock < 1) {
       //remove product from cart if the item is out of stock since it has gone out of stock after adding to cart
-      dispatch(deleteUserCartItemAsync({ userId, productId }))
+      dispatch(deleteUserCartItemAsync(productId))
     } else if (user && !productFound && selectedProduct.stock < 1) {
       toast.error("Out Of Stock");
     } else if (!user) {

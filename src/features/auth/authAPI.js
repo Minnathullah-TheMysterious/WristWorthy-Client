@@ -39,21 +39,15 @@ export const register = async (registrationData) => {
     console.error("Something Went Wrong While Registering - Client", error);
   }
 };
-
+ 
 export const login = async (loginData) => {
   try {
-    const response = await axios.post("/api/v1/auth/login", loginData);
-    const { success, message, token, user } = response.data;
+    const {data} = await axios.post("/api/v1/auth/login", loginData);
+    const { success, message, user } = data;
 
     if (success) {
       toast.success(message);
-      const userWithOutAddressesArray = { ...user };
-      delete userWithOutAddressesArray.addresses;
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ token, _id: user?._id, role:user?.role })
-      );
-      return { success, message, userWithOutAddressesArray };
+      return { success, message, user };
     } else {
       toast.error(message);
       return { success, message };
@@ -77,22 +71,19 @@ export const login = async (loginData) => {
   }
 };
 
-export const getAuthData = async (uId) => {
+export const getAuthData = async () => {
   try {
-    const response = await axios.get(`/api/v1/auth/user-info/${uId}`);
-    const { success, user } = response.data;
+    const {data} = await axios.get(`/api/v1/user/own/info`);
+    const { success, user } = data;
 
     if (success) {
       return {
         _id: user?._id,
-        user_name: user?.user_name,
-        email: user?.email,
-        phone: user?.phone,
         role: user?.role,
       };
     } else {
       toast.error("Error in fetching auth data");
-      return response.data;
+      return data;
     }
   } catch (error) {
     console.error("Something Went Wrong While login - Client", error);

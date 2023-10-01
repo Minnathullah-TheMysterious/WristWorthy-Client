@@ -49,7 +49,7 @@ const AddAddressForm = ({ setIsAddAddressEnabled }) => {
   const handleAddAddressClick = async (e) => {
     e.preventDefault();
     try {
-      dispatchAsync(addUserAddressAsync({ addressData, userId })).then(() =>
+      dispatchAsync(addUserAddressAsync(addressData)).then(() =>
         setIsAddAddressEnabled(false)
       );
     } catch (error) {

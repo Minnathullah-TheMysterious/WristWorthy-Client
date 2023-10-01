@@ -10,9 +10,6 @@ const CartPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state?.cart?.items);
-  const user = useSelector((state) => state.auth.user);
-
-  const userId = user?._id;
 
   console.log(cartItems);
 
@@ -25,9 +22,7 @@ const CartPage = () => {
     }
     cartItems?.items?.forEach((item) => {
       if (item?.product?.stock < 1) {
-        dispatch(
-          deleteUserCartItemAsync({ userId, productId: item?.product?._id })
-        );
+        dispatch(deleteUserCartItemAsync(item?.product?._id));
       }
     });
     navigate("/dashboard/user/checkout");

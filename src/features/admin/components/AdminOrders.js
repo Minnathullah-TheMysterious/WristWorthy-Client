@@ -4,9 +4,9 @@ import { getAllFilteredOrdersAsync, getOrderDetailsAsync } from "../adminSlice";
 import { BsPencilSquare, BsFillFileEarmarkLockFill } from "react-icons/bs";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { Select, Modal } from "antd";
-import { updateOrderStatusAsync } from "../../user/userSlice";
 import { Link } from "react-router-dom";
 import { DISCOUNTED_PRICE } from "../../../app/constants";
+import { updateOrderStatusAsync } from "./../adminSlice";
 
 const orderLimitPerPage = [
   { _id: 1, value: 5, label: 5 },
@@ -32,6 +32,7 @@ const AdminOrders = () => {
   const order = useSelector((state) => state?.admin?.orderDetails);
   const orderDetails = order && order[0];
 
+  console.log(order);
   console.log(orderDetails);
   console.log(allOrders);
 
@@ -40,10 +41,10 @@ const AdminOrders = () => {
   const [queryOrderStatus, setQueryOrderStatus] = useState("");
   const [orderIdInput, setOrderIdInput] = useState("");
   const [input, setInput] = useState("");
-  const [editableOrder, setEditableOrder] = useState("");
+  const [editableOrderId, setEditableOrderId] = useState("");
   const [open, setOpen] = useState(false);
 
-  console.log(editableOrder);
+  console.log(editableOrderId);
 
   let ordersQueryString = "";
   if (queryOrderStatus === "" && orderIdInput === "") {
@@ -66,16 +67,12 @@ const AdminOrders = () => {
 
   console.log(allOrders);
 
-  const handleStatusChange = async (orderStatus, userId, orderId) => {
+  const handleStatusChange = async (orderStatus, orderId) => {
     console.log(orderStatus);
-    console.log(userId);
     console.log(orderId);
-    dispatch(updateOrderStatusAsync({ userId, orderId, orderStatus })).then(
-      () => {
-        setEditableOrder("");
-        dispatch(getAllFilteredOrdersAsync(ordersQueryString));
-      }
-    );
+    dispatch(updateOrderStatusAsync({ orderId, orderStatus })).then(() => {
+      setEditableOrderId("");
+    });
   };
 
   const handleOrderDetails = (orderId) => {
@@ -256,7 +253,7 @@ const AdminOrders = () => {
                             {order?.shippingAddress?.pinCode}
                           </div>
                         </td>
-                        {order?._id !== editableOrder ? (
+                        {order?._id !== editableOrderId ? (
                           <td className="px-5 py-5 border-b border-gray-200 bg-white">
                             <p
                               className={` flex justify-center items-center text-white px-2 py-1 rounded-lg font-semibold ${chooseStatusColor(
@@ -266,18 +263,14 @@ const AdminOrders = () => {
                               {order?.status}
                             </p>
                           </td>
-                        ) : order?._id === editableOrder &&
+                        ) : order?._id === editableOrderId &&
                           order?.status !== "cancelled" ? (
                           <td className="px-5 py-5 border-b border-gray-200 bg-white">
                             <Select
                               className="w-32"
                               value={order?.status}
                               onChange={(value) =>
-                                handleStatusChange(
-                                  value,
-                                  orders?.user,
-                                  order?._id
-                                )
+                                handleStatusChange(value, order?._id)
                               }
                             >
                               {orderStatusMessages.map((status) => (
@@ -303,14 +296,14 @@ const AdminOrders = () => {
                         )}
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                           <div className="flex justify-around">
-                            {order?._id !== editableOrder ? (
+                            {order?._id !== editableOrderId ? (
                               <BsPencilSquare
-                                onClick={() => setEditableOrder(order?._id)}
+                                onClick={() => setEditableOrderId(order?._id)}
                                 className="h-6 w-6 hover:cursor-pointer text-green-600 hover:text-blue-600 active:text-blue-900"
                               />
                             ) : (
                               <AiFillEyeInvisible
-                                onClick={() => setEditableOrder("")}
+                                onClick={() => setEditableOrderId("")}
                                 className="h-6 w-6 hover:cursor-pointer text-green-600 hover:text-blue-600 active:text-blue-900"
                               />
                             )}
@@ -330,7 +323,7 @@ const AdminOrders = () => {
                             >
                               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10 bg-white py-4 space-y-12">
                                 {orderDetails?.order?.map((orderDetail) => (
-                                  <div>
+                                  <div key={orderDetail?._id}>
                                     <h1 className="text-2xl font-bold font-serif text-gray-900 shadow-cyan-800 shadow  inline border-none py-1 px-4">
                                       Order Id: {orderDetail?._id}
                                     </h1>

@@ -13,12 +13,12 @@ const Wishlist = () => {
   const wishlistItems = useSelector((state) => state?.wishlist);
 
   useEffect(() => {
-    userId && dispatch(fetchWishlistAsync(userId));
+    userId && dispatch(fetchWishlistAsync());
   }, [dispatch, userId]);
 
   const handleDeleteWishlistItemClick = (productId) => {
     try {
-      userId && dispatch(deleteWishlistItemAsync({ userId, productId }));
+      userId && dispatch(deleteWishlistItemAsync(productId ));
     } catch (error) {
       console.error(
         "Something went wrong while dispatching the deleteWishlistItemAsync action",

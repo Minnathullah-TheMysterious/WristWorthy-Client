@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getAllFilteredOrders, getOrderDetails } from "./adminAPI";
+import {
+  getAllFilteredOrders,
+  getOrderDetails,
+  updateOrderStatus,
+} from "./adminAPI";
 
 const initialState = {
   loading: false,
@@ -41,6 +45,24 @@ export const getOrderDetailsAsync = createAsyncThunk(
   }
 );
 
+export const updateOrderStatusAsync = createAsyncThunk(
+  "order/updateOrderStatus",
+  async ({ orderId, orderStatus }) => {
+    try {
+      const response = await updateOrderStatus(orderId, orderStatus);
+      if (response.success) {
+        console.log(response.updatedOrder, orderId);
+        return { order: response.updatedOrder, orderId };
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      console.error("Something Went Wrong in update-order-thunk", error);
+      throw new Error(error.message);
+    }
+  }
+);
+
 const adminSlice = createSlice({
   name: "orders",
   initialState,
@@ -68,6 +90,26 @@ const adminSlice = createSlice({
       .addCase(getOrderDetailsAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.orderDetails = action.payload;
+      })
+
+      .addCase(updateOrderStatusAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateOrderStatusAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(updateOrderStatusAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        const orderIndex = state?.allOrders?.findIndex(
+          (orders) => orders?.order[0]?._id === action.payload.orderId
+        );
+        console.log(orderIndex);
+        console.log(action.payload.order)
+        console.log(action.payload.orderId)
+        if (orderIndex !== -1) {
+          state.allOrders.splice(orderIndex, 1, action.payload.order[0]);
+        }
       });
   },
 });

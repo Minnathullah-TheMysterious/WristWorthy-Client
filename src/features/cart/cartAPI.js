@@ -1,10 +1,10 @@
 import toast from "react-hot-toast";
 import axios from "axios";
 
-export const addItemToCart = async (userId, productId) => {
+export const addItemToCart = async (productId) => {
   try {
     const { data } = await axios.post(
-      `/api/v1/cart/add-to-cart/${userId}/${productId}`
+      `/api/v1/cart/user/add-to-cart/${productId}`
     );
     const { success, message } = data;
     if (success) {
@@ -30,9 +30,9 @@ export const addItemToCart = async (userId, productId) => {
   }
 };
 
-export const fetchUserCartItems = async (userId) => {
+export const fetchUserCartItems = async () => {
   try {
-    const { data } = await axios.get(`/api/v1/cart/get-cart-items/${userId}`);
+    const { data } = await axios.get(`/api/v1/cart/user/get-cart-items`);
     const { success, message } = data;
     if (success) {
       // toast.success(message);
@@ -56,10 +56,11 @@ export const fetchUserCartItems = async (userId) => {
   }
 };
 
-export const deleteUserCartItem = async (userId, productId) => {
+export const deleteUserCartItem = async (productId) => {
+  console.log(productId);
   try {
     const { data } = await axios.delete(
-      `/api/v1/cart/delete-cart-item/${userId}/${productId}`
+      `/api/v1/cart/user/delete-cart-item/${productId}`
     );
     const { success, message } = data;
     if (success) {
@@ -80,15 +81,15 @@ export const deleteUserCartItem = async (userId, productId) => {
       toast.error(error?.response?.data?.message);
       console.error(
         "Something Went Wrong While deleting the cart Item - Client",
-        error
+        error.message
       );
     }
   }
 };
 
-export const resetCart = async (userId) => {
+export const resetCart = async () => {
   try {
-    const { data } = await axios.delete(`/api/v1/cart/delete-cart/${userId}`);
+    const { data } = await axios.delete(`/api/v1/cart/user/delete-cart`);
     const { success, message } = data;
     if (success) {
       toast.success(message);
@@ -99,7 +100,7 @@ export const resetCart = async (userId) => {
       toast(error?.response?.data?.message, {
         className: "font-serif bg-blue-900 text-white",
       });
-    }else if(error.response && error.response.status === 404){
+    } else if (error.response && error.response.status === 404) {
       toast(error?.response?.data?.message, {
         className: "font-serif bg-blue-900 text-white",
       });
@@ -113,10 +114,10 @@ export const resetCart = async (userId) => {
   }
 };
 
-export const updateCartItemQuantity = async (userId, productId, quantity) => {
+export const updateCartItemQuantity = async (productId, quantity) => {
   try {
     const { data } = await axios.put(
-      `/api/v1/cart/update-product-quantity/${userId}/${productId}/${quantity}`
+      `/api/v1/cart/user/update-product-quantity/${productId}/${quantity}`
     );
     const { success, message } = data;
     if (success) {

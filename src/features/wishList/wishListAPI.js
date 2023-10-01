@@ -1,10 +1,10 @@
 import toast from "react-hot-toast";
 import axios from "axios";
 
-export const addToWishlist = async (userId, productId) => {
+export const addToWishlist = async (productId) => {
   try {
     const { data } = await axios.post(
-      `/api/v1/wishlist/add-to-wishlist/${userId}/${productId}`
+      `/api/v1/wishlist/user/add-to-wishlist/${productId}`
     );
     const { success, message } = data;
     if (success) {
@@ -25,9 +25,9 @@ export const addToWishlist = async (userId, productId) => {
   }
 };
 
-export const fetchWishlist = async (userId) => {
+export const fetchWishlist = async () => {
   try {
-    const { data } = await axios.get(`/api/v1/wishlist/get-wishlist/${userId}`);
+    const { data } = await axios.get(`/api/v1/wishlist/user/get-wishlist`);
     const { success, wishlist } = data;
     if (success) {
       // toast.success(message);
@@ -50,16 +50,16 @@ export const fetchWishlist = async (userId) => {
   }
 };
 
-export const deleteWishlistItem = async (userId, productId) => {
+export const deleteWishlistItem = async (productId) => {
   try {
-    const {data} = await axios.delete(
-      `/api/v1/wishlist/delete-wishlist-item/${userId}/${productId}`
+    const { data } = await axios.delete(
+      `/api/v1/wishlist/user/delete-wishlist-item/${productId}`
     );
-    const {success, message, wishlist}= data
-    if(success){
-      toast.success(message)
-      console.log(wishlist)
-      return wishlist
+    const { success, message, wishlist } = data;
+    if (success) {
+      toast.success(message);
+      console.log(wishlist);
+      return wishlist;
     }
   } catch (error) {
     if (error.response && error.response.status === 404) {
@@ -67,18 +67,21 @@ export const deleteWishlistItem = async (userId, productId) => {
         className: "font-serif bg-blue-900 text-white",
       });
       return { success: false, message: error?.response?.data?.message };
-    }else if(error.response && error.response.status === 409){
+    } else if (error.response && error.response.status === 409) {
       toast(error?.response?.data?.message, {
         className: "font-serif bg-blue-900 text-white",
       });
       return { success: false, message: error?.response?.data?.message };
     } else {
       toast.error("Something Went Wrong While deleting Item from Wishlist");
-      console.error("Something Went Wrong While deleting Item from Wishlist", error);
+      console.error(
+        "Something Went Wrong While deleting Item from Wishlist",
+        error
+      );
       return {
         success: false,
         message: "Something Went Wrong While deleting Item from Wishlist",
-        error:error.message
+        error: error.message,
       };
     }
   }

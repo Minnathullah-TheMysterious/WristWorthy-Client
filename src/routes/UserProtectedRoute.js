@@ -6,31 +6,25 @@ import toast from "react-hot-toast";
 
 const UserProtectedRoute = () => {
   const [ok, setOk] = useState(false);
-
-  const user = JSON.parse(localStorage.getItem("user"));
+  console.log("user check");
 
   useEffect(() => {
     const authCheck = async () => {
       try {
-        const { data } = await axios.get("/api/v1/auth/user-auth", {
-          headers: {
-            Authorization: user?.token,
-          },
-        });
+        const { data } = await axios.get("/api/v1/auth/authenticate-user");
         if (data.ok) {
+          console.log("user check successful");
           setOk(true);
         } else {
           setOk(false);
         }
       } catch (error) {
+        console.error(error.message);
         toast.error("Token expired, Please Login Again");
-        localStorage.removeItem("user");
-        window.location.reload();
       }
     };
-
-    if (user?.token) authCheck();
-  }, [user?.token]);
+    authCheck();
+  }, []);
 
   return ok ? <Outlet /> : <LoggedInCheckLoader />;
 };

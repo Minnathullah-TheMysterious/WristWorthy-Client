@@ -13,9 +13,9 @@ const initialState = {
 
 export const addToWishlistAsync = createAsyncThunk(
   "wishlist/addToWishlist",
-  async ({ userId, productId }) => {
+  async (productId) => {
     try {
-      const response = await addToWishlist(userId, productId);
+      const response = await addToWishlist(productId);
       if (response.success) {
         return response.wishlist;
       }
@@ -27,9 +27,9 @@ export const addToWishlistAsync = createAsyncThunk(
 
 export const fetchWishlistAsync = createAsyncThunk(
   "wishlist/fetchWishlist",
-  async (userId) => {
+  async () => {
     try {
-      const response = await fetchWishlist(userId);
+      const response = await fetchWishlist();
       return response;
     } catch (error) {
       console.error("Something Went Wrong in fetch-wishlist thunk", error);
@@ -39,9 +39,9 @@ export const fetchWishlistAsync = createAsyncThunk(
 
 export const deleteWishlistItemAsync = createAsyncThunk(
   "wishlist/deleteWishlistItem",
-  async ({ userId, productId }) => {
+  async (productId) => {
     try {
-      const response = await deleteWishlistItem(userId, productId);
+      const response = await deleteWishlistItem( productId);
       return response;
     } catch (error) {
       console.error("Something Went Wrong in fetch-wishlist thunk", error);

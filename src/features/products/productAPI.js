@@ -46,19 +46,6 @@ export const fetchAllProductsByFilters = async (filter, sort, pagination) => {
   }
 };
 
-export const fetchAllProducts = async () => {
-  try {
-    const { data } = await axios.get("/api/v1/product/get-all-products");
-    const { success } = data;
-    if (success) {
-      console.log("products fetched successfully");
-      return data;
-    }
-  } catch (error) {
-    console.error("Something Went Wrong While fetching all products", error);
-  }
-};
-
 export const fetchCategories = async () => {
   try {
     const { data } = await axios.get("/api/v1/category/get-all-categories");
@@ -116,7 +103,7 @@ export const fetchSelectedProduct = async (productId) => {
 export const updateProductStock = async (productId, productQuantity) => {
   try {
     const { data } = await axios.put(
-      `/api/v1/product/update-product-stock/${productId}/${productQuantity}`
+      `/api/v1/product/user/update-product-stock/${productId}/${productQuantity}`
     );
     const { success, message } = data;
     if (success) {

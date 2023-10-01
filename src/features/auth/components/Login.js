@@ -37,17 +37,15 @@ const Login = () => {
     }
   };
 
-  const loginData = { phone, email, password };
+  const loginData = { password, username: phone || email };
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
       const actionResult = await dispatch(loginAsync(loginData));
       if (loginAsync.fulfilled.match(actionResult)) {
-        const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
-        const userId = userFromLocalStorage?._id;
-        dispatch(fetchUserCartItemsAsync(userId));
-        dispatch(getUserAsync(userId));
+        dispatch(fetchUserCartItemsAsync());
+        dispatch(getUserAsync());
         localStorage.removeItem("user_id");
         navigate(location.state || "/");
       } else {

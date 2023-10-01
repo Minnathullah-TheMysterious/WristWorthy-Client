@@ -16,9 +16,9 @@ const initialState = {
 //backend
 export const addItemToCartAsync = createAsyncThunk(
   "cart/addItemToCart",
-  async ({ userId, productId }) => {
+  async (productId) => {
     try {
-      const response = await addItemToCart(userId, productId);
+      const response = await addItemToCart(productId);
       return response?.cart;
     } catch (error) {
       console.error("Something Went Wrong in Add-to-Cart thunk", error);
@@ -29,9 +29,9 @@ export const addItemToCartAsync = createAsyncThunk(
 //backend
 export const fetchUserCartItemsAsync = createAsyncThunk(
   "cart/fetchUserCartItems",
-  async (userId) => {
+  async () => {
     try {
-      const response = await fetchUserCartItems(userId);
+      const response = await fetchUserCartItems();
       return response?.cart;
     } catch (error) {
       console.error("Something Went Wrong in fetch-Cart thunk", error);
@@ -42,10 +42,9 @@ export const fetchUserCartItemsAsync = createAsyncThunk(
 //backend
 export const updateCartItemQuantityAsync = createAsyncThunk(
   "cart/updateCartItemQuantity",
-  async ({ userId, productId, quantity }) => {
+  async ({ productId, quantity }) => {
     try {
       const response = await updateCartItemQuantity(
-        userId,
         productId,
         quantity
       );
@@ -59,10 +58,10 @@ export const updateCartItemQuantityAsync = createAsyncThunk(
 //backend
 export const deleteUserCartItemAsync = createAsyncThunk(
   "cart/deleteUserCartItem",
-  async ({ userId, productId }) => {
-    console.log(userId, productId);
+  async (productId) => {
+    console.log(productId);
     try {
-      const response = await deleteUserCartItem(userId, productId);
+      const response = await deleteUserCartItem(productId);
       return response?.cart;
     } catch (error) {
       console.error("Something Went Wrong in fetch-Cart thunk", error);
@@ -73,9 +72,9 @@ export const deleteUserCartItemAsync = createAsyncThunk(
 //backend
 export const resetCartAsync = createAsyncThunk(
   "cart/resetCart",
-  async (userId) => {
+  async () => {
     try {
-      const response = await resetCart(userId);
+      const response = await resetCart();
       if (response) {
         return [];
       }

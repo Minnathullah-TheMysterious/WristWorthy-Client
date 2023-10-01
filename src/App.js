@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchUserCartItemsAsync } from "./features/cart/cartSlice";
 import { Toaster } from "react-hot-toast";
 import { getUserAsync } from "./features/user/userSlice";
@@ -31,16 +31,14 @@ import AdminOrdersPage from "./pages/adminPages/AdminOrdersPage";
 
 function App() {
   const dispatch = useDispatch();
-
-  const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
-  const userId = userFromLocalStorage?._id;
-  const role = userFromLocalStorage?.role;
+  const user = useSelector((state) => state?.auth?.user);
+  console.log(user)
 
   useEffect(() => {
-    userId && role === "user" && dispatch(fetchUserCartItemsAsync(userId));
-    userId && dispatch(getUserAsync(userId));
-    userId && dispatch(getAuthDataAsync(userId));
-  }, [dispatch, userId, role]);
+    dispatch(getAuthDataAsync());
+    dispatch(fetchUserCartItemsAsync());
+    dispatch(getUserAsync());
+  }, [dispatch]);
   return (
     <>
       <Routes>
@@ -48,7 +46,10 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/req-password-reset" element={<PassResetPage />} />
-        <Route path="/product-details/:productId" element={<ProductDetailsPage />} />
+        <Route
+          path="/product-details/:productId"
+          element={<ProductDetailsPage />}
+        />
         {/* LoggedIn User Routes */}
         <Route path="/dashboard/user" element={<UserProtectedRoute />}>
           <Route path="cart" element={<CartPage />} />
@@ -61,9 +62,15 @@ function App() {
         </Route>
         {/* Admin Routes */}
         <Route path="/dashboard/admin" element={<AdminProtectedRoute />}>
-          <Route path="product-details/:productId" element={<AdminProductDetailsPage />}/>
+          <Route
+            path="product-details/:productId"
+            element={<AdminProductDetailsPage />}
+          />
           <Route path="create-product" element={<CreateProductPage />} />
-          <Route path="update-product/:productId" element={<UpdateProductPage />} />
+          <Route
+            path="update-product/:productId"
+            element={<UpdateProductPage />}
+          />
           <Route path="products" element={<AdminProductsPage />} />
           <Route path="categories" element={<AdminCategoriesPage />} />
           <Route path="brands" element={<AdminBrandsPage />} />

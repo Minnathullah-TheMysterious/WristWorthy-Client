@@ -6,8 +6,8 @@ import {
   updateUserAddress,
   placeOrder,
   fetchUserOrders,
+  cancelOrder,
 } from "./userAPI";
-import { updateOrderStatus } from "../admin/adminAPI";
 
 const initialState = {
   loading: false,
@@ -19,9 +19,9 @@ const initialState = {
 };
 //we may need more info of current order
 
-export const getUserAsync = createAsyncThunk("auth/getUser", async (userId) => {
+export const getUserAsync = createAsyncThunk("auth/getUser", async () => {
   try {
-    const response = await getUser(userId);
+    const response = await getUser();
     return response;
   } catch (error) {
     console.error("Something went wrong in get-user thunk", error);
@@ -30,9 +30,9 @@ export const getUserAsync = createAsyncThunk("auth/getUser", async (userId) => {
 
 export const addUserAddressAsync = createAsyncThunk(
   "auth/addUserAddress",
-  async ({ addressData, userId }) => {
+  async (addressData) => {
     try {
-      const response = await addUserAddress(addressData, userId);
+      const response = await addUserAddress(addressData);
       if (response.success) {
         console.log(response?.user?.addresses);
         return response?.user?.addresses;
@@ -48,9 +48,9 @@ export const addUserAddressAsync = createAsyncThunk(
 
 export const deleteUserAddressAsync = createAsyncThunk(
   "auth/deleteUserAddress",
-  async ({ userId, addressId }) => {
+  async (addressId) => {
     try {
-      const response = await deleteUserAddress(userId, addressId);
+      const response = await deleteUserAddress(addressId);
       return response;
     } catch (error) {
       console.error("Something went wrong in delete-user-address thunk", error);
@@ -60,12 +60,10 @@ export const deleteUserAddressAsync = createAsyncThunk(
 
 export const updateUserAddressAsync = createAsyncThunk(
   "auth/updateUserAddress",
-  async ({ userId, addressId, addressData }) => {
-    console.log(
-      `user_id: ${userId} \naddress_id: ${addressId} \naddress_data: ${addressData}`
-    );
+  async ({ addressId, addressData }) => {
+    console.log(`address_id: ${addressId} \naddress_data: ${addressData}`);
     try {
-      const response = await updateUserAddress(userId, addressId, addressData);
+      const response = await updateUserAddress(addressId, addressData);
       if (response.success) {
         return response.updatedUser;
       } else {
@@ -80,9 +78,9 @@ export const updateUserAddressAsync = createAsyncThunk(
 
 export const fetchUserOrdersAsync = createAsyncThunk(
   "order/fetchUserOrders",
-  async (userId) => {
+  async () => {
     try {
-      const response = await fetchUserOrders(userId);
+      const response = await fetchUserOrders();
       if (response.success) {
         console.log(response.orders);
         return response.orders;
@@ -99,7 +97,6 @@ export const fetchUserOrdersAsync = createAsyncThunk(
 export const placeOrderAsync = createAsyncThunk(
   "order/placeOrder",
   async ({
-    userId,
     products,
     totalItems,
     totalAmount,
@@ -108,7 +105,6 @@ export const placeOrderAsync = createAsyncThunk(
   }) => {
     try {
       const response = await placeOrder(
-        userId,
         products,
         totalItems,
         totalAmount,
@@ -122,18 +118,18 @@ export const placeOrderAsync = createAsyncThunk(
   }
 );
 
-export const updateOrderStatusAsync = createAsyncThunk(
-  "order/updateOrderStatus",
-  async ({userId, orderId, orderStatus}) => {
+export const cancelOrderAsync = createAsyncThunk(
+  "order/cancelOrder",
+  async (orderId) => {
     try {
-      const response = await updateOrderStatus(userId, orderId, orderStatus);
+      const response = await cancelOrder(orderId);
       if (response.success) {
         return response.orders;
       } else {
         throw new Error(response.message);
       }
     } catch (error) {
-      console.error("Something Went Wrong in update-order-thunk", error);
+      console.error("Something went wrong while cancelling order", error);
       throw new Error(error.message);
     }
   }
@@ -228,17 +224,17 @@ const userSlice = createSlice({
         state.orders = action.payload;
       })
 
-      .addCase(updateOrderStatusAsync.pending, (state) => {
+      .addCase(cancelOrderAsync.pending, (state) => {
         state.loading = true;
       })
-      .addCase(updateOrderStatusAsync.rejected, (state, action) => {
+      .addCase(cancelOrderAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "error";
       })
-      .addCase(updateOrderStatusAsync.fulfilled, (state, action) => {
+      .addCase(cancelOrderAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.orders = action.payload;
-      });
+      })
   },
 });
 

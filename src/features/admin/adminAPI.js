@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 export const createProduct = async (newProduct) => {
   try {
     const { data } = await axios.post(
-      "/api/v1/product/create-product",
+      "/api/v1/product/admin/create-product",
       newProduct
     );
     const { success, message } = data;
@@ -40,7 +40,7 @@ export const createProduct = async (newProduct) => {
 export const deleteProduct = async (productId) => {
   try {
     const { data } = await axios.delete(
-      `/api/v1/product/delete-product/${productId}`
+      `/api/v1/product/admin/delete-product/${productId}`
     );
     const { success, message } = data;
     if (success) {
@@ -76,7 +76,7 @@ export const deleteProduct = async (productId) => {
 export const restoreProduct = async (productId) => {
   try {
     const { data } = await axios.put(
-      `/api/v1/product/restore-product/${productId}`
+      `/api/v1/product/admin/restore-product/${productId}`
     );
     const { success, message } = data;
     if (success) {
@@ -112,7 +112,7 @@ export const restoreProduct = async (productId) => {
 export const updateProductData = async (productId, productData) => {
   try {
     const { data } = await axios.put(
-      `/api/v1/product/update-product/${productId}`,
+      `/api/v1/product/admin/update-product/${productId}`,
       productData
     );
     const { success, message } = data;
@@ -150,7 +150,7 @@ export const updateProductThumbnail = async (productId, thumbnail) => {
   console.log(productId, thumbnail);
   try {
     const { data } = await axios.put(
-      `/api/v1/product/update-product-thumbnail/${productId}`,
+      `/api/v1/product/admin/update-product-thumbnail/${productId}`,
       thumbnail
     );
     const { success, message } = data;
@@ -193,7 +193,7 @@ export const updateProductThumbnail = async (productId, thumbnail) => {
 export const updateProductImage = async (productId, image, imageIndex) => {
   try {
     const { data } = await axios.put(
-      `/api/v1/product/update-product-image/${productId}/${imageIndex}`,
+      `/api/v1/product/admin/update-product-image/${productId}/${imageIndex}`,
       image
     );
     const { success, message } = data;
@@ -236,7 +236,7 @@ export const updateProductImage = async (productId, image, imageIndex) => {
 export const createCategory = async (newCategory) => {
   try {
     const { data } = await axios.post(
-      "/api/v1/category/create-category",
+      "/api/v1/category/admin/create-category",
       newCategory
     );
     const { success, message } = data;
@@ -271,7 +271,7 @@ export const createCategory = async (newCategory) => {
 export const deleteCategory = async (categoryId) => {
   try {
     const { data } = await axios.delete(
-      `/api/v1/category/delete-category/${categoryId}`
+      `/api/v1/category/admin/delete-category/${categoryId}`
     );
     const { success, message } = data;
     if (success) {
@@ -302,7 +302,7 @@ export const deleteCategory = async (categoryId) => {
 export const restoreCategory = async (categoryId) => {
   try {
     const { data } = await axios.put(
-      `/api/v1/category/restore-category/${categoryId}`
+      `/api/v1/category/admin/restore-category/${categoryId}`
     );
     const { success, message } = data;
     if (success) {
@@ -333,7 +333,7 @@ export const restoreCategory = async (categoryId) => {
 export const updateCategoryName = async (categoryId, category_name) => {
   try {
     const { data } = await axios.put(
-      `/api/v1/category/update-category/${categoryId}`,
+      `/api/v1/category/admin/update-category/${categoryId}`,
       {
         category_name,
       }
@@ -378,7 +378,7 @@ export const updateCategoryName = async (categoryId, category_name) => {
 export const updateCategoryImage = async (categoryId, image) => {
   try {
     const { data } = await axios.put(
-      `/api/v1/category/update-category-image/${categoryId}`,
+      `/api/v1/category/admin/update-category-image/${categoryId}`,
       image
     );
     const { success, message } = data;
@@ -420,7 +420,7 @@ export const updateCategoryImage = async (categoryId, image) => {
 //Create Brand
 export const createBrand = async (newBrand) => {
   try {
-    const { data } = await axios.post("/api/v1/brand/create-brand", newBrand);
+    const { data } = await axios.post("/api/v1/brand/admin/create-brand", newBrand);
     const { success, message } = data;
     if (success) {
       toast.success(message);
@@ -452,7 +452,7 @@ export const createBrand = async (newBrand) => {
 export const deleteBrand = async (brandId) => {
   try {
     const { data } = await axios.delete(
-      `/api/v1/brand/delete-brand/${brandId}`
+      `/api/v1/brand/admin/delete-brand/${brandId}`
     );
     const { success, message } = data;
     if (success) {
@@ -482,7 +482,7 @@ export const deleteBrand = async (brandId) => {
 //Restore Brand
 export const restoreBrand = async (brandId) => {
   try {
-    const { data } = await axios.put(`/api/v1/brand/restore-brand/${brandId}`);
+    const { data } = await axios.put(`/api/v1/brand/admin/restore-brand/${brandId}`);
     const { success, message } = data;
     if (success) {
       toast.success(message);
@@ -511,7 +511,7 @@ export const restoreBrand = async (brandId) => {
 //Update Brand Name
 export const updateBrandName = async (brandId, brand_name) => {
   try {
-    const { data } = await axios.put(`/api/v1/brand/update-brand/${brandId}`, {
+    const { data } = await axios.put(`/api/v1/brand/admin/update-brand/${brandId}`, {
       brand_name,
     });
     const { success, message } = data;
@@ -554,7 +554,7 @@ export const updateBrandName = async (brandId, brand_name) => {
 export const updateBrandImage = async (brandId, image) => {
   try {
     const { data } = await axios.put(
-      `/api/v1/brand/update-brand-image/${brandId}`,
+      `/api/v1/brand/admin/update-brand-image/${brandId}`,
       image
     );
     const { success, message } = data;
@@ -598,7 +598,7 @@ export const getAllFilteredOrders = async (ordersQueryString) => {
   console.log(ordersQueryString);
   try {
     const { data } = await axios.get(
-      `/api/v1/order/get-all-filtered-orders?${ordersQueryString}`
+      `/api/v1/order/admin/get-all-filtered-orders?${ordersQueryString}`
     );
     const { success, message } = data;
     if (success) {
@@ -629,10 +629,10 @@ export const getAllFilteredOrders = async (ordersQueryString) => {
 };
 
 //Update Order Status
-export const updateOrderStatus = async (userId, orderId, orderStatus) => {
+export const updateOrderStatus = async (orderId, orderStatus) => {
   try {
     const { data } = await axios.put(
-      `/api/v1/order/update-order-status/${userId}/${orderId}/${orderStatus}`
+      `/api/v1/order/admin/update-order-status/${orderId}/${orderStatus}`
     );
     const { success, message } = data;
     if (success) {
@@ -669,7 +669,7 @@ export const updateOrderStatus = async (userId, orderId, orderStatus) => {
 export const getOrderDetails = async (orderId) => {
   try {
     const { data } = await axios.get(
-      `/api/v1/order/get-order-details/${orderId}`
+      `/api/v1/order/admin/get-order-details/${orderId}`
     );
     const { success, message } = data;
     if (success) {

@@ -14,7 +14,6 @@ import { updateProductStockSlice } from "../products/productSlice";
 const Checkout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state?.user?.userInfo);
   const cartItems = useSelector((state) => state?.cart?.items);
   const selectedUserAddress = useSelector(
     (state) => state?.user?.selectedUserAddress
@@ -23,7 +22,6 @@ const Checkout = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("cash");
   const [, setIsAddAddressEnabled] = useState();
 
-  const userId = user?._id;
 
   const handlePaymentMethod = (e) => {
     console.log(e.target.value);
@@ -63,7 +61,6 @@ const Checkout = () => {
       } else {
         dispatch(
           placeOrderAsync({
-            userId,
             products,
             totalItems,
             totalAmount,
@@ -73,7 +70,7 @@ const Checkout = () => {
         )
           .then(() => {
             dispatch(mySetSelectedUserAddress(null));
-            dispatch(resetCartAsync(userId));
+            dispatch(resetCartAsync());
             navigate("/dashboard/user/order-success");
             products?.forEach((product) =>
               dispatch(

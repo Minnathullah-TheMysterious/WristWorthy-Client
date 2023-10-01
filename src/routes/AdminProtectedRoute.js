@@ -7,16 +7,10 @@ import { toast } from "react-hot-toast";
 const AdminProtectedRoute = () => {
   const [ok, setOk] = useState(false);
 
-  const user = JSON.parse(localStorage.getItem("user"));
-
   useEffect(() => {
     const adminCheck = async () => {
       try {
-        const { data } = await axios.get("/api/v1/auth/admin-auth", {
-          headers: {
-            Authorization: user?.token,
-          },
-        });
+        const { data } = await axios.get("/api/v1/auth/authenticate-admin");
         const { ok } = data;
         if (ok) {
           setOk(true);
@@ -24,13 +18,12 @@ const AdminProtectedRoute = () => {
           setOk(false);
         }
       } catch (error) {
+        console.error(error.message);
         toast.error("Token expired, Please Login Again");
-        localStorage.removeItem("user");
-        window.location.reload();
       }
     };
-    user && user.token && adminCheck();
-  }, [user]);
+    adminCheck();
+  }, []);
 
   return ok ? <Outlet /> : <AdminCheckLoader />;
 };
