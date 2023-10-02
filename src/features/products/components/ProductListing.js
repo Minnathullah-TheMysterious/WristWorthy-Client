@@ -734,7 +734,7 @@ function ProductGrid({ products }) {
                           <div className="group border-2 border-solid border-black p-[1px] rounded-lg">
                             <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-80 lg:h-60">
                               <img
-                                src={product.thumbnail.location}
+                                src={`/${product.thumbnail.location}`}
                                 alt={product.product_name}
                                 className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                               />

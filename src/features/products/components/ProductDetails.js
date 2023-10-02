@@ -6,7 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchSelectedProductAsync } from "../productSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { addItemToCartAsync, deleteUserCartItemAsync } from "../../cart/cartSlice";
+import {
+  addItemToCartAsync,
+  deleteUserCartItemAsync,
+} from "../../cart/cartSlice";
 import { DISCOUNTED_PRICE } from "../../../app/constants";
 
 const product = {
@@ -110,7 +113,7 @@ const ProductDetails = () => {
       navigate("/dashboard/user/cart");
     } else if (user && productFound && selectedProduct.stock < 1) {
       //remove product from cart if the item is out of stock since it has gone out of stock after adding to cart
-      dispatch(deleteUserCartItemAsync(productId))
+      dispatch(deleteUserCartItemAsync(productId));
     } else if (user && !productFound && selectedProduct.stock < 1) {
       toast.error("Out Of Stock");
     } else if (!user) {
@@ -166,7 +169,7 @@ const ProductDetails = () => {
         <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
           <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
             <img
-              src={`${process.env.REACT_APP_API}/${selectedProduct?.images[0]?.location}`}
+              src={`/${selectedProduct?.images[0]?.location}`}
               alt={selectedProduct?.product_name}
               className="h-full w-full object-cover object-center"
             />
@@ -175,7 +178,7 @@ const ProductDetails = () => {
             {selectedProduct?.images[1] && (
               <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
                 <img
-                  src={`${process.env.REACT_APP_API}/${selectedProduct?.images[1]?.location}`}
+                  src={`/${selectedProduct?.images[1]?.location}`}
                   alt={selectedProduct?.product_name}
                   className="h-full w-full object-cover object-center"
                 />
@@ -184,7 +187,7 @@ const ProductDetails = () => {
             {selectedProduct?.images[2] && (
               <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
                 <img
-                  src={`${process.env.REACT_APP_API}/${selectedProduct?.images[2]?.location}`}
+                  src={`/${selectedProduct?.images[2]?.location}`}
                   alt={selectedProduct?.product_name}
                   className="h-full w-full object-cover object-center"
                 />
@@ -194,7 +197,7 @@ const ProductDetails = () => {
           {selectedProduct?.images[3] && (
             <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
               <img
-                src={`${process.env.REACT_APP_API}/${selectedProduct?.images[3]?.location}`}
+                src={`/${selectedProduct?.images[3]?.location}`}
                 alt={selectedProduct?.product_name}
                 className="h-full w-full object-cover object-center"
               />
@@ -208,9 +211,9 @@ const ProductDetails = () => {
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
               {selectedProduct?.product_name}
             </h1>
-            {selectedProduct?.stock <1 ? (
+            {selectedProduct?.stock < 1 ? (
               <p className="text-lg font-semibold text-red-600">Out Of Stock</p>
-            ):(null)}
+            ) : null}
           </div>
 
           {/* Options */}

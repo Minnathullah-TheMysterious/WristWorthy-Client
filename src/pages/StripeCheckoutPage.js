@@ -18,10 +18,13 @@ const StripeCheckoutPage = () => {
 
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
-    fetch(`${process.env.REACT_APP_API}/create-payment-intent`, {
+    fetch(`/create-payment-intent`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ totalAmount: currentOrder.totalAmount }),
+      meta: { order_id: currentOrder._id },
+      //meta info will go to the stripe => and then to our webhook.
+      //so we can conclude that the payment was successful, even if client closes window after client closes
     })
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));

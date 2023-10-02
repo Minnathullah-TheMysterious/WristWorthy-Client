@@ -158,7 +158,7 @@ const AdminProductDetails = () => {
                 className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block hover:cursor-pointer"
               >
                 <img
-                  src={`${process.env.REACT_APP_API}/${selectedProduct?.images[0]?.location}`}
+                  src={`/${selectedProduct?.images[0]?.location}`}
                   alt={selectedProduct?.product_name}
                   className="h-full w-full object-cover object-center"
                 />
@@ -190,7 +190,7 @@ const AdminProductDetails = () => {
                     {updatedProductImageData === null && (
                       <div className="flex justify-center">
                         <img
-                          src={`${process.env.REACT_APP_API}/${selectedProduct?.images[0]?.location}`}
+                          src={`/${selectedProduct?.images[0]?.location}`}
                           alt={product.product_name}
                           className="h-52 w-52 "
                         />
@@ -238,7 +238,7 @@ const AdminProductDetails = () => {
                     className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg hover:cursor-pointer"
                   >
                     <img
-                      src={`${process.env.REACT_APP_API}/${selectedProduct?.images[1]?.location}`}
+                      src={`/${selectedProduct?.images[1]?.location}`}
                       alt={selectedProduct?.product_name}
                       className="h-full w-full object-cover object-center"
                     />
@@ -270,7 +270,7 @@ const AdminProductDetails = () => {
                         {updatedProductImageData === null && (
                           <div className="flex justify-center">
                             <img
-                              src={`${process.env.REACT_APP_API}/${selectedProduct?.images[1]?.location}`}
+                              src={`/${selectedProduct?.images[1]?.location}`}
                               alt={product.product_name}
                               className="h-52 w-52 "
                             />
@@ -318,7 +318,7 @@ const AdminProductDetails = () => {
                     className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg hover:cursor-pointer"
                   >
                     <img
-                      src={`${process.env.REACT_APP_API}/${selectedProduct?.images[2]?.location}`}
+                      src={`/${selectedProduct?.images[2]?.location}`}
                       alt={selectedProduct?.product_name}
                       className="h-full w-full object-cover object-center"
                     />
@@ -350,7 +350,7 @@ const AdminProductDetails = () => {
                         {updatedProductImageData === null && (
                           <div className="flex justify-center">
                             <img
-                              src={`${process.env.REACT_APP_API}/${selectedProduct?.images[2]?.location}`}
+                              src={`/${selectedProduct?.images[2]?.location}`}
                               alt={product.product_name}
                               className="h-52 w-52 "
                             />
@@ -399,7 +399,7 @@ const AdminProductDetails = () => {
                   className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg hover:cursor-pointer"
                 >
                   <img
-                    src={`${process.env.REACT_APP_API}/${selectedProduct?.images[3]?.location}`}
+                    src={`/${selectedProduct?.images[3]?.location}`}
                     alt={selectedProduct?.product_name}
                     className="h-full w-full object-cover object-center"
                   />
@@ -431,7 +431,7 @@ const AdminProductDetails = () => {
                       {updatedProductImageData === null && (
                         <div className="flex justify-center">
                           <img
-                            src={`${process.env.REACT_APP_API}/${selectedProduct?.images[3]?.location}`}
+                            src={`/${selectedProduct?.images[3]?.location}`}
                             alt={product.product_name}
                             className="h-52 w-52 "
                           />

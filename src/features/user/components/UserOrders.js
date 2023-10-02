@@ -68,7 +68,7 @@ const UserOrders = () => {
                     <Link to={`/product-details/${product?.product_id?._id}`}>
                       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 hover:opacity-80 active:opacity-100">
                         <img
-                          src={`${process.env.REACT_APP_API}/${product?.product_id?.thumbnail?.location}`}
+                          src={`/${product?.product_id?.thumbnail?.location}`}
                           alt={product?.product_id?.product_name}
                           className="h-full w-full object-cover object-center"
                         />

@@ -217,7 +217,7 @@ const AdminOrders = () => {
                             >
                               <div className="">
                                 <img
-                                  src={`${process.env.REACT_APP_API}/${product?.thumbnail?.location}`}
+                                  src={`/${product?.thumbnail?.location}`}
                                   alt={product.product_name}
                                   className="my-2 md:w-32 sm:block hidden"
                                 />
@@ -348,7 +348,7 @@ const AdminOrders = () => {
                                                 >
                                                   <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 hover:opacity-80 active:opacity-100">
                                                     <img
-                                                      src={`${process.env.REACT_APP_API}/${product?.thumbnail?.location}`}
+                                                      src={`/${product?.thumbnail?.location}`}
                                                       alt={
                                                         product?.product_name
                                                       }

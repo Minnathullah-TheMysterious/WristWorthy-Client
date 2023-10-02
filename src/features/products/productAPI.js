@@ -8,32 +8,48 @@ export const fetchAllProductsByFilters = async (filter, sort, pagination) => {
 
   console.log(filter, sort, pagination);
 
-  const filterQueryParams = Object.entries(filter)
+  const filterQueryString = Object.entries(filter)
     .map(([key, values]) => values.map((value) => `${key}=${value}`))
     .flat()
     .join("&");
 
-  console.log("Filter Query Params: ", filterQueryParams);
+  console.log("Filter Query Params: ", filterQueryString);
 
-  let sortingQueryParams = "";
+  //add ampersand at the end of the filter query string if string presents
+  let filterQueryStringWithAmpersandEnd = ''
+  if(filterQueryString.length !== 0){
+    filterQueryStringWithAmpersandEnd = `${filterQueryString}&`;
+  }
+
+  console.log("Filter Query Params with ampersand at the end: ", filterQueryStringWithAmpersandEnd);
+
+  let sortingQueryString = "";
   for (const key in sort) {
     const sortingValue = sort[key];
-    sortingQueryParams = sortingQueryParams + `${key}=${sortingValue}&`;
+    sortingQueryString = sortingQueryString + `${key}=${sortingValue}&`;
   }
-  console.log("Sorting Query Params: ", sortingQueryParams);
+  console.log("Sorting Query Params: ", sortingQueryString);
 
-  let paginationQueryParams = "";
+  let paginationQueryString = "";
   for (const key in pagination) {
     const paginationValue = pagination[key];
-    paginationQueryParams =
-      paginationQueryParams + `${key}=${paginationValue}&`;
+    paginationQueryString =
+      paginationQueryString + `${key}=${paginationValue}&`;
   }
-  console.log("Pagination Query Params: ", paginationQueryParams);
+  console.log("Pagination Query Params: ", paginationQueryString);
 
-  const filteredProductsAPI = `/api/v1/product/get-filtered-products?${paginationQueryParams}&${filterQueryParams}&${sortingQueryParams}`;
+  const filteredProductsAPI = `/api/v1/product/get-filtered-products?${paginationQueryString}${filterQueryStringWithAmpersandEnd}${sortingQueryString}`;
+
+  console.log('filtered',filteredProductsAPI);
+
+  //Remove ampersand at the end of the string
+  const slicedFilteredProductsAPI = filteredProductsAPI.slice(0, -1);
+
+  console.log('sliced',slicedFilteredProductsAPI)
+
 
   try {
-    const { data } = await axios.get(filteredProductsAPI);
+    const { data } = await axios.get(slicedFilteredProductsAPI);
     const { success } = data;
     if (success) {
       // toast.success(message);

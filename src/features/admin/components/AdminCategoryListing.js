@@ -16,9 +16,12 @@ const AdminCategoryListing = ({ wrapClass }) => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state?.product?.categories);
 
-  const [isCreateCategoryModalOpen, setIsCreateCategoryModalOpen] = useState(false);
-  const [isUpdateCategoryNameModalOpen, setIsUpdateCategoryNameModalOpen] = useState(false);
-  const [isUpdateCategoryImageModalOpen, setIsUpdateCategoryImageModalOpen] = useState(false);
+  const [isCreateCategoryModalOpen, setIsCreateCategoryModalOpen] =
+    useState(false);
+  const [isUpdateCategoryNameModalOpen, setIsUpdateCategoryNameModalOpen] =
+    useState(false);
+  const [isUpdateCategoryImageModalOpen, setIsUpdateCategoryImageModalOpen] =
+    useState(false);
   const [categoryImagePreview, setBrandImagePreview] = useState(null);
   const [incomingImage, setIncomingImage] = useState(null);
   const [category_image, setCategory_image] = useState(null);
@@ -115,9 +118,11 @@ const AdminCategoryListing = ({ wrapClass }) => {
             <Button
               className="bg-sky-800 text-white min-w-full font-bold font-serif tracking-widest"
               type="primary"
-              onClick={()=> {setCreateCategory(true)
-                setUpdateCategoryName(false)
-                showCreateCategoryModal()}}
+              onClick={() => {
+                setCreateCategory(true);
+                setUpdateCategoryName(false);
+                showCreateCategoryModal();
+              }}
             >
               Add New Category
             </Button>
@@ -202,15 +207,18 @@ const AdminCategoryListing = ({ wrapClass }) => {
                   color={category.deleted ? "red" : "blue"}
                 >
                   <div className="group">
-                    <div onClick={() => {
+                    <div
+                      onClick={() => {
                         setCreateCategory(false);
                         setUpdateCategoryName(false);
                         showUpdateCategoryImageModal();
                         setBrandImagePreview(category.image);
                         setCategoryId(category._id);
-                      }} className="relative overflow-hidden group-hover:opacity-75 hover:cursor-pointer">
+                      }}
+                      className="relative overflow-hidden group-hover:opacity-75 hover:cursor-pointer"
+                    >
                       <img
-                        src={`${process.env.REACT_APP_API}/${category.image.location}`}
+                        src={`/${category.image.location}`}
                         alt={category.category_name}
                         className="sm:h-40 sm:min-w-[160px] sm:max-w-[160px] h-28 min-w-[7rem] max-w-[7rem] object-fill object-center rounded-full border-2 border-gray-700"
                       />
@@ -243,7 +251,7 @@ const AdminCategoryListing = ({ wrapClass }) => {
                           {!incomingImage && (
                             <div className="flex justify-center">
                               <img
-                                src={`${process.env.REACT_APP_API}/${categoryImagePreview?.location}`}
+                                src={`/${categoryImagePreview?.location}`}
                                 alt={category.category_name}
                                 className="h-52 w-52 "
                               />
@@ -285,13 +293,16 @@ const AdminCategoryListing = ({ wrapClass }) => {
                   </div>
                   {!category.deleted && (
                     <div className="flex justify-between space-x-1 mb-6 text-xs sm:text-base">
-                      <div onClick={()=>{
-                        showUpdateCategoryNameModal();
+                      <div
+                        onClick={() => {
+                          showUpdateCategoryNameModal();
                           setCategory_name(category.category_name);
                           setCategoryId(category._id);
                           setCreateCategory(false);
                           setUpdateCategoryName(true);
-                      }} className="w-[50%] text-center mt-1 py-2  rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800">
+                        }}
+                        className="w-[50%] text-center mt-1 py-2  rounded-lg bg-sky-800 text-white hover:cursor-pointer hover:bg-sky-900 active:bg-sky-800"
+                      >
                         Edit
                       </div>
                       {/* Update Category Name Modal */}
@@ -332,7 +343,10 @@ const AdminCategoryListing = ({ wrapClass }) => {
                       </Modal>
                       <div
                         onClick={() =>
-                          showDeleteConfirm(category.category_name, category._id)
+                          showDeleteConfirm(
+                            category.category_name,
+                            category._id
+                          )
                         }
                         className="mt-1 w-[50%] text-center py-2 rounded-lg bg-red-800 text-white hover:cursor-pointer hover:bg-red-900 active:bg-red-800"
                       >

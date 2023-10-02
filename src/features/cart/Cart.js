@@ -14,7 +14,7 @@ const Cart = ({ btnText, destination }) => {
   const dispatch = useDispatch();
   const userCart = useSelector((state) => state?.cart?.items);
 
-  console.log(userCart)
+  console.log(userCart);
 
   useEffect(() => {
     dispatch(fetchUserCartItemsAsync());
@@ -74,7 +74,7 @@ const Cart = ({ btnText, destination }) => {
                   <Link to={`/product-details/${item?.product?._id}`}>
                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 hover:opacity-80 active:opacity-100">
                       <img
-                        src={`${process.env.REACT_APP_API}/${item?.product?.thumbnail?.location}`}
+                        src={`/${item?.product?.thumbnail?.location}`}
                         alt={item?.product?.product_name}
                         className="h-full w-full object-cover object-center"
                       />
@@ -88,7 +88,9 @@ const Cart = ({ btnText, destination }) => {
                           <h3 className="hover:text-gray-600 active:text-gray-900">
                             {item?.product?.product_name}{" "}
                             {item?.product?.stock < 1 && (
-                              <span className=" text-red-600 text-sm font-serif">Out Of Stock</span>
+                              <span className=" text-red-600 text-sm font-serif">
+                                Out Of Stock
+                              </span>
                             )}
                           </h3>
                         </Link>

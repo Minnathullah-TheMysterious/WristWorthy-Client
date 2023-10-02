@@ -17,8 +17,10 @@ const AdminBrandListing = ({ wrapClass }) => {
   const brands = useSelector((state) => state?.product?.brands);
 
   const [isCreateBrandModalOpen, setIsCreateBrandModalOpen] = useState(false);
-  const [isUpdateBrandNameModalOpen, setIsUpdateBrandNameModalOpen] = useState(false);
-  const [isUpdateBrandImageModalOpen, setIsUpdateBrandImageModalOpen] = useState(false);
+  const [isUpdateBrandNameModalOpen, setIsUpdateBrandNameModalOpen] =
+    useState(false);
+  const [isUpdateBrandImageModalOpen, setIsUpdateBrandImageModalOpen] =
+    useState(false);
   const [brandImagePreview, setBrandImagePreview] = useState(null);
   const [incomingImage, setIncomingImage] = useState(null);
   const [brand_image, setBrand_image] = useState(null);
@@ -210,7 +212,7 @@ const AdminBrandListing = ({ wrapClass }) => {
                       className="relative overflow-hidden group-hover:opacity-75  hover:cursor-pointer"
                     >
                       <img
-                        src={`${process.env.REACT_APP_API}/${brand.image.location}`}
+                        src={`/${brand.image.location}`}
                         alt={brand.brand_name}
                         className="sm:h-40 sm:min-w-[160px] sm:max-w-[160px] h-28 min-w-[7rem] max-w-[7rem] object-fill object-center rounded-full border-2 border-gray-700"
                       />
@@ -243,7 +245,7 @@ const AdminBrandListing = ({ wrapClass }) => {
                           {!incomingImage && (
                             <div className="flex justify-center">
                               <img
-                                src={`${process.env.REACT_APP_API}/${brandImagePreview?.location}`}
+                                src={`/${brandImagePreview?.location}`}
                                 alt={brand.brand_name}
                                 className="h-52 w-52 "
                               />

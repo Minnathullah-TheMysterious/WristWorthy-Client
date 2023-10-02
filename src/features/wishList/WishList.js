@@ -18,7 +18,7 @@ const Wishlist = () => {
 
   const handleDeleteWishlistItemClick = (productId) => {
     try {
-      userId && dispatch(deleteWishlistItemAsync(productId ));
+      userId && dispatch(deleteWishlistItemAsync(productId));
     } catch (error) {
       console.error(
         "Something went wrong while dispatching the deleteWishlistItemAsync action",
@@ -45,7 +45,7 @@ const Wishlist = () => {
                     <div className="group border-2 border-solid border-black p-[2px] rounded-lg">
                       <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-80 lg:h-60">
                         <img
-                          src={`${process.env.REACT_APP_API}/${product?.thumbnail?.location}`}
+                          src={`/${product?.thumbnail?.location}`}
                           alt={product.product_name}
                           className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                         />

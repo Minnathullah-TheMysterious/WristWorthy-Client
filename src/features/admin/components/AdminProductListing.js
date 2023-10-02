@@ -792,7 +792,7 @@ function ProductGrid({ products }) {
                           <div className="border border-solid border-black p-1 rounded-lg">
                             <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-80 lg:h-60">
                               <img
-                                src={`${process.env.REACT_APP_API}/${product.thumbnail.location}`}
+                                src={`/${product.thumbnail.location}`}
                                 alt={product.product_name}
                                 className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                               />
@@ -865,7 +865,7 @@ function ProductGrid({ products }) {
                                   !changeProductThumbnail && (
                                     <div className="flex justify-center">
                                       <img
-                                        src={`${process.env.REACT_APP_API}/${productThumbnailPath}`}
+                                        src={`${productThumbnailPath}`}
                                         alt={product.product_name}
                                         className="h-52 w-52 "
                                       />
