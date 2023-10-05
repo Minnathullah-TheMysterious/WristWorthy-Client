@@ -15,7 +15,6 @@ import CheckoutPage from "./pages/CheckoutPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import PageNotFound from "./pages/PageNotFound";
 import UserProtectedRoute from "./routes/UserProtectedRoute";
-import OrderSuccessPage from "./pages/OrderSuccessPage";
 import UserOrdersPage from "./pages/UserOrdersPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import UserAddressesPage from "./pages/UserAddressesPage";
@@ -29,6 +28,8 @@ import AdminBrandsPage from "./pages/adminPages/AdminBrandsPage";
 import UpdateProductPage from "./pages/adminPages/UpdateProductPage";
 import AdminOrdersPage from "./pages/adminPages/AdminOrdersPage";
 import StripeCheckoutPage from "./pages/StripeCheckoutPage";
+import CardPaymentOrderSuccessPage from './pages/CardPaymentOrderSuccessPage';
+import CashPaymentOrderSuccessPage from './pages/CashPaymentOrderSuccessPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -60,7 +61,8 @@ function App() {
         <Route path="/dashboard/user" element={<UserProtectedRoute />}>
           <Route path="cart" element={<CartPage />} />
           <Route path="checkout" element={<CheckoutPage />} />
-          <Route path="order-success/:orderId" element={<OrderSuccessPage />} />
+          <Route path="card-payment-order-success/:orderId" element={<CardPaymentOrderSuccessPage />} />
+          <Route path="cash-payment-order-success" element={<CashPaymentOrderSuccessPage />} />
           <Route path="orders" element={<UserOrdersPage />} />
           <Route path="profile" element={<UserProfilePage />} />
           <Route path="addresses" element={<UserAddressesPage />} />

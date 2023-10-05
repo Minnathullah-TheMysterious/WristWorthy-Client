@@ -3,12 +3,13 @@ import UserAddresses from "../user/components/UserAddresses";
 import Cart from "../cart/Cart";
 import { useDispatch, useSelector } from "react-redux";
 
-import { placeOrderAsync } from "../user/userSlice";
+import { mySetSelectedUserAddress, placeOrderAsync } from "../user/userSlice";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import AddAddressForm from "../user/components/AddAddressForm";
 import { DISCOUNTED_PRICE } from "./../../app/constants";
 import { updateProductStockSlice } from "../products/productSlice";
+import { resetCartAsync } from "../cart/cartSlice";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -17,7 +18,6 @@ const Checkout = () => {
   const selectedUserAddress = useSelector(
     (state) => state?.user?.selectedUserAddress
   );
-  const currentOrder = useSelector((state) => state?.user?.currentOrder);
 
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("cash");
   const [, setIsAddAddressEnabled] = useState();
@@ -67,7 +67,7 @@ const Checkout = () => {
             selectedPaymentMethod,
           })
         )
-          .then(() => {
+          .then(async () => {
             if (selectedPaymentMethod === "cash") {
               products?.forEach((product) =>
                 dispatch(
@@ -77,7 +77,11 @@ const Checkout = () => {
                   })
                 )
               );
-              navigate(`/dashboard/user/order-success/${currentOrder._id}`);
+              dispatch(mySetSelectedUserAddress(null))
+              dispatch(resetCartAsync());
+              return navigate(
+                `/dashboard/user/cash-payment-order-success`
+              );
             } else if (selectedPaymentMethod === "card") {
               products?.forEach((product) =>
                 dispatch(
@@ -87,17 +91,18 @@ const Checkout = () => {
                   })
                 )
               );
-              navigate("/dashboard/user/stripe-checkout");
+              return navigate("/dashboard/user/stripe-checkout");
             }
           })
-          .catch(() => {
+          .catch((err) => {
+            console.log("catch of placeOrderAsync", err.message || err);
             navigate("/dashboard/user/cart");
           });
       }
     } catch (error) {
       console.error(
         "Something Went Wrong in dispatching the place-order",
-        error
+        error.message || error
       );
     }
   };

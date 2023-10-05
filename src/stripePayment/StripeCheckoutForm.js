@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   PaymentElement,
   useStripe,
-  useElements
+  useElements,
 } from "@stripe/react-stripe-js";
 import { useSelector } from "react-redux";
 
@@ -60,7 +60,8 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: `http://localhost:3000/dashboard/user/order-success/${currentOrder?._id}`,
+        //TODO
+        return_url: `https://wrist-worthy-ecommerce.vercel.app/dashboard/user/card-payment-order-success/${currentOrder?._id}`,
       },
     });
 
@@ -79,8 +80,8 @@ export default function CheckoutForm() {
   };
 
   const paymentElementOptions = {
-    layout: "tabs"
-  }
+    layout: "tabs",
+  };
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>

@@ -726,8 +726,8 @@ function ProductGrid({ products }) {
                     }}
                   >
                     <Badge.Ribbon
-                      text={product.stock >=1 ? "In Stock" : "Out Of Stock"}
-                      color={product.stock >=1 ? "green" : "red"}
+                      text={product.stock >= 1 ? "In Stock" : "Out Of Stock"}
+                      color={product.stock >= 1 ? "green" : "red"}
                     >
                       <div className="relative">
                         <Link to={`/product-details/${product._id}`}>
