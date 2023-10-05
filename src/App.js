@@ -30,6 +30,7 @@ import AdminOrdersPage from "./pages/adminPages/AdminOrdersPage";
 import StripeCheckoutPage from "./pages/StripeCheckoutPage";
 import CardPaymentOrderSuccessPage from './pages/CardPaymentOrderSuccessPage';
 import CashPaymentOrderSuccessPage from './pages/CashPaymentOrderSuccessPage';
+import PassResetMailPage from './pages/PassResetMailPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -57,6 +58,7 @@ function App() {
           path="/product-details/:productId"
           element={<ProductDetailsPage />}
         />
+        <Route path="/Reset-password/:email" element={<PassResetMailPage />} />
         {/* LoggedIn User Routes */}
         <Route path="/dashboard/user" element={<UserProtectedRoute />}>
           <Route path="cart" element={<CartPage />} />

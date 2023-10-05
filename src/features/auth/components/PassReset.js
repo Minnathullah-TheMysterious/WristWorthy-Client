@@ -3,8 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import { requestPasswordReset, resetPassword, verifyOtp } from "../authAPI";
+import { useDispatch } from "react-redux";
+import { requestPasswordResetMailAsync } from "../authSlice";
 
 const PassReset = () => {
+  const dispatch = useDispatch();
+
   const [phoneInputDisabled, setPhoneInputDisabled] = useState(false);
   const [emailInputDisabled, setEmailInputDisabled] = useState(false);
   const [passwordResetReqSuccess, setPasswordResetReqSuccess] = useState(false);
@@ -12,8 +16,8 @@ const PassReset = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [otp, setOtp] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [otp, setOtp] = useState("");
 
   const navigate = useNavigate();
 
@@ -40,7 +44,7 @@ const PassReset = () => {
     }
   };
 
-  const handlePasswordResetReqSubmit = async (e) => {
+  const handlePasswordResetReqOtpClick = async (e) => {
     e.preventDefault();
     try {
       const response = await requestPasswordReset(ReqResetData);
@@ -53,6 +57,13 @@ const PassReset = () => {
         error
       );
     }
+  };
+
+  const handlePasswordResetReqMailClick = async (e) => {
+    e.preventDefault();
+    const resetPasswordLink = `${window.location.origin}/Reset-password/${email}`;
+    console.log(resetPasswordLink)
+    dispatch(requestPasswordResetMailAsync({ email, resetPasswordLink }));
   };
 
   const handleVerifyOtp = async (e) => {
@@ -96,12 +107,7 @@ const PassReset = () => {
         <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
           {!passwordResetReqSuccess && !otpVerified ? (
             <>
-              <form
-                className=""
-                action="#"
-                method="POST"
-                onSubmit={handlePasswordResetReqSubmit}
-              >
+              <form>
                 <div>
                   <label
                     htmlFor="phone"
@@ -145,14 +151,27 @@ const PassReset = () => {
                   </div>
                 </div>
 
-                <div>
-                  <button
-                    type="submit"
-                    className="mt-6 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    Get OTP
-                  </button>
-                </div>
+                {!phoneInputDisabled ? (
+                  <div>
+                    <button
+                      type="button"
+                      onClick={handlePasswordResetReqOtpClick}
+                      className="mt-6 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                      GET OTP
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    <button
+                      type="button"
+                      onClick={handlePasswordResetReqMailClick}
+                      className="mt-6 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                      GET LINK
+                    </button>
+                  </div>
+                )}
               </form>
 
               <p className="mt-5 text-end text-sm">

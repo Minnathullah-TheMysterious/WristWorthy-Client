@@ -39,10 +39,10 @@ export const register = async (registrationData) => {
     console.error("Something Went Wrong While Registering - Client", error);
   }
 };
- 
+
 export const login = async (loginData) => {
   try {
-    const {data} = await axios.post("/api/v1/auth/login", loginData);
+    const { data } = await axios.post("/api/v1/auth/login", loginData);
     const { success, message, user } = data;
 
     if (success) {
@@ -73,7 +73,7 @@ export const login = async (loginData) => {
 
 export const getAuthData = async () => {
   try {
-    const {data} = await axios.get(`/api/v1/user/own/info`);
+    const { data } = await axios.get(`/api/v1/user/own/info`);
     const { success, user } = data;
 
     if (success) {
@@ -123,6 +123,49 @@ export const requestPasswordReset = async (reqResetData) => {
         "Something went wrong in requesting the password reset - Client",
         error
       );
+    }
+  }
+};
+
+export const requestPasswordResetMail = async (email, resetPasswordLink) => {
+  console.log(resetPasswordLink);
+  try {
+    const { data } = await axios.post("/api/v1/auth/req-password-reset-mail", {
+      email,
+      resetPasswordLink,
+    });
+    const { success, message } = data;
+    if (success) {
+      toast.success(message);
+      return data;
+    } else {
+      toast.error(message);
+      return { data };
+    }
+  } catch (error) {
+    if (error?.response?.status === 400) {
+      toast(error?.response?.data?.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
+      return { success: false, message: error?.response?.data?.message };
+    } else if (error?.response?.status === 404) {
+      toast.error(error?.response?.data.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else if (error?.response?.status === 500) {
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      toast.error("Something went wrong in requesting the password reset");
+      console.error(
+        "Something went wrong in requesting the password reset - Client",
+        error
+      );
+      return {
+        success: false,
+        message:
+          error?.response?.data?.message ||
+          "Something went wrong in requesting the password reset",
+      };
     }
   }
 };
@@ -183,6 +226,52 @@ export const resetPassword = async (userId, passwords) => {
     } else {
       toast.error("Something Went Wrong While Password Reset");
       console.error("Something Went Wrong in Password Reset - Client", error);
+    }
+  }
+};
+
+export const resetPasswordMail = async (
+  email,
+  newPassword,
+  confirmNewPassword
+) => {
+  try {
+    const { data } = await axios.post(`/api/v1/auth/reset-password`, {
+      email,
+      newPassword,
+      confirmNewPassword,
+    });
+    const { success, message } = data;
+    console.log(data)
+
+    if (success) {
+      toast.success(message);
+      return data;
+    } else {
+      toast.error(message);
+      return data;
+    }
+  } catch (error) {
+    if (error?.response?.status === 400) {
+      toast(error?.response?.data?.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
+      return { success: false, message: error?.response?.data?.message };
+    } else if (error?.response?.status === 404) {
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      toast.error(
+        error?.response?.data?.message ||
+          "Something Went Wrong While Password Reset"
+      );
+      console.error("Something Went Wrong in Password Reset - Client", error);
+      return {
+        success: false,
+        message:
+          error?.response?.data?.message ||
+          "Something Went Wrong While Password Reset",
+      };
     }
   }
 };
