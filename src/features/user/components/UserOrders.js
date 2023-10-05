@@ -48,6 +48,12 @@ const UserOrders = () => {
               Order Status:{" "}
               <span className="text-green-700">{order?.status}</span>
             </p>
+            {order?.paymentStatus && (
+              <p className="sm:text-lg text-base font-medium font-serif text-gray-900">
+                Payment Status:{" "}
+                <span className="text-green-700">{order?.paymentStatus}</span>
+              </p>
+            )}
             {order?.status !== "cancelled" ? (
               <Space wrap>
                 <button

@@ -2,8 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   getAllFilteredOrders,
   getOrderDetails,
+  updateOrderPaymentStatus,
   updateOrderStatus,
 } from "./adminAPI";
+import toast from "react-hot-toast";
 
 const initialState = {
   loading: false,
@@ -63,6 +65,26 @@ export const updateOrderStatusAsync = createAsyncThunk(
   }
 );
 
+export const updateOrderPaymentStatusAsync = createAsyncThunk(
+  "order/updateOrderPaymentStatus",
+  async ({ orderId, paymentStatus }) => {
+    try {
+      const response = await updateOrderPaymentStatus(orderId, paymentStatus);
+      if (response.success) {
+        return { order: response.updatedOrder, orderId };
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      console.error(
+        "Something Went Wrong in update-payment-thunk",
+        error.message
+      );
+      throw new Error(error.message);
+    }
+  }
+);
+
 const adminSlice = createSlice({
   name: "orders",
   initialState,
@@ -105,8 +127,28 @@ const adminSlice = createSlice({
           (orders) => orders?.order[0]?._id === action.payload.orderId
         );
         console.log(orderIndex);
-        console.log(action.payload.order)
-        console.log(action.payload.orderId)
+        console.log(action.payload.order);
+        console.log(action.payload.orderId);
+        if (orderIndex !== -1) {
+          state.allOrders.splice(orderIndex, 1, action.payload.order[0]);
+        }
+      })
+
+      .addCase(updateOrderPaymentStatusAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateOrderPaymentStatusAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(updateOrderPaymentStatusAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        const orderIndex = state?.allOrders?.findIndex(
+          (orders) => orders?.order[0]?._id === action.payload.orderId
+        );
+        console.log(orderIndex);
+        console.log(action.payload.order);
+        console.log(action.payload.orderId);
         if (orderIndex !== -1) {
           state.allOrders.splice(orderIndex, 1, action.payload.order[0]);
         }

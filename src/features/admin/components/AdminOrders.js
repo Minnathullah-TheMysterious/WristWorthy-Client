@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllFilteredOrdersAsync, getOrderDetailsAsync } from "../adminSlice";
+import { getAllFilteredOrdersAsync, getOrderDetailsAsync, updateOrderPaymentStatusAsync } from "../adminSlice";
 import { BsPencilSquare, BsFillFileEarmarkLockFill } from "react-icons/bs";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { Select, Modal } from "antd";
@@ -75,6 +75,14 @@ const AdminOrders = () => {
     });
   };
 
+  const handlePaymentStatusChange = async (paymentStatus, orderId) => {
+    console.log(paymentStatus);
+    console.log(orderId);
+    dispatch(updateOrderPaymentStatusAsync({ orderId, paymentStatus })).then(() => {
+      setEditableOrderId("");
+    });
+  };
+
   const handleOrderDetails = (orderId) => {
     setOpen(true);
     dispatch(getOrderDetailsAsync(orderId));
@@ -92,6 +100,21 @@ const AdminOrders = () => {
         return "bg-green-800";
       case "delayed":
         return "bg-yellow-500";
+      default:
+        return "bg-gray-800";
+    }
+  };
+
+  const choosePaymentStatusColor = (paymentStatus) => {
+    switch (paymentStatus) {
+      case "received":
+        return "bg-green-700";
+      case "failed":
+        return "bg-red-700";
+      case "processing":
+        return "bg-yellow-500";
+      case "cancelled":
+        return "bg-red-600";
       default:
         return "bg-gray-800";
     }
@@ -193,7 +216,10 @@ const AdminOrders = () => {
                       SHIPPING ADDRESS
                     </th>
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      STATUS
+                      ORDER STATUS
+                    </th>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      PAYMENT STATUS
                     </th>
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                       ACTIONS
@@ -294,6 +320,46 @@ const AdminOrders = () => {
                             </p>
                           </td>
                         )}
+                        {order?._id !== editableOrderId ? (
+                          <td className="px-5 py-5 border-b border-gray-200 bg-white">
+                            <p
+                              className={`flex justify-center items-center text-white px-2 py-1 rounded-lg font-semibold ${choosePaymentStatusColor(
+                                order?.paymentStatus
+                              )}`}
+                            >
+                              {order?.paymentStatus}
+                            </p>
+                          </td>
+                        ) : order?._id === editableOrderId &&
+                          order?.paymentMethod !== "card" ? (
+                          <td className="px-5 py-5 border-b border-gray-200 bg-white">
+                            <Select
+                              className="w-32"
+                              value={order?.paymentStatus}
+                              onChange={(value) =>
+                                handlePaymentStatusChange(value, order?._id)
+                              }
+                            >
+                              <Select.Option value={"pending"}>
+                                Pending
+                              </Select.Option>
+                              <Select.Option value={"received"}>
+                                Received
+                              </Select.Option>
+                            </Select>
+                          </td>
+                        ) : (
+                          <td className="px-5 py-5 border-b border-gray-200 bg-white">
+                            <p
+                              className={` flex justify-center items-center text-white px-2 py-1 rounded-lg font-semibold ${choosePaymentStatusColor(
+                                order?.paymentStatus
+                              )}`}
+                            >
+                              {order?.paymentStatus}
+                            </p>
+                          </td>
+                        )}
+
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                           <div className="flex justify-around">
                             {order?._id !== editableOrderId ? (
@@ -327,13 +393,22 @@ const AdminOrders = () => {
                                     <h1 className="text-2xl font-bold font-serif text-gray-900 shadow-cyan-800 shadow  inline border-none py-1 px-4">
                                       Order Id: {orderDetail?._id}
                                     </h1>
-                                    <p className="text-lg font-medium font-serif text-gray-900">
-                                      Order Status:{" "}
-                                      <span className="text-green-700">
-                                        {orderDetail?.status}
-                                      </span>
-                                    </p>
-
+                                    <div className="flex justify-between my-1">
+                                      <p className="text-lg font-medium font-serif text-gray-900">
+                                        Order Status:{" "}
+                                        <span className="text-green-700">
+                                          {orderDetail?.status}
+                                        </span>
+                                      </p>
+                                      {order?.paymentStatus && (
+                                        <p className="sm:text-lg text-base font-medium font-serif text-gray-900">
+                                          Payment Status:{" "}
+                                          <span className="text-green-700">
+                                            {order?.paymentStatus}
+                                          </span>
+                                        </p>
+                                      )}
+                                    </div>
                                     <div className="bg-gray-200 border-t border-gray-200 px-4 py-6 sm:px-6">
                                       <div className="flow-root">
                                         <ul className="-my-6 divide-y divide-gray-200">
@@ -404,6 +479,10 @@ const AdminOrders = () => {
                                       <div className="flex justify-between text-base font-medium text-gray-900">
                                         <p>Payment Method</p>
                                         <p>{orderDetail?.paymentMethod}</p>
+                                      </div>
+                                      <div className="flex justify-between text-base font-medium text-gray-900">
+                                        <p>Payment Status</p>
+                                        <p>{orderDetail?.paymentStatus}</p>
                                       </div>
                                     </div>
 

@@ -420,7 +420,10 @@ export const updateCategoryImage = async (categoryId, image) => {
 //Create Brand
 export const createBrand = async (newBrand) => {
   try {
-    const { data } = await axios.post("/api/v1/brand/admin/create-brand", newBrand);
+    const { data } = await axios.post(
+      "/api/v1/brand/admin/create-brand",
+      newBrand
+    );
     const { success, message } = data;
     if (success) {
       toast.success(message);
@@ -482,7 +485,9 @@ export const deleteBrand = async (brandId) => {
 //Restore Brand
 export const restoreBrand = async (brandId) => {
   try {
-    const { data } = await axios.put(`/api/v1/brand/admin/restore-brand/${brandId}`);
+    const { data } = await axios.put(
+      `/api/v1/brand/admin/restore-brand/${brandId}`
+    );
     const { success, message } = data;
     if (success) {
       toast.success(message);
@@ -511,9 +516,12 @@ export const restoreBrand = async (brandId) => {
 //Update Brand Name
 export const updateBrandName = async (brandId, brand_name) => {
   try {
-    const { data } = await axios.put(`/api/v1/brand/admin/update-brand/${brandId}`, {
-      brand_name,
-    });
+    const { data } = await axios.put(
+      `/api/v1/brand/admin/update-brand/${brandId}`,
+      {
+        brand_name,
+      }
+    );
     const { success, message } = data;
     if (success) {
       toast.success(message);
@@ -644,12 +652,61 @@ export const updateOrderStatus = async (orderId, orderStatus) => {
     }
   } catch (error) {
     if (error.response && error.response.status === 404) {
-      toast.error(error?.response?.data?.message);
+      toast.error(
+        error?.response?.data?.message || "Provide Order Status To Update"
+      );
+      return { success: false, message: error?.response?.data?.message };
+    } else if (error.response && error.response.status === 400) {
+      toast(error?.response?.data?.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
       return { success: false, message: error?.response?.data?.message };
     } else {
       console.error(
         "something went wrong while updating the order status",
         error
+      );
+      toast.error(
+        error?.response?.data?.message ||
+          "Something Went Wrong While updating the order status"
+      );
+      return {
+        success: false,
+        message:
+          error?.response?.data?.message ||
+          "Something Went Wrong While updating the order status",
+      };
+    }
+  }
+};
+
+//Update Payment Status
+export const updateOrderPaymentStatus = async (orderId, paymentStatus) => {
+  try {
+    const { data } = await axios.put(
+      `/api/v1/order/admin/update-payment-status/${orderId}/${paymentStatus}`
+    );
+    const { success, message } = data;
+    if (success) {
+      toast.success(message);
+      return data;
+    } else {
+      toast.error(message);
+      return { success, message };
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else if (error.response && error.response.status === 400) {
+      toast(error?.response?.data?.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      console.error(
+        "something went wrong while updating the order status",
+        error.message
       );
       toast.error(
         error?.response?.data?.message ||

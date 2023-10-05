@@ -10,9 +10,14 @@ export default function CheckoutForm() {
   const currentOrder = useSelector((state) => state?.user?.currentOrder);
   const stripe = useStripe();
   const elements = useElements();
+  const [baseUrl, setBaseUrl] = useState(null);
 
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setBaseUrl(window.location.origin);
+  }, []);
 
   useEffect(() => {
     if (!stripe) {
@@ -61,7 +66,7 @@ export default function CheckoutForm() {
       confirmParams: {
         // Make sure to change this to your payment completion page
         //TODO
-        return_url: `https://wrist-worthy-ecommerce.vercel.app/dashboard/user/card-payment-order-success/${currentOrder?._id}`,
+        return_url: `${baseUrl}/dashboard/user/card-payment-order-success/${currentOrder?._id}`,
       },
     });
 
