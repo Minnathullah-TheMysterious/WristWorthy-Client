@@ -49,23 +49,25 @@ export const login = async (loginData) => {
       toast.success(message);
       return { success, message, user };
     } else {
-      toast.error(message);
-      return { success, message };
+      toast.error("Invalid Credentials");
+      return { success, message: "Invalid Credentials" };
     }
   } catch (error) {
     if (error.response.status === 401) {
-      toast.error(error.response.data.message);
-      return { success: false, message: error.response.data.message };
+      toast.error("Invalid Credentials");
+      return { success: false, message: "Invalid Credentials" };
     } else if (error.response.status === 404) {
-      toast.error(error.response.data.message);
-      return { success: false, message: error.response.data.message };
+      toast.error("Invalid Credentials");
+      return { success: false, message: "Invalid Credentials" };
     } else if (error.response.status === 400) {
-      toast(error?.response?.data?.message, {
+      toast("Fill The Required Fields", {
         className: "font-serif bg-blue-900 text-white",
       });
-      return { success: false, message: error.response.data.message };
+      return { success: false, message: "Fill The Required Fields" };
     } else {
-      toast.error("Something Went Wrong While login");
+      toast.error(
+        error?.response?.data?.message || "Something Went Wrong While login"
+      );
       console.error("Something Went Wrong While login - Client", error);
     }
   }
@@ -140,7 +142,7 @@ export const requestPasswordResetMail = async (email, resetPasswordLink) => {
       return data;
     } else {
       toast.error(message);
-      return { data };
+      return data;
     }
   } catch (error) {
     if (error?.response?.status === 400) {
@@ -233,16 +235,18 @@ export const resetPassword = async (userId, passwords) => {
 export const resetPasswordMail = async (
   email,
   newPassword,
-  confirmNewPassword
+  confirmNewPassword,
+  token
 ) => {
   try {
     const { data } = await axios.post(`/api/v1/auth/reset-password`, {
       email,
       newPassword,
       confirmNewPassword,
+      token,
     });
     const { success, message } = data;
-    console.log(data)
+    console.log(data);
 
     if (success) {
       toast.success(message);

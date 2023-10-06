@@ -58,7 +58,7 @@ function App() {
           path="/product-details/:productId"
           element={<ProductDetailsPage />}
         />
-        <Route path="/Reset-password/:email" element={<PassResetMailPage />} />
+        <Route path="/Reset-password/:email/:token" element={<PassResetMailPage />} />
         {/* LoggedIn User Routes */}
         <Route path="/dashboard/user" element={<UserProtectedRoute />}>
           <Route path="cart" element={<CartPage />} />

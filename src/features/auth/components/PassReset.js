@@ -8,7 +8,7 @@ import { requestPasswordResetMailAsync } from "../authSlice";
 
 const PassReset = () => {
   const dispatch = useDispatch();
-
+  
   const [phoneInputDisabled, setPhoneInputDisabled] = useState(false);
   const [emailInputDisabled, setEmailInputDisabled] = useState(false);
   const [passwordResetReqSuccess, setPasswordResetReqSuccess] = useState(false);
