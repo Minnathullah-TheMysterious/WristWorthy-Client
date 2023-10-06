@@ -16,27 +16,37 @@ export const register = async (registrationData) => {
     if (success) {
       console.log("Registration successful.");
       toast.success(message);
-      return success;
+      return response.data;
     } else {
       console.log("Registration not successful.");
       console.log("Response status:", response.status);
       console.log("Error message:", message);
       toast.error(message);
-      return success;
+      return response.data;
     }
   } catch (error) {
     if (error.response && error.response.status === 409) {
       toast(error?.response?.data?.message, {
         className: "font-serif bg-blue-900 text-white",
       });
+      return { success: false, message: error?.response?.data?.message };
     } else if (error.response && error.response.status === 400) {
       toast(error?.response?.data?.message, {
         className: "font-serif bg-blue-900 text-white",
       });
+      return { success: false, message: error?.response?.data?.message };
     } else {
-      toast.error("Something Went Wrong While Registering");
+      toast.error(
+        error?.response?.data?.message ||
+          "Something Went Wrong While Registering"
+      );
+      return {
+        success: false,
+        message:
+          error?.response?.data?.message ||
+          "Something Went Wrong While Registering",
+      };
     }
-    console.error("Something Went Wrong While Registering - Client", error);
   }
 };
 
@@ -70,6 +80,30 @@ export const login = async (loginData) => {
       );
       console.error("Something Went Wrong While login - Client", error);
     }
+  }
+};
+
+export const logout = async () => {
+  try {
+    const { data } = await axios.post("/api/v1/auth/logout");
+    const { success, message } = data;
+
+    if (success) {
+      toast.success(message);
+      return { success, message };
+    } else {
+      toast.error("Failed To Logout");
+      return { success: false, message: "Failed To Logout" };
+    }
+  } catch (error) {
+    toast.error(
+      error?.response?.data?.message || "Something Went Wrong While logout"
+    );
+    console.error("Something Went Wrong While login - Client", error);
+    return {
+      success: false,
+      message: error?.response?.data?.message || "Failed To Logout",
+    };
   }
 };
 

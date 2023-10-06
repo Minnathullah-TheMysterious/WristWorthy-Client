@@ -22,9 +22,13 @@ const initialState = {
 export const getUserAsync = createAsyncThunk("auth/getUser", async () => {
   try {
     const response = await getUser();
-    return response;
+    if (response.success) {
+      return response.user;
+    }
+    throw new Error(response.message);
   } catch (error) {
     console.error("Something went wrong in get-user thunk", error);
+    throw new Error(error.message);
   }
 });
 
@@ -153,7 +157,8 @@ const userSlice = createSlice({
       })
       .addCase(getUserAsync.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.error? action.error.message : 'Error';
+        state.userInfo = null
       })
       .addCase(getUserAsync.fulfilled, (state, action) => {
         state.loading = false;
@@ -234,7 +239,7 @@ const userSlice = createSlice({
       .addCase(cancelOrderAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.orders = action.payload;
-      })
+      });
   },
 });
 

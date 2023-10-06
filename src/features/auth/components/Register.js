@@ -3,8 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import { register } from "../authAPI";
+import { useDispatch } from "react-redux";
+import { registerAsync } from "../authSlice";
 
 const Register = () => {
+  const dispatch = useDispatch();
+
   const [user_name, setUser_name] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -24,12 +28,14 @@ const Register = () => {
   const handleSubmitRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await register(registrationData);
-      if (response) {
-        navigate("/login");
+      const actionResult = await dispatch(registerAsync(registrationData));
+      if (registerAsync.fulfilled.match(actionResult)) {
+        navigate("/");
+      }else{
+        console.error("Failed To Register");
       }
     } catch (error) {
-      console.error("Error in registration", error);
+      console.error("Something Went Wrong in dispatching the action", error.message);
     }
   };
 

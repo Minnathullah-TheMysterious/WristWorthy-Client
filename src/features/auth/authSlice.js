@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   getAuthData,
   login,
+  logout,
+  register,
   requestPasswordResetMail,
   resetPasswordMail,
 } from "./authAPI";
@@ -14,6 +16,21 @@ const initialState = {
   error: null,
 };
 
+export const registerAsync = createAsyncThunk("auth/register", async (registrationData) => {
+  try {
+    const response = await register(registrationData);
+
+    if (response?.success) {
+      return response?.user;
+    } else {
+      throw new Error(response?.message);
+    }
+  } catch (error) {
+    console.error("Something Went Wrong in register thunk", error);
+    throw new Error(error.message || "Failed To Register");
+  }
+});
+
 export const loginAsync = createAsyncThunk("auth/login", async (loginData) => {
   try {
     const response = await login(loginData);
@@ -25,7 +42,23 @@ export const loginAsync = createAsyncThunk("auth/login", async (loginData) => {
     }
   } catch (error) {
     console.error("Something Went Wrong in login thunk", error);
-    throw new Error("Something Went Wrong in login thunk");
+    throw new Error(error.message || "Failed To Login");
+  }
+});
+
+export const logoutAsync = createAsyncThunk("auth/logout", async () => {
+  try {
+    const response = await logout();
+
+    if (response?.success) {
+      console.log(response)
+      return null;
+    } else {
+      throw new Error(response?.message);
+    }
+  } catch (error) {
+    console.error("Something Went Wrong in logout thunk", error);
+    throw new Error(error.message || "Failed To Logout");
   }
 });
 
@@ -90,6 +123,18 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(registerAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(registerAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error ? action.error.message : "Error";
+      })
+      .addCase(registerAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+
       .addCase(loginAsync.pending, (state) => {
         state.loading = true;
       })
@@ -98,6 +143,18 @@ const authSlice = createSlice({
         state.error = action.error ? action.error.message : "An error occurred";
       })
       .addCase(loginAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+
+      .addCase(logoutAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(logoutAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error ? action.error.message : "An error occurred";
+      })
+      .addCase(logoutAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
       })

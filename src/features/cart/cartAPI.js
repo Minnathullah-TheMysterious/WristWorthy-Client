@@ -35,10 +35,8 @@ export const fetchUserCartItems = async () => {
     const { data } = await axios.get(`/api/v1/cart/user/get-cart-items`);
     const { success, message } = data;
     if (success) {
-      // toast.success(message);
       return data;
     } else {
-      // toast.error(message);
       return { success, message };
     }
   } catch (error) {
@@ -46,12 +44,13 @@ export const fetchUserCartItems = async () => {
       toast(error?.response?.data?.message, {
         className: "font-serif bg-blue-900 text-white",
       });
+      return {success:false, message: error?.response?.data?.message}
     } else {
-      // toast.error(error?.response?.data?.message);
       console.error(
         "Something Went Wrong While fetching user cart items - Client",
         error
       );
+      return {success:false, message: error?.response?.data?.message}
     }
   }
 };

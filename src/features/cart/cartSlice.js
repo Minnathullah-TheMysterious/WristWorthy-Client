@@ -32,9 +32,13 @@ export const fetchUserCartItemsAsync = createAsyncThunk(
   async () => {
     try {
       const response = await fetchUserCartItems();
-      return response?.cart;
+      if (response.success) {
+        return response?.cart;
+      }
+      throw new Error(response?.message);
     } catch (error) {
       console.error("Something Went Wrong in fetch-Cart thunk", error);
+      throw new Error(error.message);
     }
   }
 );
@@ -44,10 +48,7 @@ export const updateCartItemQuantityAsync = createAsyncThunk(
   "cart/updateCartItemQuantity",
   async ({ productId, quantity }) => {
     try {
-      const response = await updateCartItemQuantity(
-        productId,
-        quantity
-      );
+      const response = await updateCartItemQuantity(productId, quantity);
       return response.cart;
     } catch (error) {
       console.error("Something Went Wrong in fetch-Cart thunk", error);
@@ -70,19 +71,16 @@ export const deleteUserCartItemAsync = createAsyncThunk(
 );
 
 //backend
-export const resetCartAsync = createAsyncThunk(
-  "cart/resetCart",
-  async () => {
-    try {
-      const response = await resetCart();
-      if (response) {
-        return [];
-      }
-    } catch (error) {
-      console.error("Something Went Wrong in fetch-Cart thunk", error);
+export const resetCartAsync = createAsyncThunk("cart/resetCart", async () => {
+  try {
+    const response = await resetCart();
+    if (response) {
+      return [];
     }
+  } catch (error) {
+    console.error("Something Went Wrong in fetch-Cart thunk", error);
   }
-);
+});
 
 const cartSlice = createSlice({
   name: "cart",
@@ -107,7 +105,8 @@ const cartSlice = createSlice({
       })
       .addCase(fetchUserCartItemsAsync.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.error ? action.error.message : 'Error';
+        state.items = [];
       })
       .addCase(fetchUserCartItemsAsync.fulfilled, (state, action) => {
         state.loading = false;

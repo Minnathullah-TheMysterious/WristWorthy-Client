@@ -4,9 +4,14 @@ import toast from "react-hot-toast";
 export const getUser = async () => {
   try {
     const { data } = await axios.get(`/api/v1/user/own/info`);
-    return data?.user;
+    if (data.success) {
+      return data;
+    } else {
+      return data;
+    }
   } catch (error) {
     console.error("Something Went Wrong in fetching the User - Client", error);
+    return { success: false, message: error.message };
   }
 };
 
@@ -192,11 +197,13 @@ export const fetchUserOrders = async () => {
 
 export const cancelOrder = async (orderId) => {
   try {
-    const { data } = await axios.put(`/api/v1/order/user/cancel-order/${orderId}`);
+    const { data } = await axios.put(
+      `/api/v1/order/user/cancel-order/${orderId}`
+    );
     console.log(data);
     const { success, message } = data;
     if (success) {
-      toast.success(message)
+      toast.success(message);
       return data;
     } else {
       toast.error(message);
@@ -208,10 +215,7 @@ export const cancelOrder = async (orderId) => {
       return { success: false, message: error?.response?.data?.message };
     } else {
       toast.error(error?.response?.data?.message);
-      console.error(
-        "Something Went Wrong while cancelling the order",
-        error
-      );
+      console.error("Something Went Wrong while cancelling the order", error);
       return {
         success: false,
         message: error?.response?.data?.message,

@@ -44,15 +44,13 @@ const Login = () => {
     try {
       const actionResult = await dispatch(loginAsync(loginData));
       if (loginAsync.fulfilled.match(actionResult)) {
-        dispatch(fetchUserCartItemsAsync());
-        dispatch(getUserAsync());
         localStorage.removeItem("user_id");
         navigate(location.state || "/");
       } else {
         console.error("Failed To Login");
       }
     } catch (error) {
-      console.error("Something Went Wrong dispatching the action", error);
+      console.error("Something Went Wrong in dispatching the action", error.message);
     }
   };
 
