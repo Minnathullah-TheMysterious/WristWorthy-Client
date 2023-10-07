@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllFilteredOrdersAsync, getOrderDetailsAsync, updateOrderPaymentStatusAsync } from "../adminSlice";
-import { BsPencilSquare, BsFillFileEarmarkLockFill } from "react-icons/bs";
+import {
+  getAllFilteredOrdersAsync,
+  getOrderDetailsAsync,
+  updateOrderPaymentStatusAsync,
+} from "../adminSlice";
+import {
+  BsPencilSquare,
+  BsFillFileEarmarkLockFill,
+  BsFillArrowDownCircleFill,
+  BsFillArrowUpCircleFill,
+} from "react-icons/bs";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { Select, Modal } from "antd";
 import { Link } from "react-router-dom";
@@ -25,6 +34,20 @@ const orderStatusMessages = [
   { _id: 6, value: "delivered", label: "Delivered" },
 ];
 
+const paymentStatusMessages = [
+  { _id: 1, value: "", label: "All" },
+  { _id: 2, value: "pending", label: "Pending" },
+  { _id: 3, value: "received", label: "Receive" },
+  { _id: 4, value: "failed", label: "Failed" },
+  { _id: 5, value: "processing", label: "Processing" },
+];
+
+const paymentMethods = [
+  { _id: 1, value: "", label: "All" },
+  { _id: 2, value: "cash", label: "Cash" },
+  { _id: 3, value: "card", label: "Card" },
+];
+
 const AdminOrders = () => {
   const dispatch = useDispatch();
   const allOrders = useSelector((state) => state?.admin?.allOrders);
@@ -38,7 +61,13 @@ const AdminOrders = () => {
 
   const [pageLimit, setPageLimit] = useState(5);
   const [page, setPage] = useState(1);
-  const [queryOrderStatus, setQueryOrderStatus] = useState("");
+  const [orderStatusFilter, setOrderStatusFilter] = useState("");
+  const [paymentStatusFilter, setPaymentStatusFilter] = useState("");
+  const [paymentMethodFilter, setPaymentMethodFilter] = useState("");
+  const [orderAmountSort, setOrderAmountSort] = useState(0);
+  const [orderItemSort, setOrderItemSort] = useState(0);
+  const [orderTimeSort, setOrderTimeSort] = useState(-1);
+  const [orderUpdateSort, setOrderUpdateSort] = useState(0);
   const [orderIdInput, setOrderIdInput] = useState("");
   const [input, setInput] = useState("");
   const [editableOrderId, setEditableOrderId] = useState("");
@@ -46,24 +75,54 @@ const AdminOrders = () => {
 
   console.log(editableOrderId);
 
-  let ordersQueryString = "";
-  if (queryOrderStatus === "" && orderIdInput === "") {
-    ordersQueryString = `_page=${page}&_limit=${pageLimit}`;
+  let filterOrderQueryString = `_page=${page}&_limit=${pageLimit}`;
+
+  if (orderStatusFilter !== "") {
+    filterOrderQueryString += `&order_status=${orderStatusFilter}`;
   }
-  if (queryOrderStatus !== "" && orderIdInput === "") {
-    ordersQueryString = `_page=${page}&_limit=${pageLimit}&order_status=${queryOrderStatus}`;
+
+  if (orderIdInput !== "") {
+    filterOrderQueryString += `&order_id=${orderIdInput}`;
   }
-  if (queryOrderStatus === "" && orderIdInput !== "") {
-    ordersQueryString = `_page=${page}&_limit=${pageLimit}&order_id=${orderIdInput}`;
+
+  if (paymentStatusFilter !== "") {
+    filterOrderQueryString += `&payment_status=${paymentStatusFilter}`;
   }
-  if (queryOrderStatus !== "" && orderIdInput !== "") {
-    ordersQueryString = `_page=${page}&_limit=${pageLimit}&order_id=${orderIdInput}&order_status=${queryOrderStatus}`;
+
+  if (paymentMethodFilter !== "") {
+    filterOrderQueryString += `&payment_method=${paymentMethodFilter}`;
   }
-  console.log(ordersQueryString);
+
+  console.log(filterOrderQueryString);
+
+  let sortOrderQueryString = `&createdAt=${orderTimeSort}`;
+
+  if (orderAmountSort !== 0) {
+    sortOrderQueryString = `&amount=${orderAmountSort}`;
+  }
+
+  if (orderItemSort !== 0) {
+    sortOrderQueryString = `&item=${orderItemSort}`;
+  }
+
+  if (orderTimeSort !== 0) {
+    sortOrderQueryString = `&createdAt=${orderTimeSort}`;
+  }
+
+  if (orderUpdateSort !== 0) {
+    sortOrderQueryString = `&updatedAt=${orderUpdateSort}`;
+  }
+
+  console.log(sortOrderQueryString);
+
+  const filterAndSortOrdersQueryString =
+    filterOrderQueryString + sortOrderQueryString;
+
+  console.log(filterAndSortOrdersQueryString);
 
   useEffect(() => {
-    dispatch(getAllFilteredOrdersAsync(ordersQueryString));
-  }, [dispatch, ordersQueryString]);
+    dispatch(getAllFilteredOrdersAsync(filterAndSortOrdersQueryString));
+  }, [dispatch, filterAndSortOrdersQueryString]);
 
   console.log(allOrders);
 
@@ -78,9 +137,11 @@ const AdminOrders = () => {
   const handlePaymentStatusChange = async (paymentStatus, orderId) => {
     console.log(paymentStatus);
     console.log(orderId);
-    dispatch(updateOrderPaymentStatusAsync({ orderId, paymentStatus })).then(() => {
-      setEditableOrderId("");
-    });
+    dispatch(updateOrderPaymentStatusAsync({ orderId, paymentStatus })).then(
+      () => {
+        setEditableOrderId("");
+      }
+    );
   };
 
   const handleOrderDetails = (orderId) => {
@@ -156,12 +217,59 @@ const AdminOrders = () => {
               <div className="relative">
                 <select
                   defaultValue={""}
-                  onChange={(e) => setQueryOrderStatus(e.target.value)}
+                  onChange={(e) => setOrderStatusFilter(e.target.value)}
                   className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
                 >
+                  <option disabled>--Order Status--</option>
                   {orderStatusMessages.map((status) => (
                     <option key={status._id} value={status.value}>
                       {status.label}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg
+                    className="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                  </svg>
+                </div>
+              </div>
+              <div className="relative">
+                <select
+                  defaultValue={""}
+                  onChange={(e) => setPaymentStatusFilter(e.target.value)}
+                  className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
+                >
+                  <option disabled>--Payment Status--</option>
+                  {paymentStatusMessages.map((status) => (
+                    <option key={status._id} value={status.value}>
+                      {status.label}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg
+                    className="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                  </svg>
+                </div>
+              </div>
+              <div className="relative">
+                <select
+                  defaultValue={""}
+                  onChange={(e) => setPaymentMethodFilter(e.target.value)}
+                  className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
+                >
+                  <option disabled>--Payment Method--</option>
+                  {paymentMethods.map((payment) => (
+                    <option key={payment._id} value={payment.value}>
+                      {payment.label}
                     </option>
                   ))}
                 </select>
@@ -206,14 +314,80 @@ const AdminOrders = () => {
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                       ORDER ID
                     </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      ITEM
+                    <th
+                      onClick={() => {
+                        orderItemSort === 1
+                          ? setOrderItemSort(-1)
+                          : setOrderItemSort(1);
+                        setOrderAmountSort(0);
+                        setOrderTimeSort(0);
+                        setOrderUpdateSort(0);
+                      }}
+                      className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hover:cursor-pointer active:font-bold"
+                    >
+                      ITEM{" "}
+                      {orderItemSort === 1 ? (
+                        <BsFillArrowUpCircleFill className="inline" />
+                      ) : (
+                        <BsFillArrowDownCircleFill className="inline" />
+                      )}
                     </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      TOTAL AMOUNT
+                    <th
+                      onClick={() => {
+                        orderAmountSort === 1
+                          ? setOrderAmountSort(-1)
+                          : setOrderAmountSort(1);
+                        setOrderItemSort(0);
+                        setOrderTimeSort(0);
+                        setOrderUpdateSort(0);
+                      }}
+                      className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hover:cursor-pointer active:font-bold"
+                    >
+                      TOTAL AMOUNT{" "}
+                      {orderAmountSort === 1 ? (
+                        <BsFillArrowUpCircleFill className="inline" />
+                      ) : (
+                        <BsFillArrowDownCircleFill className="inline" />
+                      )}
                     </th>
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                       SHIPPING ADDRESS
+                    </th>
+                    <th
+                      onClick={() => {
+                        orderTimeSort === 1
+                          ? setOrderTimeSort(-1)
+                          : setOrderTimeSort(1);
+                        setOrderAmountSort(0);
+                        setOrderItemSort(0);
+                        setOrderUpdateSort(0);
+                      }}
+                      className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hover:cursor-pointer active:font-bold"
+                    >
+                      ORDER TIME{" "}
+                      {orderTimeSort === 1 ? (
+                        <BsFillArrowUpCircleFill className="inline" />
+                      ) : (
+                        <BsFillArrowDownCircleFill className="inline" />
+                      )}
+                    </th>
+                    <th
+                      onClick={() => {
+                        orderUpdateSort === 1
+                          ? setOrderUpdateSort(-1)
+                          : setOrderUpdateSort(1);
+                        setOrderAmountSort(0);
+                        setOrderTimeSort(0);
+                        setOrderItemSort(0);
+                      }}
+                      className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hover:cursor-pointer active:font-bold"
+                    >
+                      LAST UPDATE{" "}
+                      {orderUpdateSort === 1 ? (
+                        <BsFillArrowUpCircleFill className="inline" />
+                      ) : (
+                        <BsFillArrowDownCircleFill className="inline" />
+                      )}
                     </th>
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                       ORDER STATUS
@@ -230,32 +404,34 @@ const AdminOrders = () => {
                   {allOrders?.map((orders) =>
                     orders?.order?.map((order) => (
                       <tr key={order?._id}>
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm  font-semibold">
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-xs  font-semibold">
                           <div className="ml-3">
                             <p className="text-gray-900">{order._id}</p>
                           </div>
                         </td>
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm font-semibold">
-                          {order?.products?.map((product) => (
+                          {order?.products?.map((product, index) => (
                             <div
                               key={product?.product_id}
-                              className="flex justify-start"
+                              className="flex justify-start py-1"
                             >
-                              <div className="">
+                              {/* <div>
                                 <img
                                   src={`/${product?.thumbnail?.location}`}
                                   alt={product.product_name}
                                   className="my-2 md:w-32 sm:block hidden"
                                 />
-                              </div>
-                              <div className="flex flex-col justify-center items-center mx-2">
+                              </div> */}
+                              {`${index + 1})`}
+                              <div className="flex flex-col justify-center items-center">
                                 <div className="text-blue-900">
                                   <span>#{product?.quantity} - </span>
-                                  <span>${DISCOUNTED_PRICE(product)}</span>
+                                  <span>${DISCOUNTED_PRICE(product)} - </span>
+                                  <span>{product?.product_name}</span>
                                 </div>
-                                <p className="text-blue-900">
+                                {/* <p className="text-blue-900">
                                   {product?.product_name}
-                                </p>
+                                </p> */}
                               </div>
                             </div>
                           ))}
@@ -266,18 +442,28 @@ const AdminOrders = () => {
                           </p>
                         </td>
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <div className="relative px-3 py-1 font-semibold text-green-900 leading-tight">
+                          <div className="relative py-1 font-semibold text-green-900 leading-tight">
                             {order?.shippingAddress?.city},
                           </div>
-                          <div className="relative px-3 py-1 font-semibold text-green-900 leading-tight">
+                          <div className="relative py-1 font-semibold text-green-900 leading-tight">
                             {order?.shippingAddress?.state},
                           </div>
-                          <div className="relative px-3 py-1 font-semibold text-green-900 leading-tight">
+                          <div className="relative py-1 font-semibold text-green-900 leading-tight">
                             {order?.shippingAddress?.country},
                           </div>
-                          <div className="relative px-3 py-1 font-semibold text-green-900 leading-tight">
+                          <div className="relative py-1 font-semibold text-green-900 leading-tight">
                             {order?.shippingAddress?.pinCode}
                           </div>
+                        </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white">
+                          <p className="relative text-gray-900 font-base">
+                            {new Date(order?.createdAt).toLocaleString()}
+                          </p>
+                        </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white">
+                          <p className="relative text-gray-900 font-base">
+                            {new Date(order?.updatedAt).toLocaleString()}
+                          </p>
                         </td>
                         {order?._id !== editableOrderId ? (
                           <td className="px-5 py-5 border-b border-gray-200 bg-white">
@@ -385,7 +571,7 @@ const AdminOrders = () => {
                               onCancel={() => setOpen(false)}
                               okText={""}
                               cancelText={""}
-                              width={1000}
+                              width={'100vw'}
                             >
                               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10 bg-white py-4 space-y-12">
                                 {orderDetails?.order?.map((orderDetail) => (
@@ -481,8 +667,12 @@ const AdminOrders = () => {
                                         <p>{orderDetail?.paymentMethod}</p>
                                       </div>
                                       <div className="flex justify-between text-base font-medium text-gray-900">
-                                        <p>Payment Status</p>
-                                        <p>{orderDetail?.paymentStatus}</p>
+                                        <p>Order Time</p>
+                                        <p>{orderDetail?.createdAt}</p>
+                                      </div>
+                                      <div className="flex justify-between text-base font-medium text-gray-900">
+                                        <p>Last Update</p>
+                                        <p>{orderDetail?.updatedAt}</p>
                                       </div>
                                     </div>
 
