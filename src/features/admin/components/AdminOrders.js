@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ReactModal from "react-modal";
 import {
   getAllFilteredOrdersAsync,
   getOrderDetailsAsync,
@@ -11,8 +12,8 @@ import {
   BsFillArrowDownCircleFill,
   BsFillArrowUpCircleFill,
 } from "react-icons/bs";
-import { AiFillEyeInvisible } from "react-icons/ai";
-import { Select, Modal } from "antd";
+import { AiFillEyeInvisible, AiFillCloseCircle } from "react-icons/ai";
+import { Select } from "antd";
 import { Link } from "react-router-dom";
 import { DISCOUNTED_PRICE } from "../../../app/constants";
 import { updateOrderStatusAsync } from "./../adminSlice";
@@ -48,6 +49,7 @@ const paymentMethods = [
   { _id: 3, value: "card", label: "Card" },
 ];
 
+ReactModal.setAppElement("#root");
 const AdminOrders = () => {
   const dispatch = useDispatch();
   const allOrders = useSelector((state) => state?.admin?.allOrders);
@@ -71,7 +73,7 @@ const AdminOrders = () => {
   const [orderIdInput, setOrderIdInput] = useState("");
   const [input, setInput] = useState("");
   const [editableOrderId, setEditableOrderId] = useState("");
-  const [open, setOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   console.log(editableOrderId);
 
@@ -145,7 +147,7 @@ const AdminOrders = () => {
   };
 
   const handleOrderDetails = (orderId) => {
-    setOpen(true);
+    setIsModalOpen(true);
     dispatch(getOrderDetailsAsync(orderId));
   };
 
@@ -564,19 +566,29 @@ const AdminOrders = () => {
                               className="h-6 w-6 hover:cursor-pointer text-gray-600 hover:text-blue-600 active:text-blue-900"
                             />
                             {/* Modal for showing more order details */}
-                            <Modal
-                              centered
-                              open={open}
-                              onOk={() => setOpen(false)}
-                              onCancel={() => setOpen(false)}
-                              okText={""}
-                              cancelText={""}
-                              width={'100vw'}
+                            <ReactModal
+                              isOpen={isModalOpen}
+                              ariaHideApp={true}
+                              onRequestClose={() => setIsModalOpen(false)}
+                              closeTimeoutMS={0}
+                              style={{
+                                overlay: { backgroundColor: "gray" },
+                                content: { marginTop: "70px" },
+                              }}
+                              shouldFocusAfterRender={true}
+                              shouldCloseOnOverlayClick={true}
+                              shouldCloseOnEsc={true}
+                              shouldReturnFocusAfterClose={true}
+                              preventScroll={false}
                             >
-                              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10 bg-white py-4 space-y-12">
+                              <AiFillCloseCircle
+                                onClick={() => setIsModalOpen(false)}
+                                className="text-2xl ml-auto hover:cursor-pointer"
+                              />
+                              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10 bg-white py-1 space-y-12">
                                 {orderDetails?.order?.map((orderDetail) => (
                                   <div key={orderDetail?._id}>
-                                    <h1 className="text-2xl font-bold font-serif text-gray-900 shadow-cyan-800 shadow  inline border-none py-1 px-4">
+                                    <h1 className="sm:text-2xl text-xs font-bold text-gray-900 shadow-cyan-800 shadow  inline border-none py-1 px-1">
                                       Order Id: {orderDetail?._id}
                                     </h1>
                                     <div className="flex justify-between my-1">
@@ -668,11 +680,19 @@ const AdminOrders = () => {
                                       </div>
                                       <div className="flex justify-between text-base font-medium text-gray-900">
                                         <p>Order Time</p>
-                                        <p>{orderDetail?.createdAt}</p>
+                                        <p>
+                                          {new Date(
+                                            orderDetail?.createdAt
+                                          ).toLocaleString()}
+                                        </p>
                                       </div>
                                       <div className="flex justify-between text-base font-medium text-gray-900">
                                         <p>Last Update</p>
-                                        <p>{orderDetail?.updatedAt}</p>
+                                        <p>
+                                          {new Date(
+                                            orderDetail?.updatedAt
+                                          ).toLocaleString()}
+                                        </p>
                                       </div>
                                     </div>
 
@@ -734,7 +754,7 @@ const AdminOrders = () => {
                                   </div>
                                 ))}
                               </div>
-                            </Modal>
+                            </ReactModal>
                           </div>
                         </td>
                       </tr>
