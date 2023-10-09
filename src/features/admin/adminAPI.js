@@ -610,7 +610,7 @@ export const getAllFilteredOrders = async (ordersQueryString) => {
     );
     const { success, message } = data;
     if (success) {
-      toast.success(message);
+      // toast.success(message);
       return data;
     } else {
       toast.error(message);
@@ -730,7 +730,7 @@ export const getOrderDetails = async (orderId) => {
     );
     const { success, message } = data;
     if (success) {
-      toast.success(message);
+      // toast.success(message);
       return data;
     } else {
       toast.error(message);

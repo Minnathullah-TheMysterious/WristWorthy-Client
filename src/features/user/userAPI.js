@@ -152,13 +152,10 @@ export const placeOrder = async (
       return { success: false, message: error?.response?.data?.message };
     } else {
       toast.error(error?.response?.data?.message);
-      console.error(
-        "Something Went Wrong while deleting the address - Client",
-        error
-      );
+      console.error("Something Went Wrong while placing the order", error);
       return {
         success: false,
-        message: "Something Went Wrong While Deleting The Address",
+        message: "Something Went Wrong While placing the order",
         error: error?.response?.data?.message,
       };
     }

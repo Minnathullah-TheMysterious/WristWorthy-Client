@@ -39,11 +39,11 @@ const UserOrders = () => {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10 bg-white py-4 space-y-12">
       {orders?.map((order) => (
-        <div key={order?._id}>
-          <h1 className="sm:text-2xl text-sm font-bold font-serif text-gray-900 shadow-cyan-800 shadow  inline border-none py-1 px-4">
+        <div key={order?._id} className="border-b-4 border-red-700">
+          <h1 className="sm:text-2xl text-sm font-bold text-gray-900 shadow-cyan-800 shadow  inline border-none py-1 px-4">
             Order Id: {order?._id}
           </h1>
-          <div className="flex justify-between my-1">
+          <div className="flex justify-between my-4">
             <p className="sm:text-lg text-base font-medium font-serif text-gray-900">
               Order Status:{" "}
               <span className="text-green-700">{order?.status}</span>

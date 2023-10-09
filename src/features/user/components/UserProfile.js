@@ -44,14 +44,14 @@ const UserProfile = () => {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10 bg-white py-4 space-y-12">
       <div className="space-y-2">
-        <h1 className="text-2xl font-bold font-serif text-gray-900 shadow-cyan-800 shadow  inline border-none py-1 px-4">
+        <h1 className="sm:text-2xl text-base font-bold font-serif text-gray-900 shadow-cyan-800 shadow  inline border-none py-1 px-4">
           User Name: {user?.user_name}
         </h1>
-        <p className="text-lg font-medium font-serif text-gray-900">
-          Email Id: <span className="text-green-700">{user?.email}</span>
+        <p className="sm:text-lg text-base font-medium font-serif text-gray-900">
+          Email Id: <span className="text-green-700 font-sans">{user?.email}</span>
         </p>
-        <p className="text-lg font-medium font-serif text-gray-900">
-          Phone Number: <span className="text-green-700">{user?.phone}</span>
+        <p className="sm:text-lg text-base font-medium font-serif text-gray-900">
+          Phone Number: <span className="text-green-700 font-sans">{user?.phone}</span>
         </p>
       </div>
 

@@ -3,6 +3,7 @@ import {
   fetchAllProductsByFilters,
   fetchBrands,
   fetchCategories,
+  fetchRelatedProducts,
   fetchSelectedProduct,
   updateProductStock,
 } from "./productAPI";
@@ -32,6 +33,7 @@ const initialState = {
   products: [],
   nonDeletedProducts: [],
   selectedProduct: null,
+  relatedProducts: [],
   categories: [],
   brands: [],
   error: null,
@@ -51,6 +53,22 @@ export const fetchSelectedProductAsync = createAsyncThunk(
   async (productId) => {
     const response = await fetchSelectedProduct(productId);
     return response;
+  }
+);
+
+export const fetchRelatedProductsAsync = createAsyncThunk(
+  "products/fetchRelatedProducts",
+  async (categoryId) => {
+    try {
+      const response = await fetchRelatedProducts(categoryId);
+      if (response.success) {
+        return response.relatedProducts;
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 );
 
@@ -380,6 +398,18 @@ const productSlice = createSlice({
       .addCase(fetchSelectedProductAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.selectedProduct = action.payload;
+      })
+
+      .addCase(fetchRelatedProductsAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchRelatedProductsAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error?action.error.message:'Error';
+      })
+      .addCase(fetchRelatedProductsAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.relatedProducts = action.payload;
       })
 
       .addCase(createProductAsync.pending, (state) => {

@@ -588,11 +588,11 @@ const AdminOrders = () => {
                               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10 bg-white py-1 space-y-12">
                                 {orderDetails?.order?.map((orderDetail) => (
                                   <div key={orderDetail?._id}>
-                                    <h1 className="sm:text-2xl text-xs font-bold text-gray-900 shadow-cyan-800 shadow  inline border-none py-1 px-1">
+                                    <h1 className="sm:text-2xl text-[8px] font-bold text-gray-900 shadow-cyan-800 shadow  inline border-none py-1 px-1">
                                       Order Id: {orderDetail?._id}
                                     </h1>
                                     <div className="flex justify-between my-1">
-                                      <p className="text-lg font-medium font-serif text-gray-900">
+                                      <p className="sm:text-lg text-base font-medium font-serif text-gray-900">
                                         Order Status:{" "}
                                         <span className="text-green-700">
                                           {orderDetail?.status}
@@ -636,13 +636,13 @@ const AdminOrders = () => {
                                                       <Link
                                                         to={`/product-details/${product?.product_id}`}
                                                       >
-                                                        <h3 className="text-md text-blue-700 shadow-md px-4 py-1 hover:shadow active:shadow-md">
+                                                        <h3 className="sm:text-md text-sm text-blue-700 shadow-md px-4 py-1 hover:shadow active:shadow-md">
                                                           {
                                                             product?.product_name
                                                           }
                                                         </h3>
                                                       </Link>
-                                                      <p className="ml-4">
+                                                      <p className="pl-4">
                                                         $
                                                         {DISCOUNTED_PRICE(
                                                           product
@@ -665,20 +665,20 @@ const AdminOrders = () => {
                                     </div>
 
                                     {/* Total Amount, Items and payment Method */}
-                                    <div className="bg-gray-50 border-t border-gray-200 px-4 py-6 sm:px-6">
-                                      <div className="flex justify-between text-base font-medium text-gray-900">
+                                    <div className="sm:text-base text-xs bg-gray-50 border-t border-gray-200 px-4 py-6 sm:px-6">
+                                      <div className="flex justify-between font-medium text-gray-900">
                                         <p>Subtotal</p>
                                         <p>${orderDetail?.totalAmount}</p>
                                       </div>
-                                      <div className="flex justify-between text-base font-medium text-gray-900">
+                                      <div className="flex justify-between font-medium text-gray-900">
                                         <p>Total Items</p>
                                         <p>{orderDetail?.totalItems}</p>
                                       </div>
-                                      <div className="flex justify-between text-base font-medium text-gray-900">
+                                      <div className="flex justify-between font-medium text-gray-900">
                                         <p>Payment Method</p>
                                         <p>{orderDetail?.paymentMethod}</p>
                                       </div>
-                                      <div className="flex justify-between text-base font-medium text-gray-900">
+                                      <div className="flex justify-between font-medium text-gray-900">
                                         <p>Order Time</p>
                                         <p>
                                           {new Date(
@@ -686,7 +686,7 @@ const AdminOrders = () => {
                                           ).toLocaleString()}
                                         </p>
                                       </div>
-                                      <div className="flex justify-between text-base font-medium text-gray-900">
+                                      <div className="flex justify-between font-medium text-gray-900">
                                         <p>Last Update</p>
                                         <p>
                                           {new Date(

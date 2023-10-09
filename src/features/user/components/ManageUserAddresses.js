@@ -596,7 +596,7 @@ const ManageUserAddresses = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div className="flex justify-end my-6 space-x-6">
+                              <div className="flex justify-end my-6 space-x-">
                                 <button
                                   className="bg-sky-800 py-2 px-4 rounded-lg text-white font-serif"
                                   onClick={(e) =>

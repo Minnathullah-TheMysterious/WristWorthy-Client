@@ -16,12 +16,15 @@ export const fetchAllProductsByFilters = async (filter, sort, pagination) => {
   console.log("Filter Query Params: ", filterQueryString);
 
   //add ampersand at the end of the filter query string if string presents
-  let filterQueryStringWithAmpersandEnd = ''
-  if(filterQueryString.length !== 0){
+  let filterQueryStringWithAmpersandEnd = "";
+  if (filterQueryString.length !== 0) {
     filterQueryStringWithAmpersandEnd = `${filterQueryString}&`;
   }
 
-  console.log("Filter Query Params with ampersand at the end: ", filterQueryStringWithAmpersandEnd);
+  console.log(
+    "Filter Query Params with ampersand at the end: ",
+    filterQueryStringWithAmpersandEnd
+  );
 
   let sortingQueryString = "";
   for (const key in sort) {
@@ -40,13 +43,12 @@ export const fetchAllProductsByFilters = async (filter, sort, pagination) => {
 
   const filteredProductsAPI = `/api/v1/product/get-filtered-products?${paginationQueryString}${filterQueryStringWithAmpersandEnd}${sortingQueryString}`;
 
-  console.log('filtered',filteredProductsAPI);
+  console.log("filtered", filteredProductsAPI);
 
   //Remove ampersand at the end of the string
   const slicedFilteredProductsAPI = filteredProductsAPI.slice(0, -1);
 
-  console.log('sliced',slicedFilteredProductsAPI)
-
+  console.log("sliced", slicedFilteredProductsAPI);
 
   try {
     const { data } = await axios.get(slicedFilteredProductsAPI);
@@ -112,6 +114,43 @@ export const fetchSelectedProduct = async (productId) => {
       );
       toast.error("Something Went Wrong while fetching the selected product");
       return { success: false, message: error?.response?.data?.message };
+    }
+  }
+};
+
+export const fetchRelatedProducts = async (categoryId) => {
+  console.log(categoryId)
+  try {
+    const { data } = categoryId && await axios.get(
+      `/api/v1/product/get-related-products/${categoryId}`
+    );
+    const { success, message } = data;
+    if (success) {
+      // toast.success(message);
+      return data;
+    } else {
+      toast.error(message);
+      return data;
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      console.error(
+        "Something Went Wrong while fetching the related products",
+        error
+      );
+      toast.error(
+        error?.response?.data?.message ||
+          "Something Went Wrong while fetching the related products"
+      );
+      return {
+        success: false,
+        message:
+          error?.response?.data?.message ||
+          "Something Went Wrong while fetching the related products",
+      };
     }
   }
 };
