@@ -1,13 +1,17 @@
-import React from 'react'
-import Login from '../features/auth/components/Login'
-import Layout from '../features/layout/Layout'
+import React, { useEffect } from "react";
+import Login from "../features/auth/components/Login";
+import Layout from "../features/layout/Layout";
 
 const LoginPage = () => {
-  return (
-    <Layout pageTitle={'WristWorthy - Login'}>
-      <Login/>
-    </Layout>
-  )
-}
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
-export default LoginPage
+  return (
+    <Layout pageTitle={"WristWorthy - Login"}>
+      <Login />
+    </Layout>
+  );
+};
+
+export default LoginPage;

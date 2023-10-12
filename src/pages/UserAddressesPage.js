@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "../features/layout/Layout";
 import ManageUserAddresses from "../features/user/components/ManageUserAddresses";
 
 const UserAddressesPage = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <Layout pageTitle={"WristWorthy - Manage Addresses"}>
       <div>

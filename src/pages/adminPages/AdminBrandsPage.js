@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "../../features/layout/Layout";
 import AdminBrandListing from "../../features/admin/components/AdminBrandListing";
 
 const AdminBrandsPage = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+  
   return (
     <Layout pageTitle={"WristWorthy - Admin Brands"}>
       <AdminBrandListing

@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "../../features/layout/Layout";
 import AdminCategoryListing from "../../features/admin/components/AdminCategoryListing";
 
 const AdminCategoriesPage = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <Layout pageTitle={"WristWorthy - Admin Categories"}>
       <AdminCategoryListing

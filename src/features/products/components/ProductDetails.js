@@ -43,7 +43,6 @@ const ProductDetails = () => {
   useEffect(() => {
     dispatch(fetchSelectedProductAsync(params.productId));
     productCategory && dispatch(fetchRelatedProductsAsync(productCategory));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [dispatch, params.productId, userId, productCategory]);
 
   const productFound = carts?.items?.some(

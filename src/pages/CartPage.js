@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Cart from "../features/cart/Cart";
 import Layout from "../features/layout/Layout";
 import { useNavigate } from "react-router-dom";
@@ -9,9 +9,14 @@ import { deleteUserCartItemAsync } from "../features/cart/cartSlice";
 const CartPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const cartItems = useSelector((state) => state?.cart?.items);
 
   console.log(cartItems);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   const handleCheckoutClick = (e) => {
     e.preventDefault();

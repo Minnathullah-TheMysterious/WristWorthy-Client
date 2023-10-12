@@ -7,15 +7,19 @@ import AdminProductListing from "../features/admin/components/AdminProductListin
 import AdminCategoryListing from "../features/admin/components/AdminCategoryListing";
 import AdminBrandListing from "../features/admin/components/AdminBrandListing";
 import AdminPromo from "../features/admin/components/AdminPromo";
-import { fetchBrandsAsync, fetchCategoriesAsync } from "../features/products/productSlice";
+import {
+  fetchBrandsAsync,
+  fetchCategoriesAsync,
+} from "../features/products/productSlice";
 
 const Home = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     dispatch(fetchCategoriesAsync());
     dispatch(fetchBrandsAsync());
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [dispatch]);
 
   return (
