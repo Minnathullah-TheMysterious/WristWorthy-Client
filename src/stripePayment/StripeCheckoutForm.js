@@ -65,7 +65,6 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        //TODO
         return_url: `${baseUrl}/dashboard/user/card-payment-order-success/${currentOrder?._id}`,
       },
     });

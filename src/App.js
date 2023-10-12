@@ -31,6 +31,7 @@ import StripeCheckoutPage from "./pages/StripeCheckoutPage";
 import CardPaymentOrderSuccessPage from './pages/CardPaymentOrderSuccessPage';
 import CashPaymentOrderSuccessPage from './pages/CashPaymentOrderSuccessPage';
 import PassResetMailPage from './pages/PassResetMailPage';
+import CreatePromoPage from "./pages/adminPages/CreatePromoPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -78,6 +79,7 @@ function App() {
             element={<AdminProductDetailsPage />}
           />
           <Route path="create-product" element={<CreateProductPage />} />
+          <Route path="create-promo" element={<CreatePromoPage />} />
           <Route
             path="update-product/:productId"
             element={<UpdateProductPage />}

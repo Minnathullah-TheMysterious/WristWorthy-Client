@@ -758,3 +758,123 @@ export const getOrderDetails = async (orderId) => {
     }
   }
 };
+
+//Update Promo image
+export const updatePromoImage = async (image, imageIndex) => {
+  try {
+    const { data } = await axios.put(
+      `/api/v1/promo/admin/update-promo-image/${imageIndex}`,
+      image
+    );
+    const { success, message } = data;
+    if (success) {
+      toast.success(message);
+      return data;
+    } else {
+      toast.error(message);
+      return { success, message };
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else if (error.response && error.response.status === 400) {
+      toast(error?.response?.data?.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      console.error(
+        "something went wrong while updating the promo image",
+        error
+      );
+      toast.error(
+        error?.response?.data?.message ||
+          "Something Went Wrong While updating the promo image"
+      );
+      return {
+        success: false,
+        message:
+          error?.response?.data?.message ||
+          "Something Went Wrong While updating the promo image",
+      };
+    }
+  }
+};
+
+//Update Promo
+export const updatePromo = async (updateData) => {
+  try {
+    const { data } = await axios.put(
+      `/api/v1/promo/admin/update-promo`,
+      updateData
+    );
+    const { success, message } = data;
+    if (success) {
+      toast.success(message);
+      return data;
+    } else {
+      toast.error(message);
+      return { success, message };
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    } else if (error.response && error.response.status === 400) {
+      toast(error?.response?.data?.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      console.error("something went wrong while updating the promo", error);
+      toast.error(
+        error?.response?.data?.message ||
+          "Something Went Wrong While updating the promo"
+      );
+      return {
+        success: false,
+        message:
+          error?.response?.data?.message ||
+          "Something Went Wrong While updating the promo",
+      };
+    }
+  }
+};
+
+//Create Promo
+export const createPromo = async (promoData) => {
+  try {
+    const { data } = await axios.post(
+      `/api/v1/promo/admin/create-promo`,
+      promoData
+    );
+    const { success, message } = data;
+    if (success) {
+      toast.success(message);
+      return data;
+    } else {
+      toast.error(message);
+      return { success, message };
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 400) {
+      toast(error?.response?.data?.message, {
+        className: "font-serif bg-blue-900 text-white",
+      });
+      return { success: false, message: error?.response?.data?.message };
+    } else {
+      console.error("something went wrong while creating the promo", error);
+      toast.error(
+        error?.response?.data?.message ||
+          "Something Went Wrong While creating the promo"
+      );
+      return {
+        success: false,
+        message:
+          error?.response?.data?.message ||
+          "Something Went Wrong While creating the promo",
+      };
+    }
+  }
+};

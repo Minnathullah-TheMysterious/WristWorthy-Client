@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import AdminCheckLoader from "../loaders/AdminCheckLoader";
 import { toast } from "react-hot-toast";
 
 const AdminProtectedRoute = () => {
+  const navigate = useNavigate()
   const [ok, setOk] = useState(false);
 
   useEffect(() => {
@@ -20,10 +21,11 @@ const AdminProtectedRoute = () => {
       } catch (error) {
         console.error(error.message);
         toast.error("Token expired, Please Login Again");
+        navigate('/login')
       }
     };
     adminCheck();
-  }, []);
+  }, [navigate]);
 
   return ok ? <Outlet /> : <AdminCheckLoader />;
 };

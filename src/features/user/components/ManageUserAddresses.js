@@ -9,7 +9,6 @@ import { FiAlertTriangle } from "react-icons/fi";
 
 const ManageUserAddresses = () => {
   const dispatchAsync = useDispatch();
-  const userId = useSelector((state) => state?.auth?.user?._id);
   const userAddresses = useSelector(
     (state) => state?.user?.userInfo?.addresses
   );

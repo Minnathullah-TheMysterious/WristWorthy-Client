@@ -34,11 +34,16 @@ const UpdateProductForm = () => {
     price: productToBeUpdated?.price,
     discountPercentage: productToBeUpdated?.discountPercentage,
     stock: productToBeUpdated?.stock,
+    highlight_1: productToBeUpdated?.highlights[0],
+    highlight_2: productToBeUpdated?.highlights[1],
+    highlight_3: productToBeUpdated?.highlights[2],
+    highlight_4: productToBeUpdated?.highlights[3],
+    highlight_5: productToBeUpdated?.highlights[4],
   };
 
-  const createProductReducer = (state, action) => {
+  const updateProductReducer = (state, action) => {
     switch (action.type) {
-      case "ADD_PRODUCT":
+      case "EDIT_PRODUCT":
         return { ...state, [action.key]: action.value };
       case "RESET_FORM":
         return initialState;
@@ -48,13 +53,13 @@ const UpdateProductForm = () => {
   };
 
   const [productData, dispatch] = useReducer(
-    createProductReducer,
+    updateProductReducer,
     initialState
   );
   console.log(productData);
 
   const handleFieldChange = (key, value) => {
-    dispatch({ type: "ADD_PRODUCT", key, value });
+    dispatch({ type: "EDIT_PRODUCT", key, value });
   };
 
   const updatedProduct = {
@@ -65,6 +70,11 @@ const UpdateProductForm = () => {
     price: productData.price,
     discountPercentage: productData.discountPercentage,
     stock: productData.stock,
+    highlight_1: productData.highlight_1,
+    highlight_2: productData.highlight_2,
+    highlight_3: productData.highlight_3,
+    highlight_4: productData.highlight_4,
+    highlight_5: productData.highlight_5,
   };
 
   const handleFormSubmit = (e) => {
@@ -187,6 +197,106 @@ const UpdateProductForm = () => {
                 <p className="mt-3 text-sm leading-6 text-gray-600">
                   Write a few sentences about Product.
                 </p>
+              </div>
+
+              <div className="sm:col-span-3 sm:col-start-1">
+                <label
+                  htmlFor="highlights1"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Highlights - 1
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="highlights1"
+                    name="highlights1"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={(e) =>
+                      handleFieldChange("highlight_1", e.target.value)
+                    }
+                    value={productData.highlight_1}
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-3">
+                <label
+                  htmlFor="highlights2"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Highlights - 2
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="highlights2"
+                    name="highlights2"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={(e) =>
+                      handleFieldChange("highlight_2", e.target.value)
+                    }
+                    value={productData.highlight_2}
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-2  sm:col-start-1">
+                <label
+                  htmlFor="highlights3"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Highlights - 3
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="highlights3"
+                    name="highlights3"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={(e) =>
+                      handleFieldChange("highlight_3", e.target.value)
+                    }
+                    value={productData.highlight_3}
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="highlights4"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Highlights - 4
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="highlights4"
+                    name="highlights4"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={(e) =>
+                      handleFieldChange("highlight_4", e.target.value)
+                    }
+                    value={productData.highlight_4}
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="highlights5"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Highlights - 5
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="highlights5"
+                    name="highlights5"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={(e) =>
+                      handleFieldChange("highlight_5", e.target.value)
+                    }
+                    value={productData.highlight_5}
+                  />
+                </div>
               </div>
 
               <div className="sm:col-span-2 sm:col-start-1">

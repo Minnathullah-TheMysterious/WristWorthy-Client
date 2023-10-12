@@ -5,7 +5,6 @@ import {
   updateOrderPaymentStatus,
   updateOrderStatus,
 } from "./adminAPI";
-import toast from "react-hot-toast";
 
 const initialState = {
   loading: false,

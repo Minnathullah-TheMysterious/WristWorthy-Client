@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
-import { register } from "../authAPI";
 import { useDispatch } from "react-redux";
 import { registerAsync } from "../authSlice";
 

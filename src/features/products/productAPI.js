@@ -121,7 +121,7 @@ export const fetchSelectedProduct = async (productId) => {
 export const fetchRelatedProducts = async (categoryId) => {
   console.log(categoryId)
   try {
-    const { data } = categoryId && await axios.get(
+    const { data } = await axios.get(
       `/api/v1/product/get-related-products/${categoryId}`
     );
     const { success, message } = data;

@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import LoggedInCheckLoader from "../loaders/LoggedInCheckLoader";
 import toast from "react-hot-toast";
 
 const UserProtectedRoute = () => {
+  const navigate = useNavigate()
   const [ok, setOk] = useState(false);
-  console.log("user check");
 
   useEffect(() => {
     const authCheck = async () => {
@@ -21,10 +21,11 @@ const UserProtectedRoute = () => {
       } catch (error) {
         console.error(error.message);
         toast.error("Token expired, Please Login Again");
+        navigate('/login')
       }
     };
     authCheck();
-  }, []);
+  }, [navigate]);
 
   return ok ? <Outlet /> : <LoggedInCheckLoader />;
 };

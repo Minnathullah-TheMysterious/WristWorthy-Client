@@ -18,8 +18,6 @@ import {
 import {
   deleteProductAsync,
   fetchAllProductsByFiltersAsync,
-  fetchBrandsAsync,
-  fetchCategoriesAsync,
   restoreProductAsync,
   updateProductThumbnailAsync,
 } from "../../products/productSlice";
@@ -147,11 +145,6 @@ const AdminProductListing = () => {
   useEffect(() => {
     setPageNum(1);
   }, [totalProductsCount, sort]);
-
-  useEffect(() => {
-    dispatch(fetchCategoriesAsync());
-    dispatch(fetchBrandsAsync());
-  }, [dispatch]);
 
   return (
     <div className="bg-white">

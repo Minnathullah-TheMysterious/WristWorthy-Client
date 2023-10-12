@@ -27,6 +27,11 @@ const ProductForm = () => {
     category: "",
     product_name: "",
     description: "",
+    highlight_1: "",
+    highlight_2: "",
+    highlight_3: "",
+    highlight_4: "",
+    highlight_5: "",
     price: 0,
     discountPercentage: 0,
     stock: 1,
@@ -69,9 +74,15 @@ const ProductForm = () => {
     formData.append("category", productData.category);
     formData.append("product_name", productData.product_name);
     formData.append("description", productData.description);
+    formData.append("highlight_1", productData.highlight_1);
+    formData.append("highlight_2", productData.highlight_2);
+    formData.append("highlight_3", productData.highlight_3);
+    formData.append("highlight_4", productData.highlight_4);
+    formData.append("highlight_5", productData.highlight_5);
     formData.append("price", productData.price);
     formData.append("discountPercentage", productData.discountPercentage);
     formData.append("stock", productData.stock);
+    
     dispatchAsync(createProductAsync(formData))
       .then(() => handleResetForm())
       .catch((err) => console.error(err));
@@ -341,6 +352,111 @@ const ProductForm = () => {
                 </p>
               </div>
 
+              <div className="sm:col-span-3 sm:col-start-1">
+                <label
+                  htmlFor="highlights1"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Highlights - 1
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="highlights1"
+                    name="highlights1"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    defaultValue={""}
+                    onChange={(e) =>
+                      handleFieldChange("highlight_1", e.target.value)
+                    }
+                    value={productData.highlight_1}
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-3">
+                <label
+                  htmlFor="highlights2"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Highlights - 2
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="highlights2"
+                    name="highlights2"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    defaultValue={""}
+                    onChange={(e) =>
+                      handleFieldChange("highlight_2", e.target.value)
+                    }
+                    value={productData.highlight_2}
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-2  sm:col-start-1">
+                <label
+                  htmlFor="highlights3"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Highlights - 3
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="highlights3"
+                    name="highlights3"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    defaultValue={""}
+                    onChange={(e) =>
+                      handleFieldChange("highlight_3", e.target.value)
+                    }
+                    value={productData.highlight_3}
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="highlights4"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Highlights - 4
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="highlights4"
+                    name="highlights4"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    defaultValue={""}
+                    onChange={(e) =>
+                      handleFieldChange("highlight_4", e.target.value)
+                    }
+                    value={productData.highlight_4}
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="highlights5"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Highlights - 5
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="highlights5"
+                    name="highlights5"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    defaultValue={""}
+                    onChange={(e) =>
+                      handleFieldChange("highlight_5", e.target.value)
+                    }
+                    value={productData.highlight_5}
+                  />
+                </div>
+              </div>
+
               <div className="sm:col-span-2 sm:col-start-1">
                 <label
                   htmlFor="price"
@@ -404,143 +520,6 @@ const ProductForm = () => {
               </div>
             </div>
           </div>
-
-          {/* Extra. See If these can be used */}
-          {/* <div className="border-b border-gray-900/10 pb-12">
-            <h2 className="text-base font-semibold leading-7 text-gray-900">
-              Notifications
-            </h2>
-            <p className="mt-1 text-sm leading-6 text-gray-600">
-              We'll always let you know about important changes, but you pick
-              what else you want to hear about
-            </p>
-
-            <div className="mt-10 space-y-10">
-              <fieldset>
-                <legend className="text-sm font-semibold leading-6 text-gray-900">
-                  By Email
-                </legend>
-                <div className="mt-6 space-y-6">
-                  <div className="relative flex gap-x-3">
-                    <div className="flex h-6 items-center">
-                      <input
-                        id="comments"
-                        name="comments"
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                      />
-                    </div>
-                    <div className="text-sm leading-6">
-                      <label
-                        htmlFor="comments"
-                        className="font-medium text-gray-900"
-                      >
-                        Comments
-                      </label>
-                      <p className="text-gray-500">
-                        Get notified when someones posts a comment on a posting.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="relative flex gap-x-3">
-                    <div className="flex h-6 items-center">
-                      <input
-                        id="candidates"
-                        name="candidates"
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                      />
-                    </div>
-                    <div className="text-sm leading-6">
-                      <label
-                        htmlFor="candidates"
-                        className="font-medium text-gray-900"
-                      >
-                        Candidates
-                      </label>
-                      <p className="text-gray-500">
-                        Get notified when a candidate applies for a job.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="relative flex gap-x-3">
-                    <div className="flex h-6 items-center">
-                      <input
-                        id="offers"
-                        name="offers"
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                      />
-                    </div>
-                    <div className="text-sm leading-6">
-                      <label
-                        htmlFor="offers"
-                        className="font-medium text-gray-900"
-                      >
-                        Offers
-                      </label>
-                      <p className="text-gray-500">
-                        Get notified when a candidate accepts or rejects an
-                        offer.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </fieldset>
-              <fieldset>
-                <legend className="text-sm font-semibold leading-6 text-gray-900">
-                  Push Notifications
-                </legend>
-                <p className="mt-1 text-sm leading-6 text-gray-600">
-                  These are delivered via SMS to your mobile phone.
-                </p>
-                <div className="mt-6 space-y-6">
-                  <div className="flex items-center gap-x-3">
-                    <input
-                      id="push-everything"
-                      name="push-notifications"
-                      type="radio"
-                      className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    />
-                    <label
-                      htmlFor="push-everything"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Everything
-                    </label>
-                  </div>
-                  <div className="flex items-center gap-x-3">
-                    <input
-                      id="push-email"
-                      name="push-notifications"
-                      type="radio"
-                      className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    />
-                    <label
-                      htmlFor="push-email"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Same as email
-                    </label>
-                  </div>
-                  <div className="flex items-center gap-x-3">
-                    <input
-                      id="push-nothing"
-                      name="push-notifications"
-                      type="radio"
-                      className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    />
-                    <label
-                      htmlFor="push-nothing"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      No push notifications
-                    </label>
-                  </div>
-                </div>
-              </fieldset>
-            </div>
-          </div> */}
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">

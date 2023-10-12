@@ -1,12 +1,11 @@
 import React, { useReducer, useState } from "react";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addUserAddressAsync } from "../userSlice";
 
 const AddAddressForm = ({ setIsAddAddressEnabled }) => {
   const dispatchAsync = useDispatch();
-  const userId = useSelector((state) => state?.auth?.user?._id);
   const [mobileNumber, setMobileNumber] = useState("");
   const [altMobileNumber, setAltMobileNumber] = useState("");
 
