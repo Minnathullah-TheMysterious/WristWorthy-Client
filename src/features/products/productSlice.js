@@ -58,9 +58,9 @@ export const fetchSelectedProductAsync = createAsyncThunk(
 
 export const fetchRelatedProductsAsync = createAsyncThunk(
   "products/fetchRelatedProducts",
-  async (categoryId) => {
+  async ({productCategory, productId}) => {
     try {
-      const response = await fetchRelatedProducts(categoryId);
+      const response = await fetchRelatedProducts(productCategory, productId);
       if (response.success) {
         return response.relatedProducts;
       } else {

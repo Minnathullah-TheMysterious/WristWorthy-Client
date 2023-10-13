@@ -42,8 +42,8 @@ const ProductDetails = () => {
 
   useEffect(() => {
     dispatch(fetchSelectedProductAsync(params.productId));
-    productCategory && dispatch(fetchRelatedProductsAsync(productCategory));
-  }, [dispatch, params.productId, userId, productCategory]);
+    productCategory && dispatch(fetchRelatedProductsAsync({productCategory, productId}));
+  }, [dispatch, params.productId, userId, productCategory, productId]);
 
   const productFound = carts?.items?.some(
     (item) => item?.product?._id === selectedProduct?._id
@@ -244,9 +244,6 @@ const ProductDetails = () => {
 
             <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-4">
               {products.loading && <Loader />}
-              {/* {!products.loading && products.error ? (
-              <p>Error: {products.error}</p>
-            ) : null} */}
               {!products.loading && products?.relatedProducts?.length
                 ? products?.relatedProducts?.map((product) => (
                     <Space

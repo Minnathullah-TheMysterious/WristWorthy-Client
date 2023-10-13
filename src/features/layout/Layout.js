@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "./header/Navbar";
 import Footer from "./footer/Footer";
 import Helmet from "react-helmet";
+import TopLoadBar from './../../loaders/TopLoadBar';
 
 const Layout = ({
   children,
@@ -19,7 +20,8 @@ const Layout = ({
         <meta name="keywords" content={pageKeywords} />
         <title>{pageTitle}</title>
       </Helmet>
-      <Navbar />
+      <Navbar/>
+      <TopLoadBar/>
       <main className="min-h-screen">{children}</main>
       <Footer />
     </>

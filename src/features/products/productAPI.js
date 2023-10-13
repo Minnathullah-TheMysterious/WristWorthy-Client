@@ -118,11 +118,11 @@ export const fetchSelectedProduct = async (productId) => {
   }
 };
 
-export const fetchRelatedProducts = async (categoryId) => {
-  console.log(categoryId)
+export const fetchRelatedProducts = async (categoryId, productId) => {
+  console.log(categoryId, productId)
   try {
     const { data } = await axios.get(
-      `/api/v1/product/get-related-products/${categoryId}`
+      `/api/v1/product/get-related-products/${categoryId}/${productId}`
     );
     const { success, message } = data;
     if (success) {

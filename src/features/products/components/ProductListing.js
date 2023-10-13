@@ -3,9 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import {
-  fetchAllProductsByFiltersAsync,
-} from "../productSlice";
+import { fetchAllProductsByFiltersAsync } from "../productSlice";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -576,7 +574,7 @@ function Pagination({
       <div className="flex flex-1 justify-between sm:hidden">
         <button
           onClick={(e) => {
-            e.preventDefault();
+            window.scrollTo({ top: 1000, behavior: "smooth" });
             setPageNum(pageNum - 1);
           }}
           disabled={pageNum === 1 ? true : false}
@@ -586,7 +584,7 @@ function Pagination({
         </button>
         <button
           onClick={(e) => {
-            e.preventDefault();
+            window.scrollTo({ top: 1000, behavior: "smooth" });
             setPageNum(pageNum + 1);
           }}
           disabled={
@@ -627,6 +625,7 @@ function Pagination({
               disabled={pageNum === 1 ? true : false}
               onClick={(e) => {
                 e.preventDefault();
+                window.scrollTo({ top: 1100, behavior: "smooth" });
                 setPageNum(pageNum - 1);
               }}
             >
@@ -641,6 +640,7 @@ function Pagination({
               <button
                 key={index}
                 onClick={(e) => {
+                  window.scrollTo({ top: 1100, behavior: "smooth" });
                   handlePagination(e, index + 1);
                 }}
                 aria-current="page"
@@ -660,6 +660,7 @@ function Pagination({
               }`}
               onClick={(e) => {
                 e.preventDefault();
+                window.scrollTo({ top: 1100, behavior: "smooth" });
                 setPageNum(pageNum + 1);
               }}
               disabled={
@@ -699,7 +700,6 @@ function ProductGrid({ products }) {
     <div className="lg:col-span-3">
       <div className="bg-white">
         <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:pt-2 sm:pb-6 lg:max-w-7xl lg:px-8">
-
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-4">
             {products.loading && <Loader />}
             {/* {!products.loading && products.error ? (

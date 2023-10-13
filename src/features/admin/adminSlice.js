@@ -95,8 +95,10 @@ const adminSlice = createSlice({
       })
       .addCase(getAllFilteredOrdersAsync.rejected, (state, action) => {
         state.error = action.error.message;
+        state.loading = false
       })
       .addCase(getAllFilteredOrdersAsync.fulfilled, (state, action) => {
+        state.loading = false
         state.allOrders = action.payload.orders;
         state.ordersCount = action.payload.ordersCount;
       })

@@ -589,6 +589,7 @@ function Pagination({
         <button
           onClick={(e) => {
             e.preventDefault();
+            window.scrollTo({top:2000, behavior: 'smooth'})
             setPageNum(pageNum - 1);
           }}
           disabled={pageNum === 1 ? true : false}
@@ -599,6 +600,7 @@ function Pagination({
         <button
           onClick={(e) => {
             e.preventDefault();
+            window.scrollTo({top:2000, behavior: 'smooth'})
             setPageNum(pageNum + 1);
           }}
           disabled={
@@ -639,6 +641,7 @@ function Pagination({
               disabled={pageNum === 1 ? true : false}
               onClick={(e) => {
                 e.preventDefault();
+                window.scrollTo({top:2000, behavior: 'smooth'})
                 setPageNum(pageNum - 1);
               }}
             >
@@ -653,6 +656,7 @@ function Pagination({
               <button
                 key={index}
                 onClick={(e) => {
+                  window.scrollTo({top:2000, behavior: 'smooth'})
                   handlePagination(e, index + 1);
                 }}
                 aria-current="page"
@@ -672,6 +676,7 @@ function Pagination({
               }`}
               onClick={(e) => {
                 e.preventDefault();
+                window.scrollTo({top:2000, behavior: 'smooth'})
                 setPageNum(pageNum + 1);
               }}
               disabled={
