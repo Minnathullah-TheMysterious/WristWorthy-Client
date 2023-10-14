@@ -12,13 +12,11 @@ const UserProtectedRoute = () => {
       try {
         const { data } = await axios.get("/api/v1/auth/authenticate-user");
         if (data.ok) {
-          console.log("user check successful");
           setOk(true);
         } else {
           setOk(false);
         }
       } catch (error) {
-        console.error(error.message);
         setOk(false)
       }
     };

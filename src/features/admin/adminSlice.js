@@ -51,14 +51,13 @@ export const updateOrderStatusAsync = createAsyncThunk(
   async ({ orderId, orderStatus }) => {
     try {
       const response = await updateOrderStatus(orderId, orderStatus);
+
       if (response.success) {
-        console.log(response.updatedOrder, orderId);
         return { order: response.updatedOrder, orderId };
-      } else {
-        throw new Error(response.message);
       }
+
+      throw new Error(response.message);
     } catch (error) {
-      console.error("Something Went Wrong in update-order-thunk", error);
       throw new Error(error.message);
     }
   }
@@ -69,16 +68,13 @@ export const updateOrderPaymentStatusAsync = createAsyncThunk(
   async ({ orderId, paymentStatus }) => {
     try {
       const response = await updateOrderPaymentStatus(orderId, paymentStatus);
+
       if (response.success) {
         return { order: response.updatedOrder, orderId };
-      } else {
-        throw new Error(response.message);
       }
+
+      throw new Error(response.message);
     } catch (error) {
-      console.error(
-        "Something Went Wrong in update-payment-thunk",
-        error.message
-      );
       throw new Error(error.message);
     }
   }
@@ -95,10 +91,10 @@ const adminSlice = createSlice({
       })
       .addCase(getAllFilteredOrdersAsync.rejected, (state, action) => {
         state.error = action.error.message;
-        state.loading = false
+        state.loading = false;
       })
       .addCase(getAllFilteredOrdersAsync.fulfilled, (state, action) => {
-        state.loading = false
+        state.loading = false;
         state.allOrders = action.payload.orders;
         state.ordersCount = action.payload.ordersCount;
       })
@@ -127,9 +123,6 @@ const adminSlice = createSlice({
         const orderIndex = state?.allOrders?.findIndex(
           (orders) => orders?.order[0]?._id === action.payload.orderId
         );
-        console.log(orderIndex);
-        console.log(action.payload.order);
-        console.log(action.payload.orderId);
         if (orderIndex !== -1) {
           state.allOrders.splice(orderIndex, 1, action.payload.order[0]);
         }
@@ -147,9 +140,6 @@ const adminSlice = createSlice({
         const orderIndex = state?.allOrders?.findIndex(
           (orders) => orders?.order[0]?._id === action.payload.orderId
         );
-        console.log(orderIndex);
-        console.log(action.payload.order);
-        console.log(action.payload.orderId);
         if (orderIndex !== -1) {
           state.allOrders.splice(orderIndex, 1, action.payload.order[0]);
         }

@@ -8,7 +8,7 @@ import { requestPasswordResetMailAsync } from "../authSlice";
 
 const PassReset = () => {
   const dispatch = useDispatch();
-  
+
   const [phoneInputDisabled, setPhoneInputDisabled] = useState(false);
   const [emailInputDisabled, setEmailInputDisabled] = useState(false);
   const [passwordResetReqSuccess, setPasswordResetReqSuccess] = useState(false);
@@ -52,17 +52,13 @@ const PassReset = () => {
         setPasswordResetReqSuccess(response);
       }
     } catch (error) {
-      console.error(
-        "something went wrong in requesting for reset password",
-        error
-      );
+      console.error(error.message);
     }
   };
 
   const handlePasswordResetReqMailClick = async (e) => {
     e.preventDefault();
     const resetPasswordLink = `${window.location.origin}/Reset-password/${email}`;
-    console.log(resetPasswordLink)
     dispatch(requestPasswordResetMailAsync({ email, resetPasswordLink }));
   };
 
@@ -74,7 +70,7 @@ const PassReset = () => {
         setOtpVerified(response);
       }
     } catch (error) {
-      console.error("Something Went Wrong While Verifying OTP", error);
+      console.error(error.message);
     }
   };
 
@@ -86,7 +82,7 @@ const PassReset = () => {
         navigate("/login");
       }
     } catch (error) {
-      console.error("Something Went Wrong While Resetting Password", error);
+      console.error(error.message);
     }
   };
 

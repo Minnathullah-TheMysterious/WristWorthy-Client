@@ -37,9 +37,6 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.auth?.user);
 
-  console.log(user);
-  console.log(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
-
   useEffect(() => {
     dispatch(getAuthDataAsync());
   }, [dispatch]);

@@ -24,7 +24,6 @@ const UpdateProductForm = () => {
 
   const result = products.filter((product) => product._id === productId);
   const productToBeUpdated = result[0];
-  console.log(productToBeUpdated);
 
   const initialState = {
     brand: productToBeUpdated?.brand?._id,
@@ -56,7 +55,6 @@ const UpdateProductForm = () => {
     updateProductReducer,
     initialState
   );
-  console.log(productData);
 
   const handleFieldChange = (key, value) => {
     dispatch({ type: "EDIT_PRODUCT", key, value });
@@ -82,7 +80,6 @@ const UpdateProductForm = () => {
 
     dispatchAsync(updateProductDataAsync({ productId, updatedProduct }))
       .then(() => navigate("/"))
-      .catch((err) => console.error(err));
   };
 
   return (

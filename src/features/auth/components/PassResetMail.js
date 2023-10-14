@@ -20,12 +20,9 @@ const PassResetMail = () => {
     e.preventDefault();
     dispatch(
       resetPasswordMailAsync({ email, newPassword, confirmNewPassword, token })
-    )
-      .then(() => console.log("dispatched resetPasswordMailAsync"))
-
-      .catch(() => {
-        toast.error("Failed to Reset Password");
-      });
+    ).catch((err) => {
+      toast.error(err.message || "Failed to Reset Password");
+    });
   };
   return !resetPassword ? (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">

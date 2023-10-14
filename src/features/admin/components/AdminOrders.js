@@ -57,10 +57,6 @@ const AdminOrders = () => {
   const order = useSelector((state) => state?.admin?.orderDetails);
   const orderDetails = order && order[0];
 
-  console.log(order);
-  console.log(orderDetails);
-  console.log(allOrders);
-
   const [pageLimit, setPageLimit] = useState(5);
   const [page, setPage] = useState(1);
   const [orderStatusFilter, setOrderStatusFilter] = useState("");
@@ -74,8 +70,6 @@ const AdminOrders = () => {
   const [input, setInput] = useState("");
   const [editableOrderId, setEditableOrderId] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  console.log(editableOrderId);
 
   let filterOrderQueryString = `_page=${page}&_limit=${pageLimit}`;
 
@@ -95,8 +89,6 @@ const AdminOrders = () => {
     filterOrderQueryString += `&payment_method=${paymentMethodFilter}`;
   }
 
-  console.log(filterOrderQueryString);
-
   let sortOrderQueryString = `&createdAt=${orderTimeSort}`;
 
   if (orderAmountSort !== 0) {
@@ -115,30 +107,20 @@ const AdminOrders = () => {
     sortOrderQueryString = `&updatedAt=${orderUpdateSort}`;
   }
 
-  console.log(sortOrderQueryString);
-
   const filterAndSortOrdersQueryString =
     filterOrderQueryString + sortOrderQueryString;
-
-  console.log(filterAndSortOrdersQueryString);
 
   useEffect(() => {
     dispatch(getAllFilteredOrdersAsync(filterAndSortOrdersQueryString));
   }, [dispatch, filterAndSortOrdersQueryString]);
 
-  console.log(allOrders);
-
   const handleStatusChange = async (orderStatus, orderId) => {
-    console.log(orderStatus);
-    console.log(orderId);
     dispatch(updateOrderStatusAsync({ orderId, orderStatus })).then(() => {
       setEditableOrderId("");
     });
   };
 
   const handlePaymentStatusChange = async (paymentStatus, orderId) => {
-    console.log(paymentStatus);
-    console.log(orderId);
     dispatch(updateOrderPaymentStatusAsync({ orderId, paymentStatus })).then(
       () => {
         setEditableOrderId("");

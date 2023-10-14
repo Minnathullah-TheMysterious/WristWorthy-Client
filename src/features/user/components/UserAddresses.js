@@ -17,10 +17,7 @@ const UserAddresses = () => {
         )
       );
     } catch (error) {
-      console.error(
-        "Something Went Wrong while dispatching the user-selected-address",
-        error
-      );
+      console.error(error.message);
     }
   };
 

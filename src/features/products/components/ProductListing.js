@@ -71,19 +71,15 @@ const ProductListing = () => {
   ];
 
   const handleFilterChange = (e, section, option) => {
-    console.log(e, section, option);
     const isChecked = e.target.checked;
     const newFilter = { ...filter };
-    console.log(newFilter);
 
     if (isChecked) {
       // Add the selected value to the filter section's array
       if (!newFilter[section.id]) {
         newFilter[section.id] = [option._id];
-        console.log(newFilter);
       } else {
         newFilter[section.id].push(option._id);
-        console.log(newFilter);
       }
     } else {
       // Remove the unchecked value from the filter section's array
@@ -91,44 +87,35 @@ const ProductListing = () => {
         const updatedValues = newFilter[section.id].filter(
           (value) => value !== option._id
         );
-        console.log("Updated values after removing filter:", updatedValues);
 
         if (updatedValues.length === 0) {
           delete newFilter[section.id];
-          console.log("Filter section removed:", newFilter);
         } else {
           newFilter[section.id] = updatedValues;
-          console.log("Filter section updated:", newFilter);
         }
       }
     }
-    console.log("newFilter: ", newFilter);
     setFilter(newFilter);
   };
 
   const handlePriceFilterChange = (value) => {
-    console.log(`value=${value}`);
     const priceArray = value.split(",");
-    console.log(priceArray);
     const newFilter = {
       ...filter,
       lowerPriceLimit: [+priceArray[0]],
       higherPriceLimit: [+priceArray[1]],
     };
-    console.log("newFilter: ", newFilter);
     setFilter(newFilter);
   };
 
   const handleSorting = (e, option) => {
     const sort = { _sort: option.sort, _order: option.order };
     setSort(sort);
-    console.log(sort);
   };
 
   const handlePagination = (e, pageNum) => {
     e.preventDefault();
     setPageNum(pageNum);
-    console.log("page number:", pageNum);
   };
 
   useEffect(() => {

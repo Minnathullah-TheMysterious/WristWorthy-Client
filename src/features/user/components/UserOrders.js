@@ -13,9 +13,6 @@ const UserOrders = () => {
 
   const { confirm } = Modal;
 
-  console.log(userId);
-  console.log(orders);
-
   useEffect(() => {
     dispatch(fetchUserOrdersAsync());
   }, [dispatch, userId]);
@@ -30,9 +27,7 @@ const UserOrders = () => {
       onOk() {
         dispatch(cancelOrderAsync(orderId));
       },
-      onCancel() {
-        console.log("Cancel");
-      },
+      onCancel() {},
     });
   };
 

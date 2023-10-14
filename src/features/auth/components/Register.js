@@ -30,11 +30,9 @@ const Register = () => {
       const actionResult = await dispatch(registerAsync(registrationData));
       if (registerAsync.fulfilled.match(actionResult)) {
         navigate("/");
-      }else{
-        console.error("Failed To Register");
       }
-    } catch (error) {
-      console.error("Something Went Wrong in dispatching the action", error.message);
+    } catch (err) {
+      navigate("/register");
     }
   };
 

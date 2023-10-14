@@ -38,16 +38,13 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state?.user?.userInfo);
-  console.log(user);
   const cart = useSelector((state) => state?.cart?.items);
-  console.log(cart);
 
   const handleLogout = () => {
     dispatch(logoutAsync())
       .then(() => {
-        dispatch(fetchUserCartItemsAsync());
-        dispatch(getUserAsync());
         navigate("/login");
+        window.location.reload()
       })
       .catch(() => navigate("/"));
   };

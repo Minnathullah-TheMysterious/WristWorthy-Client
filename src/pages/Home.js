@@ -15,7 +15,7 @@ import {
 const Home = () => {
   const dispatch = useDispatch();
 
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state?.auth?.user);
 
   useEffect(() => {
     dispatch(fetchCategoriesAsync());
@@ -25,7 +25,7 @@ const Home = () => {
 
   return (
     <Layout pageTitle={"WristWorthy - Home"}>
-      {user?.role === "user" || !user ? (
+      {user?.role === "user" || user?.success === false ? (
         <>
           <Promo />
           <ProductListing />

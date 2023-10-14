@@ -45,10 +45,10 @@ const Login = () => {
         localStorage.removeItem("user_id");
         navigate(location.state || "/");
       } else {
-        console.error("Failed To Login");
+        navigate("/login");
       }
     } catch (error) {
-      console.error("Something Went Wrong in dispatching the action", error.message);
+      navigate("/login");
     }
   };
 

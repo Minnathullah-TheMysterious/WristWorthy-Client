@@ -41,9 +41,7 @@ const AdminBrandListing = ({ wrapClass }) => {
       onOk() {
         dispatch(deleteBrandAsync(brandId));
       },
-      onCancel() {
-        console.log("Cancel");
-      },
+      onCancel() {},
     });
   };
 
@@ -59,7 +57,6 @@ const AdminBrandListing = ({ wrapClass }) => {
         dispatch(restoreBrandAsync(brandId));
       },
       onCancel() {
-        console.log("Cancel");
       },
     });
   };
@@ -76,7 +73,6 @@ const AdminBrandListing = ({ wrapClass }) => {
   const handleOk = () => {
     if (createBrand && !updateBrandName) {
       setIsCreateBrandModalOpen(false);
-      console.log(brand_name, brand_image);
       const formData = new FormData();
       formData.append("brand_name", brand_name);
       formData.append("image", brand_image);

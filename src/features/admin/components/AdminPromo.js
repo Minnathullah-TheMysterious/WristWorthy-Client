@@ -27,15 +27,9 @@ const AdminPromo = () => {
   const [disableBrand, setDisableBrand] = useState(false);
   const [disableCategory, setDisableCategory] = useState(false);
 
-  console.log("brand:", brand);
-  console.log("category:", category);
-  console.log(promo_heading);
-
   useEffect(() => {
     dispatch(fetchPromoAsync());
   }, [dispatch]);
-
-  console.log(promo);
 
   const showPromoImageEditModal = () => {
     setIsPromoImageEditModalOpen(true);
@@ -60,10 +54,10 @@ const AdminPromo = () => {
   if (!promo?.brand) {
     data.category = category;
   }
+  
   if (!promo?.category) {
     data.brand = brand;
   }
-  console.log(data);
 
   const handlePromoEditOk = async () => {
     setIsPromoEditModalOpen(false);

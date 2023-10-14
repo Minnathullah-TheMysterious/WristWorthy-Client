@@ -9,17 +9,14 @@ const initialState = {
 };
 
 export const fetchPromoAsync = createAsyncThunk("fetchPromo", async () => {
-  console.log('fetchPromoAsync')
   try {
     const response = await fetchPromo();
-    console.log(response)
 
     if (response.success) {
       return response.promo;
     }
     throw new Error(response.message);
   } catch (error) {
-    console.error(error.message)
     throw new Error(error.message);
   }
 });
@@ -43,7 +40,6 @@ export const updatePromoImageAsync = createAsyncThunk(
 export const updatePromoAsync = createAsyncThunk(
   "updatePromo",
   async (data) => {
-    console.log(data)
     try {
       const response = await updatePromo(data);
 
@@ -87,7 +83,7 @@ const promoSlice = createSlice({
         state.rejected = action.error ? action.error.message : "Error";
       })
       .addCase(fetchPromoAsync.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loading = true;
         state.item = action.payload[0];
       })
 

@@ -18,7 +18,6 @@ const AdminProtectedRoute = () => {
           setOk(false);
         }
       } catch (error) {
-        console.error(error.message);
         setOk(false);
       }
     };

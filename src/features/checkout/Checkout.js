@@ -23,7 +23,6 @@ const Checkout = () => {
   const [, setIsAddAddressEnabled] = useState();
 
   const handlePaymentMethod = (e) => {
-    console.log(e.target.value);
     setSelectedPaymentMethod(e.target.value);
   };
 
@@ -44,8 +43,6 @@ const Checkout = () => {
   }));
   //an array of products with product _id and its quantity
 
-  console.log(products);
-
   const handlePlaceOrderClick = (e) => {
     e.preventDefault();
     try {
@@ -57,53 +54,47 @@ const Checkout = () => {
         return toast("Your Cart Is Empty, Please Add Items To Place Order", {
           className: "font-serif bg-blue-900 text-white",
         });
-      } else {
-        dispatch(
-          placeOrderAsync({
-            products,
-            totalItems,
-            totalAmount,
-            selectedUserAddress,
-            selectedPaymentMethod,
-          })
-        )
-          .then(async () => {
-            if (selectedPaymentMethod === "cash") {
-              products?.forEach((product) =>
-                dispatch(
-                  updateProductStockSlice({
-                    productId: product?.product_id,
-                    productQuantity: product?.quantity,
-                  })
-                )
-              );
-              dispatch(mySetSelectedUserAddress(null))
-              dispatch(resetCartAsync());
-              return navigate(
-                `/dashboard/user/cash-payment-order-success`
-              );
-            } else if (selectedPaymentMethod === "card") {
-              products?.forEach((product) =>
-                dispatch(
-                  updateProductStockSlice({
-                    productId: product?.product_id,
-                    productQuantity: product?.quantity,
-                  })
-                )
-              );
-              return navigate("/dashboard/user/stripe-checkout");
-            }
-          })
-          .catch((err) => {
-            console.log("catch of placeOrderAsync", err.message || err);
-            navigate("/dashboard/user/cart");
-          });
       }
+
+      dispatch(
+        placeOrderAsync({
+          products,
+          totalItems,
+          totalAmount,
+          selectedUserAddress,
+          selectedPaymentMethod,
+        })
+      )
+        .then(async () => {
+          if (selectedPaymentMethod === "cash") {
+            products?.forEach((product) =>
+              dispatch(
+                updateProductStockSlice({
+                  productId: product?.product_id,
+                  productQuantity: product?.quantity,
+                })
+              )
+            );
+            dispatch(mySetSelectedUserAddress(null));
+            dispatch(resetCartAsync());
+            return navigate(`/dashboard/user/cash-payment-order-success`);
+          } else if (selectedPaymentMethod === "card") {
+            products?.forEach((product) =>
+              dispatch(
+                updateProductStockSlice({
+                  productId: product?.product_id,
+                  productQuantity: product?.quantity,
+                })
+              )
+            );
+            return navigate("/dashboard/user/stripe-checkout");
+          }
+        })
+        .catch(() => {
+          navigate("/dashboard/user/cart");
+        });
     } catch (error) {
-      console.error(
-        "Something Went Wrong in dispatching the place-order",
-        error.message || error
-      );
+      toast.error(error.message);
     }
   };
 

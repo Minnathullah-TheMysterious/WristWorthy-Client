@@ -13,7 +13,6 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 const StripeCheckoutPage = () => {
   const currentOrder = useSelector((state) => state?.user?.currentOrder);
-  console.log(currentOrder);
   const [clientSecret, setClientSecret] = useState("");
 
   useEffect(() => {

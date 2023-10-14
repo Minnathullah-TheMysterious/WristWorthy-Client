@@ -38,11 +38,10 @@ const ProductDetails = () => {
   const productId = selectedProduct?._id;
   const productCategory = selectedProduct?.category;
 
-  console.log(productCategory);
-
   useEffect(() => {
     dispatch(fetchSelectedProductAsync(params.productId));
-    productCategory && dispatch(fetchRelatedProductsAsync({productCategory, productId}));
+    productCategory &&
+      dispatch(fetchRelatedProductsAsync({ productCategory, productId }));
   }, [dispatch, params.productId, userId, productCategory, productId]);
 
   const productFound = carts?.items?.some(
@@ -59,10 +58,6 @@ const ProductDetails = () => {
         })
         .catch((error) => {
           toast.error("Failed To Add To Cart");
-          console.error(
-            "Something Went Wrong While dispatching the add-to-cart",
-            error
-          );
         });
     } else if (user && productFound && selectedProduct.stock >= 1) {
       navigate("/dashboard/user/cart");

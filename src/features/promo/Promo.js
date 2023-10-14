@@ -8,8 +8,6 @@ const Promo = () => {
   const dispatch = useDispatch();
   const promo = useSelector((state) => state?.promo?.item);
 
-  console.log(promo);
-
   useEffect(() => {
     dispatch(fetchPromoAsync());
   }, [dispatch]);

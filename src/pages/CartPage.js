@@ -12,8 +12,6 @@ const CartPage = () => {
 
   const cartItems = useSelector((state) => state?.cart?.items);
 
-  console.log(cartItems);
-
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);

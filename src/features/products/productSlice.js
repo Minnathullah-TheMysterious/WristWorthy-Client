@@ -42,9 +42,16 @@ const initialState = {
 export const fetchAllProductsByFiltersAsync = createAsyncThunk(
   "products/fetchAllProductsByFilters",
   async ({ filter, sort, pagination }) => {
-    const response = await fetchAllProductsByFilters(filter, sort, pagination);
-    console.log("Products In The Page:", response);
-    return response;
+    try {
+      const response = await fetchAllProductsByFilters(
+        filter,
+        sort,
+        pagination
+      );
+      return response;
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 );
 
@@ -58,7 +65,7 @@ export const fetchSelectedProductAsync = createAsyncThunk(
 
 export const fetchRelatedProductsAsync = createAsyncThunk(
   "products/fetchRelatedProducts",
-  async ({productCategory, productId}) => {
+  async ({ productCategory, productId }) => {
     try {
       const response = await fetchRelatedProducts(productCategory, productId);
       if (response.success) {
@@ -192,7 +199,6 @@ export const fetchBrandsAsync = createAsyncThunk(
   "products/fetchBrands",
   async () => {
     const response = await fetchBrands();
-    console.log(response?.brands);
     return response?.brands;
   }
 );
@@ -405,7 +411,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchRelatedProductsAsync.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error?action.error.message:'Error';
+        state.error = action.error ? action.error.message : "Error";
       })
       .addCase(fetchRelatedProductsAsync.fulfilled, (state, action) => {
         state.loading = false;

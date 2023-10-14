@@ -17,11 +17,10 @@ export const addToWishlist = async (productId) => {
         className: "font-serif bg-blue-900 text-white",
       });
       return { success: false, message: error?.response?.data?.message };
-    } else {
-      toast.error(error?.response?.data?.message);
-      console.error("Something Went Wrong While Adding To Wishlist", error);
-      return { success: false, message: error?.response?.data?.message };
     }
+
+    toast.error(error?.response?.data?.message);
+    return { success: false, message: error?.response?.data?.message };
   }
 };
 
@@ -30,7 +29,6 @@ export const fetchWishlist = async () => {
     const { data } = await axios.get(`/api/v1/wishlist/user/get-wishlist`);
     const { success, wishlist } = data;
     if (success) {
-      // toast.success(message);
       return wishlist;
     }
   } catch (error) {
@@ -39,14 +37,18 @@ export const fetchWishlist = async () => {
         className: "font-serif bg-blue-900 text-white",
       });
       return { success: false, message: error?.response?.data?.message };
-    } else {
-      toast.error("Something Went Wrong While fetching Wishlist");
-      console.error("Something Went Wrong While fetching Wishlist", error);
-      return {
-        success: false,
-        message: "Something Went Wrong While fetching Wishlist",
-      };
     }
+
+    toast.error(
+      error?.response?.data?.message ||
+        "Something Went Wrong While fetching Wishlist"
+    );
+    return {
+      success: false,
+      message:
+        error?.response?.data?.message ||
+        "Something Went Wrong While fetching Wishlist",
+    };
   }
 };
 
@@ -58,7 +60,6 @@ export const deleteWishlistItem = async (productId) => {
     const { success, message, wishlist } = data;
     if (success) {
       toast.success(message);
-      console.log(wishlist);
       return wishlist;
     }
   } catch (error) {
@@ -72,17 +73,17 @@ export const deleteWishlistItem = async (productId) => {
         className: "font-serif bg-blue-900 text-white",
       });
       return { success: false, message: error?.response?.data?.message };
-    } else {
-      toast.error("Something Went Wrong While deleting Item from Wishlist");
-      console.error(
-        "Something Went Wrong While deleting Item from Wishlist",
-        error
-      );
-      return {
-        success: false,
-        message: "Something Went Wrong While deleting Item from Wishlist",
-        error: error.message,
-      };
     }
+
+    toast.error(
+      error?.response?.data?.message ||
+        "Something Went Wrong While deleting Item from Wishlist"
+    );
+    return {
+      success: false,
+      message:
+        error?.response?.data?.message ||
+        "Something Went Wrong While deleting Item from Wishlist",
+    };
   }
 };

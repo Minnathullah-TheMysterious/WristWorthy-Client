@@ -50,7 +50,6 @@ const ManageUserAddresses = () => {
   );
 
   const handleFieldChange = (field, value) => {
-    console.log(value);
     dispatch({ type: "UPDATE_FIELD", field, value });
   };
 
@@ -68,20 +67,14 @@ const ManageUserAddresses = () => {
         try {
           dispatchAsync(deleteUserAddressAsync(addressId));
         } catch (error) {
-          console.error(
-            "Something Went Wrong while dispatching the delete-user-address action",
-            error
-          );
+          console.error(error.message);
         }
       },
-      onCancel() {
-        console.log("Cancel");
-      },
+      onCancel() {},
     });
   };
 
   const handleUpdateAddressClick = (e, addressId) => {
-    console.log(addressData);
     e.preventDefault();
     const serializedAddressData = JSON.stringify(addressData);
     dispatchAsync(

@@ -14,8 +14,6 @@ const Cart = ({ btnText, destination }) => {
   const dispatch = useDispatch();
   const userCart = useSelector((state) => state?.cart?.items);
 
-  console.log(userCart);
-
   useEffect(() => {
     dispatch(fetchUserCartItemsAsync());
   }, [dispatch]);
@@ -34,7 +32,6 @@ const Cart = ({ btnText, destination }) => {
 
   const handleRemoveClick = async (e, productId) => {
     e.preventDefault();
-    console.log(productId);
     const deleteItem = dispatch(deleteUserCartItemAsync(productId));
     deleteItem
       .then(() => {
@@ -43,10 +40,7 @@ const Cart = ({ btnText, destination }) => {
         }
       })
       .catch((error) => {
-        console.error(
-          "Something Went Wrong While removing the cart Item",
-          error
-        );
+        navigate("/");
       });
   };
 

@@ -52,7 +52,6 @@ const ProductForm = () => {
     createProductReducer,
     initialState
   );
-  console.log(productData);
 
   const handleFieldChange = (key, value) => {
     dispatch({ type: "ADD_PRODUCT", key, value });
@@ -85,7 +84,6 @@ const ProductForm = () => {
     
     dispatchAsync(createProductAsync(formData))
       .then(() => handleResetForm())
-      .catch((err) => console.error(err));
   };
 
   return (

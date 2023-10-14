@@ -12,24 +12,26 @@ const initialState = {
   loading: false,
   user: null,
   mailSent: false,
-  resetPassword:false,
+  resetPassword: false,
   error: null,
 };
 
-export const registerAsync = createAsyncThunk("auth/register", async (registrationData) => {
-  try {
-    const response = await register(registrationData);
+export const registerAsync = createAsyncThunk(
+  "auth/register",
+  async (registrationData) => {
+    try {
+      const response = await register(registrationData);
 
-    if (response?.success) {
-      return response?.user;
-    } else {
+      if (response?.success) {
+        return response?.user;
+      }
+
       throw new Error(response?.message);
+    } catch (error) {
+      throw new Error(error.message || "Failed To Register");
     }
-  } catch (error) {
-    console.error("Something Went Wrong in register thunk", error);
-    throw new Error(error.message || "Failed To Register");
   }
-});
+);
 
 export const loginAsync = createAsyncThunk("auth/login", async (loginData) => {
   try {
@@ -37,11 +39,10 @@ export const loginAsync = createAsyncThunk("auth/login", async (loginData) => {
 
     if (response?.success) {
       return response?.user;
-    } else {
-      throw new Error(response?.message);
     }
+
+    throw new Error(response?.message);
   } catch (error) {
-    console.error("Something Went Wrong in login thunk", error);
     throw new Error(error.message || "Failed To Login");
   }
 });
@@ -51,13 +52,11 @@ export const logoutAsync = createAsyncThunk("auth/logout", async () => {
     const response = await logout();
 
     if (response?.success) {
-      console.log(response)
       return null;
-    } else {
-      throw new Error(response?.message);
     }
+
+    throw new Error(response?.message);
   } catch (error) {
-    console.error("Something Went Wrong in logout thunk", error);
     throw new Error(error.message || "Failed To Logout");
   }
 });
@@ -69,7 +68,7 @@ export const getAuthDataAsync = createAsyncThunk(
       const response = await getAuthData();
       return response;
     } catch (error) {
-      console.error("Something Went Wrong in get-auth-data thunk", error);
+      throw new Error(error.message);
     }
   }
 );
@@ -77,18 +76,19 @@ export const getAuthDataAsync = createAsyncThunk(
 export const requestPasswordResetMailAsync = createAsyncThunk(
   "auth/requestPasswordResetMail",
   async ({ email, resetPasswordLink }) => {
-    console.log(resetPasswordLink);
     try {
       const response = await requestPasswordResetMail(email, resetPasswordLink);
 
       if (response?.success) {
         return response.success;
-      } else {
-        throw new Error(response?.message);
       }
+
+      throw new Error(response?.message);
     } catch (error) {
-      console.error("Something Went Wrong in login thunk", error);
-      throw new Error(error.message || "Something Went Wrong in login thunk");
+      throw new Error(
+        error.message ||
+          "Something Went Wrong while requesting password reset via mail"
+      );
     }
   }
 );
@@ -96,7 +96,6 @@ export const requestPasswordResetMailAsync = createAsyncThunk(
 export const resetPasswordMailAsync = createAsyncThunk(
   "auth/resetPasswordMail",
   async ({ email, newPassword, confirmNewPassword, token }) => {
-    console.log(email);
     try {
       const response = await resetPasswordMail(
         email,
@@ -107,12 +106,11 @@ export const resetPasswordMailAsync = createAsyncThunk(
 
       if (response?.success) {
         return response?.success;
-      } else {
-        throw new Error(response?.message);
       }
+
+      throw new Error(response?.message);
     } catch (error) {
-      console.error("Something Went Wrong in login thunk", error);
-      throw new Error(error.message || "Something Went Wrong in login thunk");
+      throw new Error(error.message || "Something Went Wrong while resetting password");
     }
   }
 );
@@ -194,7 +192,7 @@ const authSlice = createSlice({
       })
       .addCase(resetPasswordMailAsync.fulfilled, (state) => {
         state.loading = false;
-        state.resetPassword = true
+        state.resetPassword = true;
       });
   },
 });

@@ -20,10 +20,7 @@ const Wishlist = () => {
     try {
       userId && dispatch(deleteWishlistItemAsync(productId));
     } catch (error) {
-      console.error(
-        "Something went wrong while dispatching the deleteWishlistItemAsync action",
-        error
-      );
+      console.error(error.message);
     }
   };
   return (

@@ -52,10 +52,7 @@ const AddAddressForm = ({ setIsAddAddressEnabled }) => {
         setIsAddAddressEnabled(false)
       );
     } catch (error) {
-      console.error(
-        "Something Went Wrong in dispatching the add-user-address",
-        error
-      );
+      console.error(error.message);
     }
   };
 

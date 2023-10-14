@@ -16,8 +16,7 @@ const UserProfile = () => {
     confirm({
       title: `Are you sure to delete this address?`,
       icon: <FiAlertTriangle className="font-bold text-red-700 text-2xl" />,
-      content:
-        "Be Careful! The address will be deleted permanently",
+      content: "Be Careful! The address will be deleted permanently",
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
@@ -25,15 +24,10 @@ const UserProfile = () => {
         try {
           dispatch(deleteUserAddressAsync(addressId));
         } catch (error) {
-          console.error(
-            "Something Went Wrong while dispatching the delete-user-address action",
-            error
-          );
+          console.error(error.message);
         }
       },
-      onCancel() {
-        console.log("Cancel");
-      },
+      onCancel() {},
     });
   };
 
@@ -48,10 +42,12 @@ const UserProfile = () => {
           User Name: {user?.user_name}
         </h1>
         <p className="sm:text-lg text-base font-medium font-serif text-gray-900">
-          Email Id: <span className="text-green-700 font-sans">{user?.email}</span>
+          Email Id:{" "}
+          <span className="text-green-700 font-sans">{user?.email}</span>
         </p>
         <p className="sm:text-lg text-base font-medium font-serif text-gray-900">
-          Phone Number: <span className="text-green-700 font-sans">{user?.phone}</span>
+          Phone Number:{" "}
+          <span className="text-green-700 font-sans">{user?.phone}</span>
         </p>
       </div>
 

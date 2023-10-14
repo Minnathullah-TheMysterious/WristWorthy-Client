@@ -20,7 +20,7 @@ export const addToWishlistAsync = createAsyncThunk(
         return response.wishlist;
       }
     } catch (error) {
-      console.error("Something Went Wrong in add-to-wishlist thunk", error);
+      throw new Error(error.message);
     }
   }
 );
@@ -32,7 +32,7 @@ export const fetchWishlistAsync = createAsyncThunk(
       const response = await fetchWishlist();
       return response;
     } catch (error) {
-      console.error("Something Went Wrong in fetch-wishlist thunk", error);
+      throw new Error(error.message);
     }
   }
 );
@@ -41,10 +41,10 @@ export const deleteWishlistItemAsync = createAsyncThunk(
   "wishlist/deleteWishlistItem",
   async (productId) => {
     try {
-      const response = await deleteWishlistItem( productId);
+      const response = await deleteWishlistItem(productId);
       return response;
     } catch (error) {
-      console.error("Something Went Wrong in fetch-wishlist thunk", error);
+      throw new Error(error.message)
     }
   }
 );

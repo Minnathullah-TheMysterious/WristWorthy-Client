@@ -6,14 +6,10 @@ export const fetchAllProductsByFilters = async (filter, sort, pagination) => {
   //sort = {_sort: 'price', _order: 'desc'}
   //pagination = {_page: 1, _limit: 10}
 
-  console.log(filter, sort, pagination);
-
   const filterQueryString = Object.entries(filter)
     .map(([key, values]) => values.map((value) => `${key}=${value}`))
     .flat()
     .join("&");
-
-  console.log("Filter Query Params: ", filterQueryString);
 
   //add ampersand at the end of the filter query string if string presents
   let filterQueryStringWithAmpersandEnd = "";
@@ -21,17 +17,11 @@ export const fetchAllProductsByFilters = async (filter, sort, pagination) => {
     filterQueryStringWithAmpersandEnd = `${filterQueryString}&`;
   }
 
-  console.log(
-    "Filter Query Params with ampersand at the end: ",
-    filterQueryStringWithAmpersandEnd
-  );
-
   let sortingQueryString = "";
   for (const key in sort) {
     const sortingValue = sort[key];
     sortingQueryString = sortingQueryString + `${key}=${sortingValue}&`;
   }
-  console.log("Sorting Query Params: ", sortingQueryString);
 
   let paginationQueryString = "";
   for (const key in pagination) {
@@ -39,16 +29,11 @@ export const fetchAllProductsByFilters = async (filter, sort, pagination) => {
     paginationQueryString =
       paginationQueryString + `${key}=${paginationValue}&`;
   }
-  console.log("Pagination Query Params: ", paginationQueryString);
 
   const filteredProductsAPI = `/api/v1/product/get-filtered-products?${paginationQueryString}${filterQueryStringWithAmpersandEnd}${sortingQueryString}`;
 
-  console.log("filtered", filteredProductsAPI);
-
   //Remove ampersand at the end of the string
   const slicedFilteredProductsAPI = filteredProductsAPI.slice(0, -1);
-
-  console.log("sliced", slicedFilteredProductsAPI);
 
   try {
     const { data } = await axios.get(slicedFilteredProductsAPI);
@@ -59,7 +44,6 @@ export const fetchAllProductsByFilters = async (filter, sort, pagination) => {
     }
   } catch (error) {
     toast.error(error.message);
-    console.error("Error fetching filtered products:", error);
     throw new Error({ success: false, error: error.message });
   }
 };
@@ -67,26 +51,18 @@ export const fetchAllProductsByFilters = async (filter, sort, pagination) => {
 export const fetchCategories = async () => {
   try {
     const { data } = await axios.get("/api/v1/category/get-all-categories");
-    console.log(data);
     return data;
   } catch (error) {
-    console.error(
-      "Something Went Wrong in fetching the categories - client",
-      error
-    );
+    return { success: false, message: error.message };
   }
 };
 
 export const fetchBrands = async () => {
   try {
     const { data } = await axios.get("/api/v1/brand/get-all-brands");
-    console.log(data);
     return data;
   } catch (error) {
-    console.error(
-      "Something Went Wrong in fetching the brands - client",
-      error
-    );
+    return { success: false, message: error.message };
   }
 };
 
@@ -96,62 +72,61 @@ export const fetchSelectedProduct = async (productId) => {
       `/api/v1/product/get-selected-product/${productId}`
     );
     const { success, message, selectedProduct } = data;
+
     if (success) {
-      // toast.success(message);
       return selectedProduct;
-    } else {
-      toast.error(message);
-      return data;
     }
+
+    toast.error(message);
+    return data;
   } catch (error) {
     if (error.response && error.response.status === 404) {
       toast.error(error?.response?.data?.message);
       return { success: false, message: error?.response?.data?.message };
-    } else {
-      console.error(
-        "Something Went Wrong while fetching the selected product",
-        error
-      );
-      toast.error("Something Went Wrong while fetching the selected product");
-      return { success: false, message: error?.response?.data?.message };
     }
+
+    toast.error(
+      error?.response?.data?.message ||
+        "Something Went Wrong while fetching the selected product"
+    );
+    return {
+      success: false,
+      message:
+        error?.response?.data?.message ||
+        "Something Went Wrong while fetching the selected product",
+    };
   }
 };
 
 export const fetchRelatedProducts = async (categoryId, productId) => {
-  console.log(categoryId, productId)
   try {
     const { data } = await axios.get(
       `/api/v1/product/get-related-products/${categoryId}/${productId}`
     );
     const { success, message } = data;
+
     if (success) {
-      // toast.success(message);
-      return data;
-    } else {
-      toast.error(message);
       return data;
     }
+
+    toast.error(message);
+    return data;
   } catch (error) {
     if (error.response && error.response.status === 404) {
       toast.error(error?.response?.data?.message);
       return { success: false, message: error?.response?.data?.message };
-    } else {
-      console.error(
-        "Something Went Wrong while fetching the related products",
-        error
-      );
-      toast.error(
-        error?.response?.data?.message ||
-          "Something Went Wrong while fetching the related products"
-      );
-      return {
-        success: false,
-        message:
-          error?.response?.data?.message ||
-          "Something Went Wrong while fetching the related products",
-      };
     }
+
+    toast.error(
+      error?.response?.data?.message ||
+        "Something Went Wrong while fetching the related products"
+    );
+    return {
+      success: false,
+      message:
+        error?.response?.data?.message ||
+        "Something Went Wrong while fetching the related products",
+    };
   }
 };
 
@@ -160,22 +135,13 @@ export const updateProductStock = async (productId, productQuantity) => {
     const { data } = await axios.put(
       `/api/v1/product/user/update-product-stock/${productId}/${productQuantity}`
     );
-    const { success } = data;
-    if (success) {
-      return data;
-    } else {
-      return data;
-    }
+    return data;
   } catch (error) {
-    console.error(
-      error?.response?.data?.message ||
-        error ||
-        "Something Went Wrong while updating product stock"
-    );
     return {
       success: false,
       message:
         error?.response?.data?.message ||
+        error.message ||
         error ||
         "Something Went Wrong while updating product stock",
     };

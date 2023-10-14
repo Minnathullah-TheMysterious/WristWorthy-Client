@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const CreatePromo = () => {
   const dispatchAsync = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const brands = useSelector((state) => state?.product?.brands);
   const categories = useSelector((state) => state?.product?.categories);
@@ -47,7 +47,6 @@ const CreatePromo = () => {
   };
 
   const [promoData, dispatch] = useReducer(createPromoReducer, initialState);
-  console.log(promoData);
 
   const handleFieldChange = (key, value) => {
     dispatch({ type: "CREATE_PROMO", key, value });
@@ -82,9 +81,8 @@ const CreatePromo = () => {
     dispatchAsync(createPromoAsync(formData))
       .then(() => {
         handleResetForm();
-        navigate('/')
+        navigate("/");
       })
-      .catch((err) => console.error(err));
   };
 
   return (

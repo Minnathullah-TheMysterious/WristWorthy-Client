@@ -21,7 +21,7 @@ export const addItemToCartAsync = createAsyncThunk(
       const response = await addItemToCart(productId);
       return response?.cart;
     } catch (error) {
-      console.error("Something Went Wrong in Add-to-Cart thunk", error);
+      throw new Error(error.message);
     }
   }
 );
@@ -32,12 +32,13 @@ export const fetchUserCartItemsAsync = createAsyncThunk(
   async () => {
     try {
       const response = await fetchUserCartItems();
+
       if (response.success) {
         return response?.cart;
       }
+
       throw new Error(response?.message);
     } catch (error) {
-      console.error("Something Went Wrong in fetch-Cart thunk", error);
       throw new Error(error.message);
     }
   }
@@ -51,7 +52,7 @@ export const updateCartItemQuantityAsync = createAsyncThunk(
       const response = await updateCartItemQuantity(productId, quantity);
       return response.cart;
     } catch (error) {
-      console.error("Something Went Wrong in fetch-Cart thunk", error);
+      throw new Error(error.message);
     }
   }
 );
@@ -60,12 +61,11 @@ export const updateCartItemQuantityAsync = createAsyncThunk(
 export const deleteUserCartItemAsync = createAsyncThunk(
   "cart/deleteUserCartItem",
   async (productId) => {
-    console.log(productId);
     try {
       const response = await deleteUserCartItem(productId);
       return response?.cart;
     } catch (error) {
-      console.error("Something Went Wrong in fetch-Cart thunk", error);
+      throw new Error(error.message);
     }
   }
 );
@@ -78,7 +78,7 @@ export const resetCartAsync = createAsyncThunk("cart/resetCart", async () => {
       return [];
     }
   } catch (error) {
-    console.error("Something Went Wrong in fetch-Cart thunk", error);
+    throw new Error(error.message);
   }
 });
 
@@ -105,7 +105,7 @@ const cartSlice = createSlice({
       })
       .addCase(fetchUserCartItemsAsync.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error ? action.error.message : 'Error';
+        state.error = action.error ? action.error.message : "Error";
         state.items = [];
       })
       .addCase(fetchUserCartItemsAsync.fulfilled, (state, action) => {

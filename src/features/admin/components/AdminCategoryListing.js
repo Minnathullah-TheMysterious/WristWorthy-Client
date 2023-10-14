@@ -42,9 +42,7 @@ const AdminCategoryListing = ({ wrapClass }) => {
       onOk() {
         dispatch(deleteCategoryAsync(categoryId));
       },
-      onCancel() {
-        console.log("Cancel");
-      },
+      onCancel() {},
     });
   };
 
@@ -59,9 +57,7 @@ const AdminCategoryListing = ({ wrapClass }) => {
       onOk() {
         dispatch(restoreCategoryAsync(categoryId));
       },
-      onCancel() {
-        console.log("Cancel");
-      },
+      onCancel() {},
     });
   };
 
@@ -80,7 +76,6 @@ const AdminCategoryListing = ({ wrapClass }) => {
   const handleOk = () => {
     if (createCategory && !updateCategoryName) {
       setIsCreateCategoryModalOpen(false);
-      console.log(category_name, category_image);
       const formData = new FormData();
       formData.append("category_name", category_name);
       formData.append("image", category_image);
@@ -146,7 +141,7 @@ const AdminCategoryListing = ({ wrapClass }) => {
                 },
               }}
             >
-              <form preserve={false} className="space-y-5" onSubmit={handleOk}>
+              <form className="space-y-5" onSubmit={handleOk}>
                 <h1 className="text-center font-serif font-bold text-xl">
                   Create A New Category
                 </h1>

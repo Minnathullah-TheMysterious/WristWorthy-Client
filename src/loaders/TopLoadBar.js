@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import LoadingBar from "react-top-loading-bar";
-
-// TODO: manage addresses top loading bar not working
-// TODO: my profile top loading bar not working
 
 const TopLoadBar = () => {
   const productLoading = useSelector((state) => state?.product?.loading);
@@ -14,47 +11,25 @@ const TopLoadBar = () => {
   const adminLoading = useSelector((state) => state?.admin?.loading);
   const promoLoading = useSelector((state) => state?.promo?.loading);
 
-  const [progress, setProgress] = useState(0);
-
-  console.log("product loading", productLoading);
-  console.log("user loading", userLoading);
-  console.log("wishlist loading", wishlistLoading);
-  console.log("cart loading", cartLoading);
-  console.log("auth loading", authLoading);
-  console.log("admin loading", adminLoading);
-  console.log("promo loading", promoLoading);
-  console.log("progress", progress);
-
-  useEffect(() => {
-    if (
-      productLoading ||
-      userLoading ||
-      wishlistLoading ||
-      cartLoading ||
-      authLoading ||
-      adminLoading ||
-      promoLoading
-    ) {
-      setProgress(progress + 50);
-    } else {
-      setProgress(0);
-    }
-  }, [
+  const loadingStates = [
     productLoading,
-    progress,
     userLoading,
     wishlistLoading,
     cartLoading,
     authLoading,
     adminLoading,
     promoLoading,
-  ]);
+  ];
 
+  const isLoading = loadingStates.some((loading) => loading === true);
+
+  const progress = isLoading ? 100 : 0;
+  
   return (
     <LoadingBar
       color="#f11946"
       progress={progress}
-      onLoaderFinished={() => setProgress(0)}
+      onLoaderFinished={() => {}}
     />
   );
 };
