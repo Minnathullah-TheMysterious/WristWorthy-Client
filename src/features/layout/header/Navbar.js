@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
@@ -11,6 +11,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAsync } from "../../auth/authSlice";
+import { searchProductsAsync } from "../../products/productSlice";
 
 // const navigation = [{ name: "Home", href: "/", current: false }];
 
@@ -38,13 +39,19 @@ const Navbar = () => {
   const user = useSelector((state) => state?.user?.userInfo);
   const cart = useSelector((state) => state?.cart?.items);
 
+  const [searchValue, setSearchValue] = useState("");
+
   const handleLogout = () => {
     dispatch(logoutAsync())
       .then(() => {
         navigate("/login");
-        window.location.reload()
+        window.location.reload();
       })
       .catch(() => navigate("/"));
+  };
+
+  const handleProductSearchClick = () => {
+    dispatch(searchProductsAsync(searchValue));
   };
 
   return (
@@ -72,7 +79,13 @@ const Navbar = () => {
                           type="text"
                           size="large"
                           placeholder="Search Products"
-                          prefix={<BsSearch />}
+                          onChange={(e) => setSearchValue(e.target.value)}
+                          prefix={
+                            <BsSearch
+                              onClick={() => handleProductSearchClick()}
+                              className="cursor-pointer text-blue-500 hover:text-red-600 active:text-blue-600 text-xl"
+                            />
+                          }
                         />
                       </div>
                     </div>
@@ -295,7 +308,13 @@ const Navbar = () => {
                       type="text"
                       size="large"
                       placeholder="Search Products"
-                      prefix={<BsSearch />}
+                      onChange={(e) => setSearchValue(e.target.value)}
+                      prefix={
+                        <BsSearch
+                          onClick={() => handleProductSearchClick()}
+                          className="cursor-pointer text-blue-500 hover:text-red-600 active:text-blue-600 text-xl"
+                        />
+                      }
                     />
                   </div>
                   <div className="border-t border-gray-700 pb-3 pt-4">

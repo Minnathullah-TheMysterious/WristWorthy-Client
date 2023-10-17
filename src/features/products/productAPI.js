@@ -130,6 +130,38 @@ export const fetchRelatedProducts = async (categoryId, productId) => {
   }
 };
 
+export const searchProducts = async (product) => {
+  try {
+    const { data } = await axios.get(
+      `/api/v1/product/search-product/${product}`
+    );
+    const { success, message } = data;
+
+    if (success) {
+      return data;
+    }
+
+    toast.error(message);
+    return data;
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      toast.error(error?.response?.data?.message);
+      return { success: false, message: error?.response?.data?.message };
+    }
+
+    toast.error(
+      error?.response?.data?.message ||
+        "Something Went Wrong while searching the products"
+    );
+    return {
+      success: false,
+      message:
+        error?.response?.data?.message ||
+        "Something Went Wrong while searching the products",
+    };
+  }
+};
+
 export const updateProductStock = async (productId, productQuantity) => {
   try {
     const { data } = await axios.put(

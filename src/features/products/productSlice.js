@@ -5,6 +5,7 @@ import {
   fetchCategories,
   fetchRelatedProducts,
   fetchSelectedProduct,
+  searchProducts,
   updateProductStock,
 } from "./productAPI";
 import {
@@ -70,6 +71,22 @@ export const fetchRelatedProductsAsync = createAsyncThunk(
       const response = await fetchRelatedProducts(productCategory, productId);
       if (response.success) {
         return response.relatedProducts;
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+);
+
+export const searchProductsAsync = createAsyncThunk(
+  "products/searchProducts",
+  async (product) => {
+    try {
+      const response = await searchProducts(product);
+      if (response.success) {
+        return response;
       } else {
         throw new Error(response.message);
       }
@@ -416,6 +433,21 @@ const productSlice = createSlice({
       .addCase(fetchRelatedProductsAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.relatedProducts = action.payload;
+      })
+
+      .addCase(searchProductsAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(searchProductsAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error ? action.error.message : "Error";
+      })
+      .addCase(searchProductsAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = action.payload.products;
+        state.nonDeletedProducts = action.payload.nonDeletedProducts;
+        state.totalNonDeletedProductsCount = action.payload.nonDeletedProductsCount;
+        state.totalProductsCount = action.payload.productsCount;
       })
 
       .addCase(createProductAsync.pending, (state) => {
