@@ -1,5 +1,6 @@
 import React from "react";
 import { BsTwitter, BsInstagram, BsWhatsapp, BsFacebook } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -12,62 +13,54 @@ const Footer = () => {
               step
             </p>
             <div className="mt-5 flex space-x-4 sm:space-x-8 justify-center text-2xl sm:text-3xl">
-              <BsTwitter  className="cursor"/>
-              <BsInstagram  className="cursor"/>
-              <BsWhatsapp  className="cursor"/>
-              <BsFacebook  className="cursor"/>
+              <Link to={"https://twitter.com/ultimaterahmani"} target="_blank">
+                <BsTwitter className="cursor" />
+              </Link>
+              <Link
+                to={"https://www.instagram.com/mystery_minnat_556"}
+                target="_blank"
+              >
+                <BsInstagram className="cursor" />
+              </Link>
+              <Link to={"/contact"}>
+                <BsWhatsapp className="cursor" />
+              </Link>
+              <Link
+                to={"https://www.facebook.com/profile.php?id=100082452596728"}
+                target="_blank"
+              >
+                <BsFacebook className="cursor" />
+              </Link>
             </div>
           </div>
         </div>
 
-        <div className="col-span-6 md:col-span-3  flex justify-center">
-          <div>
-            <h2 className="font-serif font-bold">Solutions</h2>
-            <div className=" space-y-3">
-              <p></p>
-              <p className="cursor">Marketing</p>
-              <p className="cursor">Analytics</p>
-              <p className="cursor">Commerce</p>
-              <p className="cursor">Insights</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-span-6 md:col-span-3  flex justify-center">
-          <div>
-            <h2 className="font-serif font-bold">Support</h2>
-            <div className=" space-y-3">
-              <p></p>
-              <p className="cursor">Pricing</p>
-              <p className="cursor">Documentation</p>
-              <p className="cursor">Guide</p>
-              <p className="cursor">API Status</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-span-6 md:col-span-3  flex justify-center">
+        <div className="col-span-6  flex justify-center">
           <div>
             <h2 className="font-serif font-bold">Company</h2>
             <div className=" space-y-3">
               <p></p>
-              <p className="cursor">About</p>
-              <p className="cursor">Blog</p>
-              <p className="cursor">Jobs</p>
-              <p className="cursor">Press</p>
-              <p className="cursor">Partners</p>
+              <p className="cursor">
+                <Link to={"/contact"}>Contact</Link>
+              </p>
+              <p className="cursor">
+                <Link to={"/about"}>About</Link>
+              </p>
             </div>
           </div>
         </div>
 
-        <div className="col-span-6 md:col-span-3  flex justify-center">
+        <div className="col-span-6  flex justify-center">
           <div>
             <h2 className="font-serif font-bold">Legal</h2>
             <div className=" space-y-3">
               <p></p>
-              <p className="cursor">Claim</p>
-              <p className="cursor">Privacy</p>
-              <p className="cursor">Terms</p>
+              <p className="cursor">
+                <Link to={"/terms-conditions"}>Terms & Conditions</Link>
+              </p>
+              <p className="cursor">
+                <Link to={"/privacy-policy"}>Privacy Policy</Link>
+              </p>
             </div>
           </div>
         </div>

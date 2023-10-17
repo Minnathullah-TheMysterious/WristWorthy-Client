@@ -28,10 +28,14 @@ import AdminBrandsPage from "./pages/adminPages/AdminBrandsPage";
 import UpdateProductPage from "./pages/adminPages/UpdateProductPage";
 import AdminOrdersPage from "./pages/adminPages/AdminOrdersPage";
 import StripeCheckoutPage from "./pages/StripeCheckoutPage";
-import CardPaymentOrderSuccessPage from './pages/CardPaymentOrderSuccessPage';
-import CashPaymentOrderSuccessPage from './pages/CashPaymentOrderSuccessPage';
-import PassResetMailPage from './pages/PassResetMailPage';
+import CardPaymentOrderSuccessPage from "./pages/CardPaymentOrderSuccessPage";
+import CashPaymentOrderSuccessPage from "./pages/CashPaymentOrderSuccessPage";
+import PassResetMailPage from "./pages/PassResetMailPage";
 import CreatePromoPage from "./pages/adminPages/CreatePromoPage";
+import AboutPage from "./pages/footerPages/AboutPage";
+import ContactPage from "./pages/footerPages/ContactPage";
+import PrivacyPolicyPage from "./pages/footerPages/PrivacyPolicyPage";
+import TermsAndConditionsPage from "./pages/footerPages/TermsAndConditionsPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -56,19 +60,36 @@ function App() {
           path="/product-details/:productId"
           element={<ProductDetailsPage />}
         />
-        <Route path="/Reset-password/:email/:token" element={<PassResetMailPage />} />
+        <Route
+          path="/Reset-password/:email/:token"
+          element={<PassResetMailPage />}
+        />
+
+        {/* Footer Page Routes */}
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/terms-conditions" element={<TermsAndConditionsPage />} />
+
         {/* LoggedIn User Routes */}
         <Route path="/dashboard/user" element={<UserProtectedRoute />}>
           <Route path="cart" element={<CartPage />} />
           <Route path="checkout" element={<CheckoutPage />} />
-          <Route path="card-payment-order-success/:orderId" element={<CardPaymentOrderSuccessPage />} />
-          <Route path="cash-payment-order-success" element={<CashPaymentOrderSuccessPage />} />
+          <Route
+            path="card-payment-order-success/:orderId"
+            element={<CardPaymentOrderSuccessPage />}
+          />
+          <Route
+            path="cash-payment-order-success"
+            element={<CashPaymentOrderSuccessPage />}
+          />
           <Route path="orders" element={<UserOrdersPage />} />
           <Route path="profile" element={<UserProfilePage />} />
           <Route path="addresses" element={<UserAddressesPage />} />
           <Route path="wishlist" element={<WishlistPage />} />
           <Route path="stripe-checkout" element={<StripeCheckoutPage />} />
         </Route>
+
         {/* Admin Routes */}
         <Route path="/dashboard/admin" element={<AdminProtectedRoute />}>
           <Route
@@ -86,6 +107,7 @@ function App() {
           <Route path="brands" element={<AdminBrandsPage />} />
           <Route path="orders" element={<AdminOrdersPage />} />
         </Route>
+
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Toaster />
