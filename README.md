@@ -210,7 +210,7 @@ The project structure of this React app, "WristWorthy" follows a commonly used d
 - `.env`: The file is a critical component of our project's configuration and environment management. It is used to store sensitive and environment-specific configuration variables, secrets, and settings, ensuring the security and flexibility of our application.<br>
   It has the following variable:
     ```bash 
-      REACT_APP_STRIPE_PUBLISHABLE_KEY= your-stripe-publishable-key
+      REACT_APP_STRIPE_PUBLISHABLE_KEY = your-stripte-publishable-key
     ```
 - `package-lock.json`: The file is an essential part of our project's dependency management and package resolution process. It records specific versions of dependencies and their sub-dependencies, ensuring the consistency and reliability of our project's environment.
 - `node_modules`: The directory is a fundamental part of our project's development environment. It houses all the external dependencies and libraries required for our application to function. These dependencies are managed by package managers like npm or Yarn and provide essential functionality for our project.
