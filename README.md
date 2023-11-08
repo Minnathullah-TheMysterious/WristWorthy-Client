@@ -2,22 +2,11 @@
 
 ### Table of Contents
 
-1. [Introduction](##introduction)
-2. [Prerequisites](##prerequisites)
-3. [Getting Started](##getting-started)
-4. [Project Structure](##project-structure)
-5. [Features](##features)
-   - [Product Listing](##product-listing)
-   - [Product Details](##product-details)
-   - [Shopping Cart](##shopping-cart)
-   - [User Authentication](##user-authentication)
-   - [Order Management](##order-management)
-   - [Filtering and Sorting](##filtering-and-sorting)
-   - [Payment Integration](##payment-integration)
-6. [Installation](##installation)
-7. [Usage](##usage)
-8. [Configuration](##configuration)
-9. [Contributing](##contributing)
+1. [Introduction](#1-introduction)
+2. [Prerequisites](#2-prerequisites)
+3. [Getting Started](#3-getting-started)
+4. [Project Structure](#4-project-structure)
+5. [Features](#5-features)
 
 ## 1. Introduction
 
@@ -33,7 +22,7 @@ Before you get started with "WristWorthy," ensure you have the following prerequ
 
 ## 3. Getting Started
 
-To get the WristWorthy app up and running on your local machine, follow the steps outlined in this section. \
+To get the WristWorthy app up and running on your local machine, follow the steps outlined in this section. <br>
 **Installation**
 
 1. Clone the repository to your local machine using [Git](https://git-scm.com/) :
@@ -215,3 +204,52 @@ The project structure of this React app, "WristWorthy" follows a commonly used d
 - `package-lock.json`: The file is an essential part of our project's dependency management and package resolution process. It records specific versions of dependencies and their sub-dependencies, ensuring the consistency and reliability of our project's environment.
 - `node_modules`: The directory is a fundamental part of our project's development environment. It houses all the external dependencies and libraries required for our application to function. These dependencies are managed by package managers like npm or Yarn and provide essential functionality for our project.
 - `build`: The folder is a crucial component of our React application's build process. It contains the optimized, production-ready version of our application, ready for deployment to web servers, content delivery networks (CDNs), or cloud hosting services. The files in this folder are the result of the build process and are meant for end-users to access the application.
+## 5. Features
+"WristWorthy" comes with a range of e-commerce features, including:
+
+**1. User Registration and Authentication**
+  - Allow users to create accounts and log in securely.
+  - Implement password reset functionality for forgotten passwords.
+
+**2. Product Catalog**
+  - Display a wide range of wristwatches, phones and other products from different categories.
+  - Organize products into categories & brands for easy browsing.
+
+**3. Product Search and Filtering** 
+  - Provide a robust search feature, allowing users to find products quickly.
+  - Allow users to filter products by price, brand, category, and other relevant criteria.
+
+**4. Product Details** 
+  - Display comprehensive information about each product, including images, descriptions, prices, and availability.
+  - Offer product reviews and ratings.
+
+**5. Related Products** 
+  - Display related products when user is watching details of a specific product.
+
+**6. Shopping Cart** 
+  - Enable users to add products to their shopping cart for later purchase.
+  - Show a summary of the items in the cart and the total price.
+
+**7. Checkout and Payment** 
+  - Support a seamless and secure checkout process.
+  - Integrate with popular payment gateways to facilitate transactions.
+
+**8. Order Tracking** 
+  - Provide order status updates and tracking information for shipped items.
+  - Allow users to view their order history.
+
+**9. User Profiles** 
+  - Allow users to manage their personal information and shipping addresses.
+
+**10. Wishlists** 
+  - Enable users to create and manage wishlists for products they want to save for later.
+
+**11. Notifications** 
+  - Send order confirmations via push notifications & order summary via email.
+
+**12. Admin Dashboard** 
+  - Provide an admin panel to manage products, brands, categories and orders.
+  - Allow administrators to track the order.
+
+**13. Mobile Responsiveness** 
+  - Ensure that the app is fully responsive and works seamlessly on various devices and screen sizes.
