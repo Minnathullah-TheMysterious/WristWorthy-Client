@@ -7,9 +7,6 @@
 3. [Getting Started](#3-getting-started)
 4. [Project Structure](#4-project-structure)
 5. [Features](#5-features)
-7. [Usage](##usage)
-8. [Configuration](##configuration)
-9. [Contributing](##contributing)
 
 ## 1. Introduction
 
@@ -208,38 +205,51 @@ The project structure of this React app, "WristWorthy" follows a commonly used d
 - `node_modules`: The directory is a fundamental part of our project's development environment. It houses all the external dependencies and libraries required for our application to function. These dependencies are managed by package managers like npm or Yarn and provide essential functionality for our project.
 - `build`: The folder is a crucial component of our React application's build process. It contains the optimized, production-ready version of our application, ready for deployment to web servers, content delivery networks (CDNs), or cloud hosting services. The files in this folder are the result of the build process and are meant for end-users to access the application.
 ## 5. Features
-"WristWorthy" comes with a range of e-commerce features, including: <br>
-**1. User Registration and Authentication** <br>
+"WristWorthy" comes with a range of e-commerce features, including:
+
+**1. User Registration and Authentication**
   - Allow users to create accounts and log in securely.
   - Implement password reset functionality for forgotten passwords.
-**2. Product Catalog** <br>
+
+**2. Product Catalog**
   - Display a wide range of wristwatches, phones and other products from different categories.
   - Organize products into categories & brands for easy browsing.
-**3. Product Search and Filtering** <br>
+
+**3. Product Search and Filtering** 
   - Provide a robust search feature, allowing users to find products quickly.
   - Allow users to filter products by price, brand, category, and other relevant criteria.
-**4. Product Details** <br>
+
+**4. Product Details** 
   - Display comprehensive information about each product, including images, descriptions, prices, and availability.
   - Offer product reviews and ratings.
-**5. Related Products** <br>
+
+**5. Related Products** 
   - Display related products when user is watching details of a specific product.
-**6. Shopping Cart** <br>
+
+**6. Shopping Cart** 
   - Enable users to add products to their shopping cart for later purchase.
   - Show a summary of the items in the cart and the total price.
-**7. Checkout and Payment** <br>
+
+**7. Checkout and Payment** 
   - Support a seamless and secure checkout process.
   - Integrate with popular payment gateways to facilitate transactions.
-**8. Order Tracking** <br>
+
+**8. Order Tracking** 
   - Provide order status updates and tracking information for shipped items.
   - Allow users to view their order history.
-**9. User Profiles** <br>
+
+**9. User Profiles** 
   - Allow users to manage their personal information and shipping addresses.
-**10. Wishlists** <br>
+
+**10. Wishlists** 
   - Enable users to create and manage wishlists for products they want to save for later.
-**11. Notifications** <br>
+
+**11. Notifications** 
   - Send order confirmations via push notifications & order summary via email.
-**12. Admin Dashboard** <br>
+
+**12. Admin Dashboard** 
   - Provide an admin panel to manage products, brands, categories and orders.
   - Allow administrators to track the order.
-**13. Mobile Responsiveness** <br>
+
+**13. Mobile Responsiveness** 
   - Ensure that the app is fully responsive and works seamlessly on various devices and screen sizes.
