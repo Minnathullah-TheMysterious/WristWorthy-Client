@@ -17,7 +17,6 @@ const initialState = {
   currentOrder: null,
   error: null,
 };
-//we may need more info of current order
 
 export const getUserAsync = createAsyncThunk("auth/getUser", async () => {
   try {

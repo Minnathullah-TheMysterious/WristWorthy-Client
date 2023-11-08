@@ -10,8 +10,8 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutAsync } from "../../auth/authSlice";
-import { searchProductsAsync } from "../../products/productSlice";
+import { logoutAsync } from "../auth/authSlice";
+import { searchProductsAsync } from "../products/productSlice";
 
 // const navigation = [{ name: "Home", href: "/", current: false }];
 

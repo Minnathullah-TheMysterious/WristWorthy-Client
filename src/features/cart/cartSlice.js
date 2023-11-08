@@ -13,7 +13,6 @@ const initialState = {
   error: null,
 };
 
-//backend
 export const addItemToCartAsync = createAsyncThunk(
   "cart/addItemToCart",
   async (productId) => {
@@ -26,7 +25,6 @@ export const addItemToCartAsync = createAsyncThunk(
   }
 );
 
-//backend
 export const fetchUserCartItemsAsync = createAsyncThunk(
   "cart/fetchUserCartItems",
   async () => {
@@ -44,7 +42,6 @@ export const fetchUserCartItemsAsync = createAsyncThunk(
   }
 );
 
-//backend
 export const updateCartItemQuantityAsync = createAsyncThunk(
   "cart/updateCartItemQuantity",
   async ({ productId, quantity }) => {
@@ -57,7 +54,6 @@ export const updateCartItemQuantityAsync = createAsyncThunk(
   }
 );
 
-//backend
 export const deleteUserCartItemAsync = createAsyncThunk(
   "cart/deleteUserCartItem",
   async (productId) => {
@@ -70,7 +66,6 @@ export const deleteUserCartItemAsync = createAsyncThunk(
   }
 );
 
-//backend
 export const resetCartAsync = createAsyncThunk("cart/resetCart", async () => {
   try {
     const response = await resetCart();

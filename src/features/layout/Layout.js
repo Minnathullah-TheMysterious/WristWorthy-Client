@@ -1,8 +1,8 @@
 import React from "react";
-import Navbar from "./header/Navbar";
-import Footer from "./footer/Footer";
+import Navbar from "./Header";
 import Helmet from "react-helmet";
 import TopLoadBar from './../../loaders/TopLoadBar';
+import Footer from './Footer';
 
 const Layout = ({
   children,

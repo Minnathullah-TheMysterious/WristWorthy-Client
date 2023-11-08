@@ -394,7 +394,6 @@ const productSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-
       .addCase(fetchAllProductsByFiltersAsync.pending, (state) => {
         state.loading = true;
       })
@@ -446,7 +445,8 @@ const productSlice = createSlice({
         state.loading = false;
         state.products = action.payload.products;
         state.nonDeletedProducts = action.payload.nonDeletedProducts;
-        state.totalNonDeletedProductsCount = action.payload.nonDeletedProductsCount;
+        state.totalNonDeletedProductsCount =
+          action.payload.nonDeletedProductsCount;
         state.totalProductsCount = action.payload.productsCount;
       })
 
